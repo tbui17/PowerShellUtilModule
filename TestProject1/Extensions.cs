@@ -11,6 +11,10 @@ internal static class Extensions
 
     public static T Clone<T>(this T src) => JsonConvert.SerializeObject(src).Thru(JsonConvert.DeserializeObject<T>)!;
     
+    public static string Serialize<T>(this T src, Formatting formatting = Formatting.None) => JsonConvert.SerializeObject(src,formatting);
+    
+    public static void Log(this object src) => Console.WriteLine(src);
+    
         
     
 }
