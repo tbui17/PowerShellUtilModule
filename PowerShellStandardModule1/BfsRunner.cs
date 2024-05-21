@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Enumeration;
 using System.Linq;
+using System.Threading;
 
 namespace PowerShellStandardModule1;
 
@@ -13,40 +14,35 @@ public class BfsRunner(
     string startingDirectory,
     bool ignoreCase = true,
     DirectoryChildGetter? directoryChildGetter = null,
-    int take = 1
+    int itemsToReturn = 1,
+    int limit = int.MaxValue
 )
 {
-    public static readonly EnumerationOptions DefaultEnumerationOptions = new()
-    {
-        IgnoreInaccessible = true,
-        RecurseSubdirectories = false,
-        MatchCasing = MatchCasing.CaseSensitive,
-        MatchType = MatchType.Simple,
-        ReturnSpecialDirectories = false,
-        MaxRecursionDepth = 1,
-        AttributesToSkip = FileAttributes.Hidden
-    };
+    public readonly int ItemsToReturn = Math.Max(0, itemsToReturn);
 
-    public static DirectoryChildGetter CreateDirectoryChildGetter(EnumerationOptions enumerationOptions) =>
-        (directory) => directory
-            .EnumerateDirectories(
-                "*",
-                enumerationOptions
-            );
+    public readonly int Limit = Math.Max(0, limit);
 
     private readonly DirectoryChildGetter _childGetter = directoryChildGetter ??
-                                                        CreateDirectoryChildGetter(DefaultEnumerationOptions);
-    
+                                                         ChildGetterFactory.CreateDirectoryChildGetter(
+                                                             ChildGetterFactory.DefaultEnumerationOptions
+                                                         );
+
     private readonly DirectoryInfo _startingDirectory = new(startingDirectory);
-    
-    
-    
 
 
-    public IEnumerable<DirectoryInfo> Run()
+    public IEnumerable<DirectoryInfo> Run(CancellationToken? token = null)
     {
         Validate();
-        return BfsSequence().Take(take);
+        return _childGetter
+            .Bfs(_startingDirectory)
+            .Take(Limit)
+            .TakeWhile(_ => token switch
+            {
+                null => true,
+                _ => !token.Value.IsCancellationRequested
+            })
+            .Where(x => IsMatch(x.Name))
+            .Take(ItemsToReturn);
     }
 
     public void Validate()
@@ -57,7 +53,5 @@ public class BfsRunner(
         }
     }
 
-    public IEnumerable<DirectoryInfo> BfsSequence() => _childGetter
-        .Bfs(_startingDirectory)
-        .Where(x => FileSystemName.MatchesSimpleExpression(pattern, x.Name, ignoreCase));
+    public bool IsMatch(string name) => FileSystemName.MatchesSimpleExpression(pattern, name, ignoreCase);
 }
