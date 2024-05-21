@@ -34,14 +34,10 @@ public class BfsRunner(
                 enumerationOptions
             );
 
-    public readonly string Pattern = pattern;
-    public readonly bool IgnoreCase = ignoreCase;
-
-    public readonly DirectoryChildGetter ChildGetter = directoryChildGetter ??
-                                                       CreateDirectoryChildGetter(DefaultEnumerationOptions);
-
-
-    public readonly DirectoryInfo StartingDirectory = new(startingDirectory);
+    private readonly DirectoryChildGetter _childGetter = directoryChildGetter ??
+                                                        CreateDirectoryChildGetter(DefaultEnumerationOptions);
+    
+    private readonly DirectoryInfo _startingDirectory = new(startingDirectory);
     
     
     
@@ -55,13 +51,13 @@ public class BfsRunner(
 
     public void Validate()
     {
-        if (!StartingDirectory.Exists)
+        if (!_startingDirectory.Exists)
         {
-            throw new DirectoryNotFoundException($"Directory not found: {StartingDirectory}");
+            throw new DirectoryNotFoundException($"Directory not found: {_startingDirectory}");
         }
     }
 
-    public IEnumerable<DirectoryInfo> BfsSequence() => ChildGetter
-        .Bfs(StartingDirectory)
-        .Where(x => FileSystemName.MatchesSimpleExpression(Pattern, x.Name, IgnoreCase));
+    public IEnumerable<DirectoryInfo> BfsSequence() => _childGetter
+        .Bfs(_startingDirectory)
+        .Where(x => FileSystemName.MatchesSimpleExpression(pattern, x.Name, ignoreCase));
 }
