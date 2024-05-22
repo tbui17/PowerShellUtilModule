@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Management.Automation;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace PowerShellStandardModule1
 {
     [Cmdlet(verbName: VerbsCommon.Get, nounName: "Bfs")]
     [Alias("Bfs")]
-    [OutputType(typeof(DirectoryInfo))]
+    [OutputType(typeof(PSObject))]
     public class BfsCommand : PSCmdlet
     {
         [Parameter(
@@ -51,16 +52,21 @@ namespace PowerShellStandardModule1
         // This method will be called for each input received from the pipeline to this cmdlet; if no input is received, this method is not called
         protected override void ProcessRecord()
         {
-            IEnumerable<DirectoryInfo> res;
+            
+            IEnumerable<PSObject> result;
             var runner = new BfsRunner(Pattern, StartingDirectory, IgnoreCase, itemsToReturn: First, limit:Limit);
             _cts.CancelAfter(Math.Max(0, Timeout));
 
 
+            
             try
             {
-                var task = Task.Run(() => res = runner.Run(_cts.Token), _cts.Token);
+                // run task in a new thread then serialize result to PSObject
+                var task = Task.Run(() => runner.Run(_cts.Token), _cts.Token);
                 task.Wait();
-                res = task.GetAwaiter().GetResult();
+                IEnumerable<DirectoryInfo> taskResult = task.GetAwaiter().GetResult();
+                
+                result = taskResult.Select(x => new PSObject(x));
             }
             catch (DirectoryNotFoundException e)
             {
@@ -87,10 +93,7 @@ namespace PowerShellStandardModule1
                 return;
             }
 
-            foreach (var x in res)
-            {
-                WriteObject(x);
-            }
+            foreach (var x in result) WriteObject(x);
         }
 
         protected override void StopProcessing()
