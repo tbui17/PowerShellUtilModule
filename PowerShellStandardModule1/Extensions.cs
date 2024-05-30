@@ -43,6 +43,37 @@ public static class Extensions
             queue.EnqueueRange(children);
         }
     }
+    
+    public static IEnumerable<T> Dfs<T>(T root, Func<T, IEnumerable<T>> getChildren)
+    {
+        var stack = Stack.From([root]);
+
+        while (stack.NotEmpty())
+        {
+            var current = stack.Pop();
+            yield return current;
+
+            stack.PushRange(getChildren(current));
+        }
+    }
+
+    public static IEnumerable<T> DfsDetailed<T>(T root, Func<T, IEnumerable<T>> getChildren)
+    {
+        var stack = Stack.From([new TreeNode<T> { Value = root }]);
+
+        var adaptedGetter = getChildren.WithTreeNodeAdapter();
+
+        while (stack.NotEmpty())
+        {
+            var current = stack.Pop();
+            yield return current.Value;
+
+            var children = adaptedGetter(current).ToImmutableList();
+
+            current.Children = children;
+            stack.PushRange(children);
+        }
+    }
 
     public static Func<TreeNode<T>, IEnumerable<TreeNode<T>>> WithTreeNodeAdapter<T>(
         this Func<T, IEnumerable<T>> getChildren
@@ -67,25 +98,7 @@ public static class Extensions
         }
     }
 
-    public static IEnumerable<T> Bfs<T>(this Func<T, IEnumerable<T>> childGetter, T root) => Bfs(root, childGetter);
-
-    public static IEnumerable<T> DfsDetailed<T>(T root, Func<T, IEnumerable<T>> getChildren)
-    {
-        var stack = Stack.From([new TreeNode<T> { Value = root }]);
-
-        var adaptedGetter = getChildren.WithTreeNodeAdapter();
-
-        while (stack.NotEmpty())
-        {
-            var current = stack.Pop();
-            yield return current.Value;
-
-            var children = adaptedGetter(current).ToImmutableList();
-
-            current.Children = children;
-            stack.PushRange(children);
-        }
-    }
+   
 
 
     public static void EnqueueRange<T>(this Queue<T> queue, IEnumerable<T> items)
@@ -163,8 +176,8 @@ public static class Extensions
         Func<TIntermediate, TReturn> fn2
     ) =>
         x => fn2(fn1(x));
-    
-    
+
+
     public static string StringJoin<T>(this IEnumerable<T> items, string separator) => string.Join(separator, items);
 }
 

@@ -1,14 +1,12 @@
 ﻿using System;
-
 using System.IO;
-using System.Linq;
 using System.Management.Automation;
 using System.Threading;
 
 
 namespace PowerShellStandardModule1
 {
-    [Cmdlet(verbName: VerbsCommon.Get, nounName: "Bfs")]
+    [Cmdlet(verbName: VerbsCommon.Get, nounName: "PrintTree")]
     [Alias("PrintTree")]
     [OutputType(typeof(string))]
     public class PrintTreeCommand : PSCmdlet
@@ -27,8 +25,28 @@ namespace PowerShellStandardModule1
             set => _startingDirectory = value;
         }
 
-        [Parameter(Position = 1, HelpMessage = "The maximum depth to search. Defaults to int32 max.")]
-        public int Height = Int32.MaxValue;
+        [Parameter(
+            Position = 1,
+            HelpMessage = "The maximum depth to search. Defaults to 3. Negative numbers are rounded to 0."
+        )]
+        public int Height = 3;
+
+        [Parameter(
+            HelpMessage =
+                "The maximum amount of lines an individual node should have. Defaults to int32 max. Negative numbers are rounded to 0."
+        )]
+        public int NodeWidth = Int32.MaxValue;
+
+        [Parameter(
+            HelpMessage = "How many results to process before stopping. Defaults to int32 max. Negative numbers are rounded to 0."
+        )]
+        public int Limit = Int32.MaxValue;
+
+        [Parameter(
+            HelpMessage =
+                "The maximum amount of lines the entire tree should have. Defaults to int32 max. Negative numbers are rounded to 0."
+        )]
+        public int Width = Int32.MaxValue;
 
         private CancellationTokenSource _cts = null!;
 
@@ -37,21 +55,28 @@ namespace PowerShellStandardModule1
             _cts = new CancellationTokenSource();
         }
 
+        private static int Constrain(int value) => int.Clamp(value, 0, int.MaxValue);
+
 
         protected override void ProcessRecord()
         {
-            string result = "";
+            string result;
 
-            var childGetter = ChildGetterFactory.CreateDirectoryChildGetter();
 
-            var dir = new DirectoryInfo(StartingDirectory);
+            var instance = new PrintTreeRunner
+            {
+                TargetDirectory = new DirectoryInfo(StartingDirectory),
+                Height = Constrain(Height),
+                NodeWidth = Constrain(NodeWidth),
+                Width = Constrain(Width),
+                Take = Constrain(Limit),
+                Token = _cts.Token
+            };
 
 
             try
             {
-                var seq = Extensions.BfsDetailed(dir, childGetter);
-
-                seq.TakeWhile(x => x.Height <= Height).First();
+                result = instance.Invoke();
             }
             catch (DirectoryNotFoundException e)
             {

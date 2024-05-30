@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace PowerShellStandardModule1
 {
@@ -64,7 +63,6 @@ namespace PowerShellStandardModule1
         // This method will be called for each input received from the pipeline to this cmdlet; if no input is received, this method is not called
         protected override void ProcessRecord()
         {
-
             IEnumerable<PSObject> result;
             var runner = new BfsRunner(Pattern, StartingDirectory, IgnoreCase, itemsToReturn: First, limit: Limit);
             _cts.CancelAfter(Math.Max(0, Timeout));
@@ -72,12 +70,7 @@ namespace PowerShellStandardModule1
 
             try
             {
-                // run task in a new thread then serialize result to PSObject
-                var task = Task.Run(() => runner.Run(_cts.Token), _cts.Token);
-                task.Wait();
-                IEnumerable<DirectoryInfo> taskResult = task.GetAwaiter().GetResult();
-
-                result = taskResult.Select(x => new PSObject(x));
+                result = runner.Run(_cts.Token).Select(x => new PSObject(x));
             }
             catch (DirectoryNotFoundException e)
             {

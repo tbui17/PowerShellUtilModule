@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Immutable;
+using FluentAssertions;
 using FluentAssertions.Execution;
 using PowerShellStandardModule1;
 using static PowerShellStandardModule1.Extensions;
@@ -7,7 +8,7 @@ using TestNode = PowerShellStandardModule1.Structs.TreeNode<string>;
 
 namespace TestProject1;
 
-public class PrintTreeExtensionsTest
+public class PrintTreeTest
 {
     private TestNode _root = null!;
 
@@ -140,6 +141,44 @@ public class PrintTreeExtensionsTest
         }
 
         height.Should().Be(4);
+    }
+
+    [Test]
+    public void TestTreeRunner()
+    {
+        var dir = EnvVars.HOME_DIRECTORY.Get().Pipe(x => new DirectoryInfo(x));
+        
+        var height = 3;
+        var nodeWidth = 10;
+        var width = 10;
+        var take = 400000;
+
+        var instance = new PrintTreeRunner
+        {
+            TargetDirectory = dir,
+            Height = height,
+            NodeWidth = nodeWidth,
+            Width = width,
+            Take = take
+        };
+
+        var res = instance.CreateTreeNodes();
+        res.Should().HaveCountGreaterThan(0);
+        var root = res[0];
+        using var scope = new AssertionScope();
+
+        res.Should().HaveCountLessThan(instance.Take);
+        res.ForEach(x => x.Height.Should().BeLessThanOrEqualTo(height));
+        res.ForEach(x => x.Children.Count().Should().BeLessThanOrEqualTo(nodeWidth));
+        
+        var printNodes = instance.CreatePrintNodes(root).ToList();
+        
+        printNodes.ForEach(x => x.StringValue.Should().NotContainAny("/", "\\"));
+        
+        
+        
+        
+        Console.WriteLine(printNodes);
     }
 
     IEnumerable<TestNode> GetChildren(TestNode node) => node.Children;

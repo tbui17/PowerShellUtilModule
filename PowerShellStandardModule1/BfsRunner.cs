@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Enumeration;
 using System.Linq;
 using System.Threading;
+using static PowerShellStandardModule1.Extensions;
 
 namespace PowerShellStandardModule1;
 
@@ -32,15 +33,12 @@ public class BfsRunner(
 
     public IEnumerable<DirectoryInfo> Run(CancellationToken? token = null)
     {
+        var cancelToken = token ?? CancellationToken.None;
         Validate();
-        return _childGetter
-            .Bfs(_startingDirectory)
+        
+        return Bfs(_startingDirectory,_childGetter)
             .Take(Limit)
-            .TakeWhile(_ => token switch
-            {
-                null => true,
-                _ => !token.Value.IsCancellationRequested
-            })
+            .TakeWhile(_ => !cancelToken.IsCancellationRequested)
             .Where(x => IsMatch(x.Name))
             .Take(ItemsToReturn);
     }

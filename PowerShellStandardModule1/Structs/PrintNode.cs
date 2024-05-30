@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace PowerShellStandardModule1.Structs;
 
@@ -14,35 +16,32 @@ public enum Indents
 
 public static class IndentExtensions
 {
-    public static string Value(this Indents indent) => indent switch
-    {
-        Indents.None => "",
-        Indents.Middle => "├── ",
-        Indents.Last => "└── ",
-        Indents.Padding => "    ",
-        Indents.PaddedBranch => "│   ",
-        _ => throw new ArgumentOutOfRangeException(nameof(indent), indent, null)
-    };
-    
-    public static Indents Parse(string value) => value switch
-    {
-        "" => Indents.None,
-        "├── " => Indents.Middle,
-        "└── " => Indents.Last,
-        "    " => Indents.Padding,
-        "│   " => Indents.PaddedBranch,
-        _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
-    };
-}
+    public static string Value(this Indents indent) =>
+        indent switch
+        {
+            Indents.None => "",
+            Indents.Middle => "├── ",
+            Indents.Last => "└── ",
+            Indents.Padding => "    ",
+            Indents.PaddedBranch => "│   ",
+            _ => throw new ArgumentOutOfRangeException(nameof(indent), indent, null)
+        };
 
-public class Indent
-{
-    public required Indents Value { get; init; }
-    
-    public static implicit operator Indent(string value) => IndentExtensions.Parse(value);
-    public static implicit operator Indent(Indents value) => new(){Value=value}; 
-    
-    public static ImmutableList<Indents> operator +(Indent indent, Indents value) => ImmutableList.Create(indent.Value, value);
+    public static Indents Parse(string value) =>
+        value switch
+        {
+            "" => Indents.None,
+            "├── " => Indents.Middle,
+            "└── " => Indents.Last,
+            "    " => Indents.Padding,
+            "│   " => Indents.PaddedBranch,
+            _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
+        };
+
+    public static string ToValueString(this IImmutableList<Indents> indents) =>
+        indents
+           .Select(x => x.Value())
+           .StringJoin("");
 }
 
 public record PrintNode<T>
@@ -50,35 +49,46 @@ public record PrintNode<T>
     public required TreeNode<T> Value;
     public int Index;
     public bool IsRoot;
-    public string Indent = Indents.None.Value();
+    private IImmutableList<Indents> _indent = [];
     public Func<TreeNode<T>, string> StringValueSelector = DefaultStringValueSelector;
-    
+
     public string StringValue => StringValueSelector(Value);
 
     private bool IsFirst => Index == 0;
 
-    private string Prefix =>
+    private Indents Prefix =>
         IsFirst
-            ? Indents.Last.Value()
-            : Indents.Middle.Value();
+            ? Indents.Last
+            : Indents.Middle;
 
     public string Line =>
         IsRoot
             ? StringValue
-            : Indent + Prefix + StringValue;
+            : CompiledIndent.ToValueString() + StringValue;
 
-
-    private string PaddingBranch =>
+    public IImmutableList<Indents> CompiledIndent =>
         IsRoot
-            ? ""
-            : IsFirst
-                ? Indents.Padding.Value()
-                : Indents.PaddedBranch.Value();
+            ? []
+            : _indent.Add(Prefix);
 
-    public string NextIndent => Indent + PaddingBranch;
-    
-    private static string DefaultStringValueSelector(AbstractNode<T> node) => node.Value?.ToString() ?? "";
-    
+
+    private Indents PaddingBranch =>
+        IsRoot
+            ? Indents.None
+            : IsFirst
+                ? Indents.Padding
+                : Indents.PaddedBranch;
+
+    private IImmutableList<Indents> NextIndent => _indent.Add(PaddingBranch);
+
+    public IEnumerable<PrintNode<T>> ReversedChildren =>
+        Value
+           .Children
+           .Reverse()
+           .Select((x, i) => x.ToPrintNode() with { Index = i, _indent = NextIndent });
+
+    private static string DefaultStringValueSelector(AbstractNode<T> node) =>
+        node.Value?.ToString() ?? Indents.None.Value();
 }
 
 public static class PrintNode
