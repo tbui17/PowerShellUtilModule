@@ -163,6 +163,9 @@ public static class Extensions
         Func<TIntermediate, TReturn> fn2
     ) =>
         x => fn2(fn1(x));
+    
+    
+    public static string StringJoin<T>(this IEnumerable<T> items, string separator) => string.Join(separator, items);
 }
 
 public static class Stack
