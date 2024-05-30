@@ -55,7 +55,7 @@ public static class Extensions
             var parentHeightPlusOne = node.Height + 1;
 
             return getChildren(node.Value)
-                .Select(
+               .Select(
                     (x, i) => new TreeNode<T>
                     {
                         Value = x,
@@ -136,6 +136,26 @@ public static class Extensions
     {
         fn(src);
         return src;
+    }
+
+    public static (IList<T> True, IList<T> False) PartitionBy<T>(this IEnumerable<T> source, Predicate<T> predicate)
+    {
+        var left = new List<T>();
+        var right = new List<T>();
+
+        foreach (var item in source)
+        {
+            if (predicate(item))
+            {
+                left.Add(item);
+            }
+            else
+            {
+                right.Add(item);
+            }
+        }
+
+        return (left, right);
     }
 
     public static Func<T, TReturn> Compose<T, TIntermediate, TReturn>(

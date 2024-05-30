@@ -89,8 +89,8 @@ public class PrintTreeExtensionsTest
         var getterWithWidthLimitedNodes = baseGetter.Compose(x => x.Take(maxWidth));
 
         var treeNodes = BfsDetailed(dir, getterWithWidthLimitedNodes)
-                        .TakeWhile(x => x.Height < maxHeight)
-                        .ToList(); // must materialize to populate children
+           .TakeWhile(x => x.Height < maxHeight)
+           .ToList(); // must materialize to populate children
 
 
         var treeNodeTestCases = treeNodes.Select(
@@ -102,20 +102,18 @@ public class PrintTreeExtensionsTest
         );
 
         var printNodes = treeNodes
-                         .First()
-                         .ToPreOrderPrintNodes()
-                         .Select(
-                             outerNode => outerNode with { StringValueSelector = node => node.Value.Name }
-                         )
-                         .ToList(); // modify formatting of all involved nodes
+           .First()
+           .ToPreOrderPrintNodes()
+           .Select(outerNode => outerNode with { StringValueSelector = node => node.Value.Name })
+           .ToList(); // modify formatting of all involved nodes
 
         var printNodeTestCases = printNodes.Select(
             Action (node) => () => { node.StringValue.Should().NotContainAny("/", "\\"); }
         );
 
         var allTestCases = treeNodeTestCases
-                           .Concat(printNodeTestCases)
-                           .ToList();
+           .Concat(printNodeTestCases)
+           .ToList();
 
         allTestCases.Count.Should().BeGreaterThan(0);
 
