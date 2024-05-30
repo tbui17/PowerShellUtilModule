@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Execution;
 using FuzzySharp;
-using Newtonsoft.Json;
 using PowerShellStandardModule1;
+using PowerShellStandardModule1.Structs;
 
 namespace TestProject1;
 
@@ -72,4 +72,5 @@ public class FuzzyTests
             testCase.Should().NotThrow();
         }
     }
+    
 }

@@ -1,7 +1,7 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=55af06c5_002D12ed_002D4d62_002Db3ab_002Dcbafb7e2cf61/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.Tests.Test1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=eb7ee465_002D1aef_002D4dc5_002D8a01_002D44692aa3c5ee/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
@@ -16,6 +16,10 @@
     &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.Tests.TestChildGetter&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.Tests.TestGetDirectoryChildren&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.Tests.TestCancel&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeTest.TestBfsTree&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeTest.TestPrintTreeFull&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeExtensionsTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Globber/@EntryIndexedValue">True</s:Boolean>

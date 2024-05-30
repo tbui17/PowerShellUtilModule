@@ -23,6 +23,10 @@ public static class ChildGetterFactory
         string pattern = "*"
     ) => (directory) => 
         GetDirectoryChildren(() => directory.EnumerateDirectories(pattern, enumerationOptions));
+    
+    public static Func<DirectoryInfo, IEnumerable<DirectoryInfo>> CreateDirectoryChildGetter(
+        string pattern = "*"
+    ) => CreateDirectoryChildGetter(DefaultEnumerationOptions, pattern);
 
     // ReSharper disable once ReturnTypeCanBeEnumerable.Local
     /// <summary>

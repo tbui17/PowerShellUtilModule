@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Management.Automation;
 using FuzzySharp;
+using PowerShellStandardModule1.Structs;
 
 public delegate int FuzzyFunc(string s1, string s2);
 

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Dynamic;
+using Newtonsoft.Json;
 
 namespace TestProject1;
 
@@ -14,6 +15,12 @@ internal static class Extensions
     public static string Serialize<T>(this T src, Formatting formatting = Formatting.None) => JsonConvert.SerializeObject(src,formatting);
     
     public static void Log(this object src) => Console.WriteLine(src);
+
+    public static object Get(this ExpandoObject src, string key)
+    {
+        var dict = (IDictionary<string, object>)src!;
+        return dict[key];
+    }
     
         
     
