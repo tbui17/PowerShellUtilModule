@@ -2,7 +2,8 @@
 using FluentAssertions;
 using FluentAssertions.Execution;
 using PowerShellStandardModule1;
-using static PowerShellStandardModule1.Extensions;
+using PowerShellStandardModule1.Commands;
+using static PowerShellStandardModule1.Lib.Extensions;
 using TestNode = PowerShellStandardModule1.Structs.TreeNode<string>;
 
 
@@ -77,51 +78,7 @@ public class PrintTreeTest
         res.ForEach(x => x.Height.Should().BeLessThanOrEqualTo(maxHeight));
     }
 
-    [Test]
-    public void TestIntegration()
-    {
-        var dir = EnvVars.HOME_DIRECTORY.Get().Pipe(x => new DirectoryInfo(x));
-        var maxHeight = 5;
-        var maxWidth = 10;
-
-        var baseGetter = ChildGetterFactory.CreateDirectoryChildGetter();
-
-        // inject node width limiter (children count) into getter, which acts within bfs function
-        var getterWithWidthLimitedNodes = baseGetter.Compose(x => x.Take(maxWidth));
-
-        var treeNodes = BfsDetailed(dir, getterWithWidthLimitedNodes)
-           .TakeWhile(x => x.Height < maxHeight)
-           .ToList(); // must materialize to populate children
-
-
-        var treeNodeTestCases = treeNodes.Select(
-            Action (node) => () =>
-            {
-                node.Height.Should().BeLessThanOrEqualTo(maxHeight);
-                node.Children.Count().Should().BeLessThanOrEqualTo(maxWidth);
-            }
-        );
-
-        var printNodes = treeNodes
-           .First()
-           .ToPreOrderPrintNodes()
-           .Select(outerNode => outerNode with { StringValueSelector = node => node.Value.Name })
-           .ToList(); // modify formatting of all involved nodes
-
-        var printNodeTestCases = printNodes.Select(
-            Action (node) => () => { node.StringValue.Should().NotContainAny("/", "\\"); }
-        );
-
-        var allTestCases = treeNodeTestCases
-           .Concat(printNodeTestCases)
-           .ToList();
-
-        allTestCases.Count.Should().BeGreaterThan(0);
-
-        using var scope = new AssertionScope();
-        allTestCases.ForEach(x => x());
-    }
-
+    
 
     [Test]
     public void TestOrderedHeight()
@@ -165,6 +122,7 @@ public class PrintTreeTest
         var res = instance.CreateTreeNodes();
         res.Should().HaveCountGreaterThan(0);
         var root = res[0];
+        
         using var scope = new AssertionScope();
 
         res.Should().HaveCountLessThan(instance.Take);
@@ -174,11 +132,12 @@ public class PrintTreeTest
         var printNodes = instance.CreatePrintNodes(root).ToList();
         
         printNodes.ForEach(x => x.StringValue.Should().NotContainAny("/", "\\"));
-        
-        
-        
-        
-        Console.WriteLine(printNodes);
+        printNodes.Count(x => x.IsRoot).Should().Be(1);
+
+
+
+
+
     }
 
     IEnumerable<TestNode> GetChildren(TestNode node) => node.Children;

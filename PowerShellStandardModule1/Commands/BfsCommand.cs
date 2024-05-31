@@ -5,7 +5,7 @@ using System.Linq;
 using System.Management.Automation;
 using System.Threading;
 
-namespace PowerShellStandardModule1
+namespace PowerShellStandardModule1.Commands
 {
     [Cmdlet(verbName: VerbsCommon.Get, nounName: "Bfs")]
     [Alias("Bfs")]

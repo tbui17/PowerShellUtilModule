@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using PowerShellStandardModule1.Structs;
 
-namespace PowerShellStandardModule1;
+namespace PowerShellStandardModule1.Lib;
 
 public static class Extensions
 {
@@ -24,12 +24,20 @@ public static class Extensions
         }
     }
 
-    public static IEnumerable<TreeNode<T>> BfsDetailed<T>(T root, Func<T, IEnumerable<T>> getChildren)
+    public static IEnumerable<TreeNode<T>> BfsDetailed<T>(T root, Func<T, IEnumerable<T>> getChildren) =>
+        BfsDetailed(root, getChildren.WithTreeNodeAdapter());
+
+    public static IEnumerable<TreeNode<T>> BfsDetailed<T>(T root, Func<TreeNode<T>, IEnumerable<T>> getChildren) =>
+        BfsDetailed(root, getChildren.WithTreeNodeAdapter());
+
+    private static IEnumerable<TreeNode<T>> BfsDetailed<T>(
+        T root,
+        Func<TreeNode<T>, IEnumerable<TreeNode<T>>> adaptedGetter
+    )
     {
         var item = new TreeNode<T> { Value = root };
         var queue = new Queue<TreeNode<T>>();
         queue.Enqueue(item);
-        var adaptedGetter = getChildren.WithTreeNodeAdapter();
 
         while (queue.Count > 0)
         {
@@ -43,7 +51,7 @@ public static class Extensions
             queue.EnqueueRange(children);
         }
     }
-    
+
     public static IEnumerable<T> Dfs<T>(T root, Func<T, IEnumerable<T>> getChildren)
     {
         var stack = Stack.From([root]);
@@ -75,30 +83,55 @@ public static class Extensions
         }
     }
 
+
     public static Func<TreeNode<T>, IEnumerable<TreeNode<T>>> WithTreeNodeAdapter<T>(
-        this Func<T, IEnumerable<T>> getChildren
-    )
+        this Func<TreeNode<T>, IEnumerable<T>> getChildrenFromTreeNode
+    ) =>
+        node => TreeNodeAdapter(node, getChildrenFromTreeNode);
+
+    public static Func<TreeNode<T>, IEnumerable<TreeNode<T>>> WithTreeNodeAdapter<T>(
+        this Func<T, IEnumerable<T>> getChildrenFromValue
+    ) =>
+        node => TreeNodeAdapter(node, n => getChildrenFromValue(n.Value));
+
+    private static IEnumerable<TreeNode<T>> TreeNodeAdapter<T>(TreeNode<T> node, Func<TreeNode<T>, IEnumerable<T>> getChildren)
     {
-        return Adapter;
+        var parentHeightPlusOne = node.Height + 1;
 
-        IEnumerable<TreeNode<T>> Adapter(TreeNode<T> node)
-        {
-            var parentHeightPlusOne = node.Height + 1;
-
-            return getChildren(node.Value)
-               .Select(
-                    (x, i) => new TreeNode<T>
-                    {
-                        Value = x,
-                        Height = parentHeightPlusOne,
-                        Parent = node,
-                        Index = i
-                    }
-                );
-        }
+        return getChildren(node)
+           .Select(
+                (x, i) => new TreeNode<T>
+                {
+                    Value = x,
+                    Height = parentHeightPlusOne,
+                    Parent = node,
+                    Index = i
+                }
+            );
     }
 
-   
+    // public static Func<TreeNode<T>, IEnumerable<TreeNode<T>>> WithTreeNodeAdapter<T>(
+    //     this Func<T, IEnumerable<T>> getChildren
+    // )
+    // {
+    //     return Adapter;
+    //
+    //     IEnumerable<TreeNode<T>> Adapter(TreeNode<T> node)
+    //     {
+    //         var parentHeightPlusOne = node.Height + 1;
+    //
+    //         return getChildren(node.Value)
+    //            .Select(
+    //                 (x, i) => new TreeNode<T>
+    //                 {
+    //                     Value = x,
+    //                     Height = parentHeightPlusOne,
+    //                     Parent = node,
+    //                     Index = i
+    //                 }
+    //             );
+    //     }
+    // }
 
 
     public static void EnqueueRange<T>(this Queue<T> queue, IEnumerable<T> items)

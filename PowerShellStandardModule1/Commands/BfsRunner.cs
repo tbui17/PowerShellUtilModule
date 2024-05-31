@@ -4,9 +4,10 @@ using System.IO;
 using System.IO.Enumeration;
 using System.Linq;
 using System.Threading;
-using static PowerShellStandardModule1.Extensions;
+using PowerShellStandardModule1.Lib;
+using static PowerShellStandardModule1.Lib.Extensions;
 
-namespace PowerShellStandardModule1;
+namespace PowerShellStandardModule1.Commands;
 
 using DirectoryChildGetter = Func<DirectoryInfo, IEnumerable<DirectoryInfo>>;
 

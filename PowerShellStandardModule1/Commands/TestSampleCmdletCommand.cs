@@ -2,7 +2,7 @@
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 
-namespace PowerShellStandardModule1
+namespace PowerShellStandardModule1.Commands
 {
     [Cmdlet(VerbsDiagnostic.Test, "SampleCmdlet")]
     [OutputType(typeof(FavoriteStuff))]
@@ -43,7 +43,10 @@ namespace PowerShellStandardModule1
             WriteVerbose("End!");
         }
     }
+}
 
+namespace PowerShellStandardModule1
+{
     public class FavoriteStuff
     {
         public int FavoriteNumber { get; set; }

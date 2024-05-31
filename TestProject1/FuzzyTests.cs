@@ -2,6 +2,7 @@
 using FluentAssertions.Execution;
 using FuzzySharp;
 using PowerShellStandardModule1;
+using PowerShellStandardModule1.Commands;
 using PowerShellStandardModule1.Structs;
 
 namespace TestProject1;

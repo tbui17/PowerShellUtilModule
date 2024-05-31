@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace PowerShellStandardModule1;
+namespace PowerShellStandardModule1.Lib;
 
 public static class ChildGetterFactory
 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using PowerShellStandardModule1.Lib;
 
 namespace PowerShellStandardModule1.Structs;
 
@@ -53,11 +54,12 @@ public record PrintNode<T>
     public Func<TreeNode<T>, string> StringValueSelector = DefaultStringValueSelector;
 
     public string StringValue => StringValueSelector(Value);
-
-    private bool IsFirst => Index == 0;
+    
+    // if iterating over children in reverse order, last child is now index 0
+    private bool IsLast => Index == 0;
 
     private Indents Prefix =>
-        IsFirst
+        IsLast
             ? Indents.Last
             : Indents.Middle;
 
@@ -75,10 +77,11 @@ public record PrintNode<T>
     private Indents PaddingBranch =>
         IsRoot
             ? Indents.None
-            : IsFirst
+            : IsLast
                 ? Indents.Padding
                 : Indents.PaddedBranch;
-
+    
+    // if it's the last child of its parent, then do not have line in padding
     private IImmutableList<Indents> NextIndent => _indent.Add(PaddingBranch);
 
     public IEnumerable<PrintNode<T>> ReversedChildren =>

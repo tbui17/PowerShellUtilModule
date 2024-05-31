@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Text;
 using PowerShellStandardModule1.Structs;
-using static PowerShellStandardModule1.Extensions;
+using static PowerShellStandardModule1.Lib.Extensions;
 
-namespace PowerShellStandardModule1;
+namespace PowerShellStandardModule1.Commands;
 
 public static class PrintTreeExtensions
 {

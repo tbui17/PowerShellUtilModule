@@ -3,8 +3,7 @@ using System.IO;
 using System.Management.Automation;
 using System.Threading;
 
-
-namespace PowerShellStandardModule1
+namespace PowerShellStandardModule1.Commands
 {
     [Cmdlet(verbName: VerbsCommon.Get, nounName: "PrintTree")]
     [Alias("PrintTree")]
@@ -38,7 +37,8 @@ namespace PowerShellStandardModule1
         public int NodeWidth = Int32.MaxValue;
 
         [Parameter(
-            HelpMessage = "How many results to process before stopping. Defaults to int32 max. Negative numbers are rounded to 0."
+            HelpMessage =
+                "How many results to process before stopping. Defaults to int32 max. Negative numbers are rounded to 0."
         )]
         public int Limit = Int32.MaxValue;
 
@@ -47,6 +47,12 @@ namespace PowerShellStandardModule1
                 "The maximum amount of lines the entire tree should have. Defaults to int32 max. Negative numbers are rounded to 0."
         )]
         public int Width = Int32.MaxValue;
+
+        [Parameter(
+            HelpMessage =
+                "Maximum width for the root node. Defaults to a negative value (-1), which will coerce it into the NodeWidth if this is the case."
+        )]
+        public int RootNodeWidth = -1;
 
         private CancellationTokenSource _cts = null!;
 
@@ -62,7 +68,6 @@ namespace PowerShellStandardModule1
         {
             string result;
 
-
             var instance = new PrintTreeRunner
             {
                 TargetDirectory = new DirectoryInfo(StartingDirectory),
@@ -70,7 +75,8 @@ namespace PowerShellStandardModule1
                 NodeWidth = Constrain(NodeWidth),
                 Width = Constrain(Width),
                 Take = Constrain(Limit),
-                Token = _cts.Token
+                Token = _cts.Token,
+                RootNodeWidth = RootNodeWidth
             };
 
 

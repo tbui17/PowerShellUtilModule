@@ -4,12 +4,12 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using PowerShellStandardModule1.Lib;
 using PowerShellStandardModule1.Structs;
-using static PowerShellStandardModule1.Extensions;
+using static PowerShellStandardModule1.Lib.Extensions;
 
 
-
-namespace PowerShellStandardModule1;
+namespace PowerShellStandardModule1.Commands;
 
 public class PrintTreeRunner
 {
@@ -19,9 +19,25 @@ public class PrintTreeRunner
     public int NodeWidth = int.MaxValue;
     public int Take = int.MaxValue;
     public CancellationToken Token = CancellationToken.None;
+    public int RootNodeWidth = -1;
 
     private static readonly Func<DirectoryInfo, IEnumerable<DirectoryInfo>> BaseGetter =
         ChildGetterFactory.CreateDirectoryChildGetter();
+
+    private Func<TreeNode<DirectoryInfo>, IEnumerable<DirectoryInfo>> CreateGetter()
+    {
+        return RootNodeWidth < 0
+            ? ConstrainedGetter
+            : ConstrainedGetterWithRootConstraint;
+
+        IEnumerable<DirectoryInfo> ConstrainedGetter(TreeNode<DirectoryInfo> node) =>
+            BaseGetter(node.Value).Take(NodeWidth);
+
+        IEnumerable<DirectoryInfo> ConstrainedGetterWithRootConstraint(TreeNode<DirectoryInfo> node) =>
+            node.Height == 0
+                ? BaseGetter(node.Value).Take(RootNodeWidth)
+                : ConstrainedGetter(node);
+    }
 
     public IImmutableList<TreeNode<DirectoryInfo>> CreateTreeNodes()
     {
@@ -29,17 +45,12 @@ public class PrintTreeRunner
         {
             throw new DirectoryNotFoundException($"Directory not found: {TargetDirectory}");
         }
-        
-        // inject node width limiter (children count) into getter, which acts within bfs function
-        var getterWithWidthLimitedNodes = BaseGetter.Compose(x => x.Take(NodeWidth));
 
-        var treeNodes = BfsDetailed(TargetDirectory, getterWithWidthLimitedNodes)
+        return BfsDetailed(TargetDirectory, CreateGetter())
            .TakeWhile(_ => !Token.IsCancellationRequested)
            .TakeWhile(x => x.Height < Height)
            .Take(Take)
            .ToImmutableList(); // must materialize to populate children
-
-        return treeNodes;
     }
 
 
@@ -58,8 +69,7 @@ public class PrintTreeRunner
            .Select(DefaultPrintNodeSelector);
 
     public string Invoke() => CreatePrintNodes().ToTreeString();
-    
-    
+
 
     private static PrintNode<DirectoryInfo> DefaultPrintNodeSelector(PrintNode<DirectoryInfo> outerNode) =>
         outerNode with { StringValueSelector = node => node.Value.Name };
