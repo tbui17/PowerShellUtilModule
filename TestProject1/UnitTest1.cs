@@ -2,6 +2,7 @@ using System.Diagnostics;
 using FluentAssertions;
 using Newtonsoft.Json;
 using PowerShellStandardModule1.Commands;
+using PowerShellStandardModule1.Commands.Bfs;
 using PowerShellStandardModule1.Lib;
 
 namespace TestProject1;
@@ -10,7 +11,7 @@ using PowerShellStandardModule1;
 
 public class Tests
 {
-    private BfsRunner _runner = null!;
+    private BfsController _controller = null!;
     private string _currentDirectory = null!;
     private string _initialDirectory = null!;
 
@@ -36,13 +37,13 @@ public class Tests
     [SetUp]
     public void Setup()
     {
-        _runner = new BfsRunner(Pattern, _currentDirectory);
+        _controller = new BfsController(Pattern, _currentDirectory);
     }
 
     [Test]
     public void TestRun()
     {
-        var res = _runner.Run().ToList();
+        var res = _controller.Invoke().ToList();
         res.Should().NotBeEmpty();
     }
 
@@ -83,7 +84,7 @@ public class Tests
             return res;
         };
 
-        var runner = new BfsRunner("a", _currentDirectory, directoryChildGetter: childGetter, itemsToReturn: 100);
+        var runner = new BfsController("a", _currentDirectory, directoryChildGetter: childGetter, itemsToReturn: 100);
 
        
 
@@ -101,7 +102,7 @@ public class Tests
         src.CancelAfter(time);
 
         // ReSharper disable once UnusedVariable
-        var res = runner.Run(src.Token).ToList();
+        var res = runner.Invoke(src.Token).ToList();
         stopwatch.Stop();
         Console.WriteLine($"Finished processing in {stopwatch.ElapsedMilliseconds} ms.");
 

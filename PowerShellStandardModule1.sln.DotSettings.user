@@ -20,6 +20,10 @@
     &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeTest.TestPrintTreeFull&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeExtensionsTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.TestReflection.TestJoin&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.TestReflection.TestDynamicAssignment&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.TestReflection.TestMember&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.ReflectionTests.TestMember&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Globber/@EntryIndexedValue">True</s:Boolean>

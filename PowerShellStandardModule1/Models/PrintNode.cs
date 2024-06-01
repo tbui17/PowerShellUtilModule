@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using PowerShellStandardModule1.Lib;
+using PowerShellStandardModule1.Lib.Extensions;
 
-namespace PowerShellStandardModule1.Structs;
+namespace PowerShellStandardModule1.Models;
 
 public enum Indents
 {
@@ -49,9 +50,19 @@ public record PrintNode<T>
 {
     public required TreeNode<T> Value;
     public int Index;
-    public bool IsRoot;
+    
+    public PrintNode<T>? Parent;
+    public bool IsRoot => Parent == null;
     private IImmutableList<Indents> _indent = [];
-    public Func<TreeNode<T>, string> StringValueSelector = DefaultStringValueSelector;
+    
+    
+    public Func<TreeNode<T>, string> StringValueSelector = PrintNode.DefaultStringValueSelector;
+
+
+    private static Func<PrintNode<T>, TreeNode<T>, int, PrintNode<T>> ChildConstructor => DefaultChildConstructor;
+
+
+    public Func<PrintNode<T>, IEnumerable<TreeNode<T>>> ChildProvider = PrintNode.DefaultChildProvider;
 
     public string StringValue => StringValueSelector(Value);
     
@@ -84,14 +95,17 @@ public record PrintNode<T>
     // if it's the last child of its parent, then do not have line in padding
     private IImmutableList<Indents> NextIndent => _indent.Add(PaddingBranch);
 
-    public IEnumerable<PrintNode<T>> ReversedChildren =>
+    public IEnumerable<PrintNode<T>> Children =>
         Value
            .Children
            .Reverse()
-           .Select((x, i) => x.ToPrintNode() with { Index = i, _indent = NextIndent });
+           .Select((x, i) => DefaultChildConstructor(this,x,i));
 
-    private static string DefaultStringValueSelector(AbstractNode<T> node) =>
-        node.Value?.ToString() ?? Indents.None.Value();
+    
+    
+    private static PrintNode<T> DefaultChildConstructor(PrintNode<T> parent, TreeNode<T> node, int index) =>
+        parent with { Value = node, Index = index, _indent = parent.NextIndent, Parent = parent };
+    
 }
 
 public static class PrintNode
@@ -99,4 +113,10 @@ public static class PrintNode
     public static PrintNode<T> ToPrintNode<T>(this TreeNode<T> node) => From(node);
 
     public static PrintNode<T> From<T>(TreeNode<T> node) => new() { Value = node };
+    
+    public static string DefaultStringValueSelector<T>(AbstractNode<T> node) =>
+        node.Value?.ToString() ?? Indents.None.Value();
+    
+    public static IEnumerable<TreeNode<T>> DefaultChildProvider<T>(PrintNode<T> node) =>
+        node.Value.Children;
 }

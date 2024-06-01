@@ -5,13 +5,13 @@ using System.IO.Enumeration;
 using System.Linq;
 using System.Threading;
 using PowerShellStandardModule1.Lib;
-using static PowerShellStandardModule1.Lib.Extensions;
+using PowerShellStandardModule1.Lib.Extensions;
 
-namespace PowerShellStandardModule1.Commands;
+namespace PowerShellStandardModule1.Commands.Bfs;
 
 using DirectoryChildGetter = Func<DirectoryInfo, IEnumerable<DirectoryInfo>>;
 
-public class BfsRunner(
+public class BfsController(
     string pattern,
     string startingDirectory,
     bool ignoreCase = true,
@@ -32,19 +32,19 @@ public class BfsRunner(
     private readonly DirectoryInfo _startingDirectory = new(startingDirectory);
 
 
-    public IEnumerable<DirectoryInfo> Run(CancellationToken? token = null)
+    public IEnumerable<DirectoryInfo> Invoke(CancellationToken? token = null)
     {
         var cancelToken = token ?? CancellationToken.None;
         Validate();
         
-        return Bfs(_startingDirectory,_childGetter)
+        return Traversal.Bfs(_startingDirectory,_childGetter)
             .Take(Limit)
             .TakeWhile(_ => !cancelToken.IsCancellationRequested)
             .Where(x => IsMatch(x.Name))
             .Take(ItemsToReturn);
     }
 
-    public void Validate()
+    private void Validate()
     {
         if (!_startingDirectory.Exists)
         {
@@ -52,5 +52,5 @@ public class BfsRunner(
         }
     }
 
-    public bool IsMatch(string name) => FileSystemName.MatchesSimpleExpression(pattern, name, ignoreCase);
+    private bool IsMatch(string name) => FileSystemName.MatchesSimpleExpression(pattern, name, ignoreCase);
 }

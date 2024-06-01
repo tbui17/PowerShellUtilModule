@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using PowerShellStandardModule1.Structs;
+using PowerShellStandardModule1.Models;
 
 namespace PowerShellStandardModule1.Lib;
 

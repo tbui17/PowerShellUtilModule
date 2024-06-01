@@ -1,4 +1,4 @@
-﻿namespace PowerShellStandardModule1.Structs;
+﻿namespace PowerShellStandardModule1.Models;
 
 public abstract record AbstractNode<T>
 {

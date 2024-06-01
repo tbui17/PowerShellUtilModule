@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PowerShellStandardModule1.Structs;
+namespace PowerShellStandardModule1.Models;
 
 public record TreeNode<T> : AbstractNode<T>
 {

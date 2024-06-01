@@ -5,7 +5,7 @@ using System.Linq;
 using System.Management.Automation;
 using System.Threading;
 
-namespace PowerShellStandardModule1.Commands
+namespace PowerShellStandardModule1.Commands.Bfs
 {
     [Cmdlet(verbName: VerbsCommon.Get, nounName: "Bfs")]
     [Alias("Bfs")]
@@ -64,13 +64,13 @@ namespace PowerShellStandardModule1.Commands
         protected override void ProcessRecord()
         {
             IEnumerable<PSObject> result;
-            var runner = new BfsRunner(Pattern, StartingDirectory, IgnoreCase, itemsToReturn: First, limit: Limit);
+            var runner = new BfsController(Pattern, StartingDirectory, IgnoreCase, itemsToReturn: First, limit: Limit);
             _cts.CancelAfter(Math.Max(0, Timeout));
 
 
             try
             {
-                result = runner.Run(_cts.Token).Select(x => new PSObject(x));
+                result = runner.Invoke(_cts.Token).Select(x => new PSObject(x));
             }
             catch (DirectoryNotFoundException e)
             {

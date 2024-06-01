@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Management.Automation;
 using FuzzySharp;
-using PowerShellStandardModule1.Structs;
+using PowerShellStandardModule1.Models;
 
-namespace PowerShellStandardModule1.Commands;
 
-public delegate int FuzzyFunc(string s1, string s2);
+namespace PowerShellStandardModule1.Commands.Fuzzy;
+
+using FuzzyFunc = Func<string, string, int>;
 
 [Cmdlet(VerbsCommon.Select, "Fuzzy")]
 [Alias("Fuzzy")]
@@ -27,9 +28,7 @@ public class SelectFuzzyCommand : PSCmdlet
     )]
     public required string String2;
 
-    [Parameter(
-        Position = 2
-    )]
+    [Parameter(Position = 2)]
     public string Strategy = "Ratio";
 
 
@@ -52,11 +51,20 @@ public class SelectFuzzyCommand : PSCmdlet
            .GetParameters()
            .Length;
 
-        return (FuzzyFunc)typeof(Fuzz)
-           .GetMethods()
-           .Where(x => x.IsStatic)
-           .Where(x => x.GetParameters().Length == arity)
-           .First(x => string.Equals(x.Name, strategy, StringComparison.InvariantCultureIgnoreCase))
-           .CreateDelegate(typeof(FuzzyFunc));
+
+        var res = typeof(Fuzz)
+               .GetMethods()
+               .Where(x => x.IsStatic)
+               .Where(
+                    x => x.GetParameters()
+                           .Length ==
+                        arity
+                )
+               .FirstOrDefault(x => string.Equals(x.Name, strategy, StringComparison.InvariantCultureIgnoreCase))
+             ?
+            .CreateDelegate(typeof(FuzzyFunc)) ??
+            throw new ArgumentException($"Invalid strategy: {strategy}");
+
+        return (FuzzyFunc)res;
     }
 }
