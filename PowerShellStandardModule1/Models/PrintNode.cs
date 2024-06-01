@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -99,7 +98,7 @@ public record PrintNode<T>
         Value
            .Children
            .Reverse()
-           .Select((x, i) => DefaultChildConstructor(this,x,i));
+           .Select((x, i) => ChildConstructor(this,x,i));
 
     
     

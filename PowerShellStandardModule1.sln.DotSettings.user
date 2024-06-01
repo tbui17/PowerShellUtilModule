@@ -1,30 +1,16 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=55af06c5_002D12ed_002D4d62_002Db3ab_002Dcbafb7e2cf61/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\PCS\AppData\Local\JetBrains\Rider2023.3\resharper-host\temp\Rider\vAny\CoverageData\_PowerShellStandardModule1.1915167387\Snapshot\snapshot.utdcvr</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=78b60576_002Dd47d_002D48a1_002Dabce_002D00168a1854b6/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="1" IsActive="True" Name="PrintTreeTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=eb7ee465_002D1aef_002D4dc5_002D8a01_002D44692aa3c5ee/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d9daccee_002D96a3_002D4a9c_002Dbae9_002D070864b66938/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestTreeRunner" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.Tests.TestBfs&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.Tests.TestPattern&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.Tests.TestBfs2&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.FuzzyTests.TestFuzzy&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.FuzzyTests.TestFuzzyReflect&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.Tests.TestRun&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.Tests.TestSearch&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.Tests.TestChildGetter&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.Tests.TestGetDirectoryChildren&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.Tests.TestCancel&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeTest.TestBfsTree&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeTest.TestPrintTreeFull&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeTest&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeExtensionsTest&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.TestReflection.TestJoin&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.TestReflection.TestDynamicAssignment&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.TestReflection.TestMember&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.ReflectionTests.TestMember&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeTest.TestTreeRunner&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	
+	
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Globber/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=globbers/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
