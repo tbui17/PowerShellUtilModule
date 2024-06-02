@@ -47,8 +47,10 @@ public partial class PrintTreeService
     }
 
 
-    private Func<AbstractNode<T>, IEnumerable<T>> CreateGetter<T>(Func<T, IEnumerable<T>> baseGetter)
+    private Func<AbstractNode<T>, IEnumerable<T>> AddNodeWidthConstraint<T>(Func<T, IEnumerable<T>> baseGetter)
     {
+        // if is root, take * RootNodeWidth else take * NodeWidth
+
         return RootNodeWidth < 0
             ? NodeGetter
             : MixedGetter;
@@ -67,19 +69,32 @@ public partial class PrintTreeService
                 : NodeGetter(node);
     }
 
+    private Func<AbstractNode<DirectoryInfo>, IEnumerable<DirectoryInfo>> CreateGetter()
+    {
+        var filteredGetter = BaseGetter.Compose(x => x.Where(Filter));
+
+        // width limit should only count for nodes that pass the filter, so it must come after filter operation
+        var filteredNodeWidthConstrainedGetter = AddNodeWidthConstraint(filteredGetter);
+
+        return filteredNodeWidthConstrainedGetter;
+    }
+
     public IImmutableList<TreeNode<DirectoryInfo>> CreateTreeNodes()
     {
+        // build up tree meeting requirements
+        
         if (!StartingDirectory.Exists)
         {
             throw new DirectoryNotFoundException($"Directory not found: {StartingDirectory}");
         }
 
+
         return Traversal
-           .BfsDetailed(StartingDirectory, CreateGetter(BaseGetter))
+           .BfsDetailed(StartingDirectory, CreateGetter())
            .TakeWhile(_ => !Token.IsCancellationRequested)
-           .TakeWhile(x => x.Height < Height)
-           .Where(x => Filter(x.Value))
            .Take(Limit)
+           .TakeWhile(x => x.Height < Height)
+           
            .ToImmutableList(); // must materialize to populate children
     }
 
@@ -91,13 +106,16 @@ public partial class PrintTreeService
 
     public IEnumerable<PrintNode<DirectoryInfo>> CreatePrintNodes(TreeNode<DirectoryInfo> treeNode)
     {
+        // tag existing tree using pre order traversal to produce padding/branch data for printing tree
+        
+        // if user stops during bfs, do not begin traversal
+        if (Token.IsCancellationRequested) return [];
         var root = CreateRootNode(treeNode);
 
         return root
            .ToPreOrderPrintNodes()
            .TakeWhile(_ => !Token.IsCancellationRequested)
-            // flattened list represents lines of output, truncate excess lines
-           .Take(Width);
+           .Take(Width); // flattened sequence represents lines of output, truncate excess lines
     }
 
     private PrintNode<DirectoryInfo> CreateRootNode(TreeNode<DirectoryInfo> treeNode)

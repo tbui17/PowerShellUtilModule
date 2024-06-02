@@ -147,8 +147,8 @@ public partial class PrintTreeTest
     {
         var height = 6;
         var nodeWidth = 10;
-        var width = 100000;
-        var take = 400000;
+        var width = 10;
+        var take = 20;
         var rootNodeWidth = 100;
 
 
@@ -177,7 +177,7 @@ public partial class PrintTreeTest
 
         res
            .Should()
-           .HaveCountLessThan(instance.Limit);
+           .HaveCountLessThanOrEqualTo(take);
         res.ForEach(
             x => x
                .Height.Should()

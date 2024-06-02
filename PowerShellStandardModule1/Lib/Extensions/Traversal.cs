@@ -44,8 +44,9 @@ public static class Traversal
             var node = queue.Dequeue();
 
             yield return node;
+            
 
-            var children = adaptedGetter(node).ToImmutableList();
+            var children = adaptedGetter(node).ToList();
 
             node.Children = children;
             queue.EnqueueRange(children);
