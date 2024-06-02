@@ -27,7 +27,7 @@ public partial class PrintTreeService
 
     public string OrderBy { get; set; } = "Name";
 
-    public bool Descending { get; set; } = false;
+    public bool Descending { get; set; }
 
     public Func<DirectoryInfo, bool> Filter { get; set; } = _ => true;
 
@@ -81,8 +81,8 @@ public partial class PrintTreeService
 
     public IImmutableList<TreeNode<DirectoryInfo>> CreateTreeNodes()
     {
-        // build up tree meeting requirements
-        
+        // build up tree meeting most requirements
+
         if (!StartingDirectory.Exists)
         {
             throw new DirectoryNotFoundException($"Directory not found: {StartingDirectory}");
@@ -94,7 +94,6 @@ public partial class PrintTreeService
            .TakeWhile(_ => !Token.IsCancellationRequested)
            .Take(Limit)
            .TakeWhile(x => x.Height < Height)
-           
            .ToImmutableList(); // must materialize to populate children
     }
 
@@ -107,7 +106,7 @@ public partial class PrintTreeService
     public IEnumerable<PrintNode<DirectoryInfo>> CreatePrintNodes(TreeNode<DirectoryInfo> treeNode)
     {
         // tag existing tree using pre order traversal to produce padding/branch data for printing tree
-        
+
         // if user stops during bfs, do not begin traversal
         if (Token.IsCancellationRequested) return [];
         var root = CreateRootNode(treeNode);
@@ -115,11 +114,15 @@ public partial class PrintTreeService
         return root
            .ToPreOrderPrintNodes()
            .TakeWhile(_ => !Token.IsCancellationRequested)
-           .Take(Width); // flattened sequence represents lines of output, truncate excess lines
+           .Take(
+                Width
+            ); // flattened sequence represents lines of output, trim excess lines. the output should be trimmed down based on preorder rather than breadth-first ordering
     }
 
     private PrintNode<DirectoryInfo> CreateRootNode(TreeNode<DirectoryInfo> treeNode)
     {
+        // inject projection and children ordering logic
+
         var orderer = CreateOrderer();
         var root = treeNode.ToPrintNode() with
         {
