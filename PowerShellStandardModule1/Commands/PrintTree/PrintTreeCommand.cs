@@ -147,7 +147,9 @@ namespace PowerShellStandardModule1.Commands.PrintTree
                 Token = _cts.Token,
                 RootNodeWidth = RootNodeWidth,
                 StringValueSelector = CreateSelector(),
-                Filter = CreateFilter()
+                Filter = CreateFilter(),
+                OrderBy = OrderBy,
+                Descending = Descending
             };
 
 
