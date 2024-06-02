@@ -6,13 +6,13 @@ using Newtonsoft.Json;
 // ReSharper disable CollectionNeverQueried.Global
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 
-
 namespace PowerShellStandardModule1.Models;
+
 
 public record TreeNode<T> : AbstractNode<T>
 {
-    public TreeNode<T>? Parent;
-    public IList<TreeNode<T>> Children = [];
+    public TreeNode<T>? Parent { get; set; }
+    public IList<TreeNode<T>> Children { get; set; } = [];
 };
 
 public static class TreeNode

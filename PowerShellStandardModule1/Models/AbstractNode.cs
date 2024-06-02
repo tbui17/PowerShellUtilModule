@@ -2,7 +2,7 @@
 
 public abstract record AbstractNode<T>
 {
-    public int Height;
-    public int Index;
-    public required T Value;
+    public int Height { get; set; }
+    public int Index { get; set; }
+    public required T Value { get; set; }
 }

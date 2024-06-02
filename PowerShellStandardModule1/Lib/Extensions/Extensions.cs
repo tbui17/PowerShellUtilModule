@@ -359,6 +359,8 @@ public static class Extensions
             prev = iterator.Current;
         }
     }
+
+    public static bool IsEmpty<T>(this IList<T> source) => source.Count == 0;
 }
 
 public static class Stack

@@ -3,8 +3,6 @@ using System.Linq;
 using System.Management.Automation;
 using FuzzySharp;
 using PowerShellStandardModule1.Models;
-
-
 namespace PowerShellStandardModule1.Commands.Fuzzy;
 
 using FuzzyFunc = Func<string, string, int>;

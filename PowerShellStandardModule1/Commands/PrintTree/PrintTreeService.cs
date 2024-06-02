@@ -12,7 +12,7 @@ using PowerShellStandardModule1.Models;
 
 namespace PowerShellStandardModule1.Commands.PrintTree;
 
-using NodeOrderer = Func<IEnumerable<TreeNode<DirectoryInfo>>, IEnumerable<TreeNode<DirectoryInfo>>>;
+using NodeOrderer = Func<IEnumerable<DirectoryTreeNode>, IEnumerable<DirectoryTreeNode>>;
 
 public partial class PrintTreeService
 {
@@ -49,7 +49,7 @@ public partial class PrintTreeService
 
     private Func<AbstractNode<T>, IEnumerable<T>> AddNodeWidthConstraint<T>(Func<T, IEnumerable<T>> baseGetter)
     {
-        // if is root, take * RootNodeWidth else take * NodeWidth
+        // if is root, take * RootNodeWidth else take * NodeWidth unless NodeWidth is negative then all are treated as regular nodes
 
         return RootNodeWidth < 0
             ? NodeGetter
@@ -71,6 +71,7 @@ public partial class PrintTreeService
 
     private Func<AbstractNode<DirectoryInfo>, IEnumerable<DirectoryInfo>> CreateGetter()
     {
+       
         var filteredGetter = BaseGetter.Compose(x => x.Where(Filter));
 
         // width limit should only count for nodes that pass the filter, so it must come after filter operation
@@ -79,7 +80,7 @@ public partial class PrintTreeService
         return filteredNodeWidthConstrainedGetter;
     }
 
-    public IImmutableList<TreeNode<DirectoryInfo>> CreateTreeNodes()
+    public IImmutableList<DirectoryTreeNode> CreateTreeNodes()
     {
         // build up tree meeting most requirements
 
@@ -98,14 +99,14 @@ public partial class PrintTreeService
     }
 
 
-    public IEnumerable<PrintNode<DirectoryInfo>> CreatePrintNodes() =>
+    public IEnumerable<DirectoryPrintNode> CreatePrintNodes() =>
         CreateTreeNodes()
            .Take(1)
            .SelectMany(CreatePrintNodes);
 
-    public IEnumerable<PrintNode<DirectoryInfo>> CreatePrintNodes(TreeNode<DirectoryInfo> treeNode)
+    public IEnumerable<DirectoryPrintNode> CreatePrintNodes(DirectoryTreeNode treeNode)
     {
-        // tag existing tree using pre order traversal to produce padding/branch data for printing tree
+        // tag existing tree using pre order traversal to produce padding/branch data for printing tree and produce pre order sequence
 
         // if user stops during bfs, do not begin traversal
         if (Token.IsCancellationRequested) return [];
@@ -119,7 +120,7 @@ public partial class PrintTreeService
             ); // flattened sequence represents lines of output, trim excess lines. the output should be trimmed down based on preorder rather than breadth-first ordering
     }
 
-    private PrintNode<DirectoryInfo> CreateRootNode(TreeNode<DirectoryInfo> treeNode)
+    private DirectoryPrintNode CreateRootNode(DirectoryTreeNode treeNode)
     {
         // inject projection and children ordering logic
 
@@ -140,9 +141,9 @@ public partial class PrintTreeService
 
 public partial class PrintTreeService
 {
-    public static string DefaultStringValueSelector(TreeNode<DirectoryInfo> node) => node.Value.Name;
+    public static string DefaultStringValueSelector(DirectoryTreeNode node) => node.Value.Name;
 
-    public static Dictionary<string, NodeOrderer> NodeOrderers = new(StringComparer.OrdinalIgnoreCase)
+    public static readonly Dictionary<string, NodeOrderer> NodeOrderers = new(StringComparer.OrdinalIgnoreCase)
     {
         ["Name"] = DefaultNodeOrderer,
         ["CreationTime"] = x => x.OrderBy(n => n.Value.CreationTime),
@@ -154,6 +155,6 @@ public partial class PrintTreeService
         ["Root"] = x => x.OrderBy(n => n.Value.Root)
     };
 
-    public static IEnumerable<TreeNode<DirectoryInfo>> DefaultNodeOrderer(IEnumerable<TreeNode<DirectoryInfo>> node) =>
+    public static IEnumerable<DirectoryTreeNode> DefaultNodeOrderer(IEnumerable<DirectoryTreeNode> node) =>
         node;
 }

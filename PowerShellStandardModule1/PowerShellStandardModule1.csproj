@@ -14,4 +14,10 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Commands\PrintTree\Params.cs">
+        <DependentUpon>PrintTreeCommand.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

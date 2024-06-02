@@ -5,7 +5,7 @@ using PowerShellStandardModule1.Models;
 
 namespace PowerShellStandardModule1.Delegates;
 
-public delegate string StringValueSelector(TreeNode<DirectoryInfo> node);
+public delegate string StringValueSelector(DirectoryTreeNode node);
 
 public static class StringValueSelectorFactory
 {
@@ -13,7 +13,7 @@ public static class StringValueSelectorFactory
     {
         return StringSelector;
 
-        string StringSelector(TreeNode<DirectoryInfo> node) =>
+        string StringSelector(DirectoryTreeNode node) =>
             stringSelector
                .InvokeWithValue(node.Value)
                .SerializePsResult();
