@@ -96,8 +96,7 @@ public record PrintNode<T>
     private IImmutableList<Indents> NextIndent => Indent.Add(PaddingBranch);
 
     public IEnumerable<PrintNode<T>> Children =>
-        Value
-           .Children
+        ChildProvider(this)
            .Reverse()
            .Select(CreateChild);
 

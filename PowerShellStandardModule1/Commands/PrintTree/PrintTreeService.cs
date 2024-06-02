@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -10,6 +11,8 @@ using PowerShellStandardModule1.Lib.Extensions;
 using PowerShellStandardModule1.Models;
 
 namespace PowerShellStandardModule1.Commands.PrintTree;
+
+using NodeOrderer = Func<IEnumerable<TreeNode<DirectoryInfo>>, IEnumerable<TreeNode<DirectoryInfo>>>;
 
 public partial class PrintTreeService
 {
@@ -22,8 +25,24 @@ public partial class PrintTreeService
     public CancellationToken Token { get; set; } = CancellationToken.None;
     public int RootNodeWidth { get; set; } = -1;
 
+    public string OrderBy { get; set; } = "Name";
+
+    public bool Descending { get; set; } = false;
+
     private static readonly Func<DirectoryInfo, IEnumerable<DirectoryInfo>> BaseGetter =
         ChildGetterFactory.CreateDirectoryChildGetter();
+
+    private NodeOrderer CreateOrderer()
+    {
+        if (!NodeOrderers.TryGetValue(OrderBy, out var orderer))
+        {
+            return DefaultNodeOrderer;
+        }
+        
+        return Descending
+            ? orderer.Compose(x => x.Reverse())
+            : orderer;
+    }
 
 
     private Func<AbstractNode<T>, IEnumerable<T>> CreateGetter<T>(Func<T, IEnumerable<T>> baseGetter)
@@ -80,10 +99,11 @@ public partial class PrintTreeService
 
     private PrintNode<DirectoryInfo> CreateRootNode(TreeNode<DirectoryInfo> treeNode)
     {
+        var orderer = CreateOrderer();
         var root = treeNode.ToPrintNode() with
         {
-            StringValueSelector = x => StringValueSelector(x),
-            ChildProvider = PrintNode.DefaultChildProvider
+            StringValueSelector = StringValueSelector.Invoke,
+            ChildProvider = x => x.Value.Children.Pipe(orderer)
         };
         return root;
     }
@@ -97,4 +117,19 @@ public partial class PrintTreeService
 public partial class PrintTreeService
 {
     public static string DefaultStringValueSelector(TreeNode<DirectoryInfo> node) => node.Value.Name;
+
+    public static Dictionary<string, NodeOrderer> NodeOrderers = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Name"] = DefaultNodeOrderer,
+        ["CreationTime"] = x => x.OrderBy(n => n.Value.CreationTime),
+        ["LastAccessTime"] = x => x.OrderBy(n => n.Value.LastAccessTime),
+        ["LastWriteTime"] = x => x.OrderBy(n => n.Value.LastWriteTime),
+        ["Extension"] = x => x.OrderBy(n => n.Value.Extension),
+        ["Attributes"] = x => x.OrderBy(n => n.Value.Attributes),
+        ["Exists"] = x => x.OrderBy(n => n.Value.Exists),
+        ["Root"] = x => x.OrderBy(n => n.Value.Root)
+    };
+
+    public static IEnumerable<TreeNode<DirectoryInfo>> DefaultNodeOrderer(IEnumerable<TreeNode<DirectoryInfo>> node) =>
+        node;
 }

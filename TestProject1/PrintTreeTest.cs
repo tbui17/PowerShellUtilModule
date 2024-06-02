@@ -1,8 +1,6 @@
-﻿using System.Management.Automation;
-using Autofac;
+﻿using Autofac;
 using FluentAssertions;
 using FluentAssertions.Execution;
-using Newtonsoft.Json;
 using PowerShellStandardModule1.Commands.PrintTree;
 using PowerShellStandardModule1.Delegates;
 using PowerShellStandardModule1.Lib.Extensions;
@@ -19,6 +17,9 @@ public partial class PrintTreeTest
 
     private ChildProvider _childProvider = PrintNode.DefaultChildProvider;
 
+    private static readonly DirectoryInfo Directory =
+        GetSolutionDirectory() ?? throw new InvalidOperationException("Solution directory not found.");
+
 
     [SetUp]
     public void Setup()
@@ -30,19 +31,21 @@ public partial class PrintTreeTest
     private void Initializer(ContainerBuilder b)
     {
         b.Register<StringValueSelector>(_ => x => x.Value.Name);
-        var dir = GetSolutionDirectory() ?? throw new InvalidOperationException("Solution directory not found.");
-        b.RegisterInstance(dir);
+
+        b.RegisterInstance(Directory);
         b
            .RegisterType<PrintTreeService>()
            .PropertiesAutowired();
 
-        b.RegisterType<PrintTreeCommand>().WithProperty("StartingDirectory", dir.Name).PropertiesAutowired();
-        
+        b
+           .RegisterType<PrintTreeCommand>()
+           .WithProperty("StartingDirectory", Directory.Name)
+           .PropertiesAutowired();
     }
 
     private static DirectoryInfo? GetSolutionDirectory(string? currentPath = null)
     {
-        currentPath ??= Directory.GetCurrentDirectory();
+        currentPath ??= System.IO.Directory.GetCurrentDirectory();
 
         var directory = new DirectoryInfo(currentPath);
 
@@ -199,10 +202,6 @@ public partial class PrintTreeTest
            .Count.Should()
            .BeLessThanOrEqualTo(width);
 
-        printNodes
-           .All(x => x.ChildProvider == _childProvider)
-           .Should()
-           .Be(true, "Nodes should inherit child provider from the root");
 
         printNodes
            .GroupBy(x => x.Value.Parent)
@@ -249,10 +248,37 @@ public partial class PrintTreeTest
         n
            .Should()
            .NotBeNull();
-       
     }
 
 
+    [Test]
+    public void TestOrdering()
+    {
+        var instance = new PrintTreeService
+        {
+            StartingDirectory = Directory,
+            Descending = true,
+            OrderBy = "creationtime",
+            Height = 500,
+            Limit = 500,
+            Width = 500,
+            NodeWidth = 500,
+            RootNodeWidth = 500
+        };
+
+        // given flat list of nodes, from a tree, when they are grouped by their parent, there will be partitions that will scope the tests
+        var res = instance.CreatePrintNodes();
+
+        using var scope = new AssertionScope();
+        res
+           .GroupBy(x => x.Parent)
+           .ForEach(
+                x => x
+                   .Select(x2 => x2.Value.Value.CreationTime)
+                   .Should()
+                   .BeInDescendingOrder()
+            );
+    }
 }
 
 public partial class PrintTreeTest

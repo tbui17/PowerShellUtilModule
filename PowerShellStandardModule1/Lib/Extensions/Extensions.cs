@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using AutoMapper;
-using PowerShellStandardModule1.Attributes;
-using PowerShellStandardModule1.Models;
 
 namespace PowerShellStandardModule1.Lib.Extensions;
 
@@ -348,19 +343,6 @@ public static class Extensions
             );
     }
 
-    /// <summary>
-    /// Sets mapping from source property to destination property. Convenient extension method. 
-    /// </summary>
-    public static IMappingExpression<TSource, TDestination> MapProperty<TSource, TDestination, TProperty>(
-        this IMappingExpression<TSource, TDestination> map,
-        Expression<Func<TSource, TProperty>> sourceMember,
-        Expression<Func<TDestination, object>> targetMember
-    )
-    {
-        map.ForMember(targetMember, opt => opt.MapFrom(sourceMember));
-
-        return map;
-    }
 
     public static IEnumerable<(T, T)> Sliding<T>(this IEnumerable<T> src)
     {
@@ -368,7 +350,7 @@ public static class Extensions
 
 
         if (!iterator.MoveNext()) yield break;
-        
+
         var prev = iterator.Current;
 
         while (iterator.MoveNext())
@@ -376,7 +358,6 @@ public static class Extensions
             yield return (prev, iterator.Current);
             prev = iterator.Current;
         }
-        
     }
 }
 

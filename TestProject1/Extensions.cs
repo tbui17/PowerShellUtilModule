@@ -1,4 +1,6 @@
 ﻿using System.Dynamic;
+using System.Linq.Expressions;
+using AutoMapper;
 using Newtonsoft.Json;
 
 namespace TestProject1;
@@ -22,6 +24,19 @@ internal static class Extensions
         return dict[key];
     }
     
-        
+    /// <summary>
+    /// Sets mapping from source property to destination property. Convenient extension method. 
+    /// </summary>
+    public static IMappingExpression<TSource, TDestination> MapProperty<TSource, TDestination, TProperty>(
+        this IMappingExpression<TSource, TDestination> map,
+        Expression<Func<TSource, TProperty>> sourceMember,
+        Expression<Func<TDestination, object>> targetMember
+    )
+    {
+        map.ForMember(targetMember, opt => opt.MapFrom(sourceMember));
+
+        return map;
+    }
+
     
 }

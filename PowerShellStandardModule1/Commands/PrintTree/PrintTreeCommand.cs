@@ -3,7 +3,10 @@ using System.IO;
 using System.Management.Automation;
 using System.Threading;
 using PowerShellStandardModule1.Delegates;
-
+using NodeOrderer =
+    System.Func<
+        System.Collections.Generic.IEnumerable<PowerShellStandardModule1.Models.TreeNode<System.IO.DirectoryInfo>>,
+        System.Collections.Generic.IEnumerable<PowerShellStandardModule1.Models.TreeNode<System.IO.DirectoryInfo>>>;
 
 namespace PowerShellStandardModule1.Commands.PrintTree
 {
@@ -12,6 +15,8 @@ namespace PowerShellStandardModule1.Commands.PrintTree
     [OutputType(typeof(string))]
     public class PrintTreeCommand : PSCmdlet
     {
+        public const string Set1 = "Set1";
+        public const string Set2 = "Set2";
         private string? _startingDirectory;
 
         [Parameter(
@@ -65,12 +70,32 @@ namespace PowerShellStandardModule1.Commands.PrintTree
 
         [Parameter(
             HelpMessage =
-                "Type: Func<DirectoryInfo,object> A scriptblock to select the string to display for each node. It should return a serializable object at minimum. Defaults to the Name property. Properties of the DirectoryInfo object are available here https://learn.microsoft.com/en-us/dotnet/api/system.io.directoryinfo?view=net-8.0"
+                """
+                Type: Func<DirectoryInfo,object> A scriptblock to select the string to display for each node. It should return a serializable object at minimum. Defaults to the Name property.
+                Properties of the DirectoryInfo object are available here
+                https://learn.microsoft.com/en-us/dotnet/api/system.io.directoryinfo?view=net-8.0
+                """
         )]
         public ScriptBlock? StringSelector { get; set; }
 
-      
-        
+        [Parameter(
+            HelpMessage = """
+                          The property to sort by of a DirectoryInfo object. Available options are:
+                          Name, CreationTime, LastAccessTime, LastWriteTime, Extension, Attributes, Exists, Root
+                          Defaults to Name.
+                          If an invalid option is selected, it will default to name.
+                          """,
+            ParameterSetName = Set1
+        )]
+        public string OrderBy { get; set; } = "Name";
+
+        [Parameter(
+            HelpMessage = "Sort order is ascending by default. Enable to sort in descending order.",
+            ParameterSetName = Set1
+        )]
+        public SwitchParameter Descending { get; set; }
+
+
         private CancellationTokenSource _cts = new();
 
         public CancellationToken Token => _cts.Token;
@@ -86,8 +111,6 @@ namespace PowerShellStandardModule1.Commands.PrintTree
             StringSelector is null
                 ? PrintTreeService.DefaultStringValueSelector
                 : StringSelector.ToStringValueSelector();
-        
-        
 
 
         protected override void ProcessRecord()
