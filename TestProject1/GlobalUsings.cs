@@ -1,2 +1,2 @@
 global using NUnit.Framework;
-global using static PowerShellStandardModule1.Container;
+global using static TestProject1.Container;

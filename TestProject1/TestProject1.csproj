@@ -16,6 +16,7 @@
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
         <PackageReference Include="Moq" Version="4.20.70" />
         <PackageReference Include="morelinq" Version="4.2.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="NUnit" Version="3.13.3"/>
         <PackageReference Include="NUnit3TestAdapter" Version="4.2.1"/>
         <PackageReference Include="NUnit.Analyzers" Version="3.6.1"/>
@@ -25,6 +26,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\PowerShellStandardModule1\PowerShellStandardModule1.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="JetBrains.ReSharper.TestRunner.Abstractions">
+        <HintPath>..\..\..\..\..\Program Files\JetBrains\JetBrains Rider 2023.3.3\lib\ReSharperHost\TestRunner\netcoreapp3.0\JetBrains.ReSharper.TestRunner.Abstractions.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

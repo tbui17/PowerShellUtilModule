@@ -39,7 +39,7 @@ public static class IndentExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
         };
 
-    public static string ToValueString(this IImmutableList<Indents> indents) =>
+    public static string ToValueString(this IEnumerable<Indents> indents) =>
         indents
            .Select(x => x.Value())
            .StringJoin("");
@@ -49,12 +49,12 @@ public record PrintNode<T>
 {
     public required TreeNode<T> Value;
     public int Index;
-    
+
     public PrintNode<T>? Parent;
     public bool IsRoot => Parent == null;
-    private IImmutableList<Indents> _indent = [];
-    
-    
+    private IImmutableList<Indents> Indent { get; set; } = [];
+
+
     public Func<TreeNode<T>, string> StringValueSelector = PrintNode.DefaultStringValueSelector;
 
 
@@ -64,7 +64,7 @@ public record PrintNode<T>
     public Func<PrintNode<T>, IEnumerable<TreeNode<T>>> ChildProvider = PrintNode.DefaultChildProvider;
 
     public string StringValue => StringValueSelector(Value);
-    
+
     // if iterating over children in reverse order, last child is now index 0
     private bool IsLast => Index == 0;
 
@@ -81,7 +81,7 @@ public record PrintNode<T>
     public IImmutableList<Indents> CompiledIndent =>
         IsRoot
             ? []
-            : _indent.Add(Prefix);
+            : Indent.Add(Prefix);
 
 
     private Indents PaddingBranch =>
@@ -90,21 +90,32 @@ public record PrintNode<T>
             : IsLast
                 ? Indents.Padding
                 : Indents.PaddedBranch;
-    
+
+
     // if it's the last child of its parent, then do not have line in padding
-    private IImmutableList<Indents> NextIndent => _indent.Add(PaddingBranch);
+    private IImmutableList<Indents> NextIndent => Indent.Add(PaddingBranch);
 
     public IEnumerable<PrintNode<T>> Children =>
         Value
            .Children
            .Reverse()
-           .Select((x, i) => ChildConstructor(this,x,i));
+           .Select(CreateChild);
 
-    
-    
+    private PrintNode<T> CreateChild(TreeNode<T> node, int index)
+    {
+        // override private properties
+        var child = ChildConstructor(this, node, index);
+        child.Indent = NextIndent;
+        return child;
+    }
+
     private static PrintNode<T> DefaultChildConstructor(PrintNode<T> parent, TreeNode<T> node, int index) =>
-        parent with { Value = node, Index = index, _indent = parent.NextIndent, Parent = parent };
-    
+        parent with
+        {
+            Value = node,
+            Index = index,
+            Parent = parent
+        };
 }
 
 public static class PrintNode
@@ -112,10 +123,9 @@ public static class PrintNode
     public static PrintNode<T> ToPrintNode<T>(this TreeNode<T> node) => From(node);
 
     public static PrintNode<T> From<T>(TreeNode<T> node) => new() { Value = node };
-    
+
     public static string DefaultStringValueSelector<T>(AbstractNode<T> node) =>
         node.Value?.ToString() ?? Indents.None.Value();
-    
-    public static IEnumerable<TreeNode<T>> DefaultChildProvider<T>(PrintNode<T> node) =>
-        node.Value.Children;
+
+    public static IEnumerable<TreeNode<T>> DefaultChildProvider<T>(PrintNode<T> node) => node.Value.Children;
 }

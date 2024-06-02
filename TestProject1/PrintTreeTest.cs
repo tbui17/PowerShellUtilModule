@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Management.Automation;
+using Autofac;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Newtonsoft.Json;
@@ -29,14 +30,34 @@ public partial class PrintTreeTest
     private void Initializer(ContainerBuilder b)
     {
         b.Register<StringValueSelector>(_ => x => x.Value.Name);
-        var dir = EnvVars
-           .HOME_DIRECTORY.Get()
-           .Pipe(x => new DirectoryInfo(x));
+        var dir = GetSolutionDirectory() ?? throw new InvalidOperationException("Solution directory not found.");
         b.RegisterInstance(dir);
-
         b
            .RegisterType<PrintTreeService>()
            .PropertiesAutowired();
+
+        b.RegisterType<PrintTreeCommand>().WithProperty("StartingDirectory", dir.Name).PropertiesAutowired();
+        
+    }
+
+    private static DirectoryInfo? GetSolutionDirectory(string? currentPath = null)
+    {
+        currentPath ??= Directory.GetCurrentDirectory();
+
+        var directory = new DirectoryInfo(currentPath);
+
+        while (directory is not null && HasNoSolution())
+        {
+            directory = directory.Parent;
+        }
+
+        return directory;
+
+        bool HasNoSolution()
+        {
+            var files = directory.GetFiles("*.sln");
+            return files.Length == 0;
+        }
     }
 
 
@@ -119,11 +140,11 @@ public partial class PrintTreeTest
 
 
     [Test]
-    public void TestTreeRunner()
+    public void TestIntegrationTest()
     {
-        var height = 3;
+        var height = 6;
         var nodeWidth = 10;
-        var width = 100;
+        var width = 100000;
         var take = 400000;
         var rootNodeWidth = 100;
 
@@ -138,11 +159,11 @@ public partial class PrintTreeTest
 
 
         var res = instance.CreateTreeNodes();
+
         res
            .Should()
            .HaveCountGreaterThan(0);
         var root = res[0];
-
 
         var printNodes = instance
            .CreatePrintNodes(root)
@@ -183,44 +204,493 @@ public partial class PrintTreeTest
            .Should()
            .Be(true, "Nodes should inherit child provider from the root");
 
-        // printNodes.ForEach(
-        //     x =>
-        //     {
-        //         if (x.Value.Height is 0)
-        //         {
-        //             x
-        //                .CompiledIndent.Count.Should()
-        //                .Be(0, "The root is not indented.");
-        //             
-        //         }
-        //         else
-        //         {
-        //             x
-        //                .CompiledIndent.Count.Should()
-        //                .Be(x.Value.Height);
-        //         }
-        //
-        //        
-        //
-        //         // (x.Value.Height, x.CompiledIndent.Serialize()).Log();
-        //     }
-        // );
-
-
         printNodes
-           .Select(x => x.CompiledIndent.Serialize())
-           .Serialize(Formatting.Indented)
-           .Log();
-        
-        
+           .GroupBy(x => x.Value.Parent)
+           .ForEach(
+                group =>
+                {
+                    group
+                       .Sliding()
+                       .All(pair => pair.Item1.Index != pair.Item2.Index)
+                       .Should()
+                       .BeTrue();
+                }
+            );
+
+        printNodes.ForEach(
+            x =>
+            {
+                if (x.Value.Height is 0)
+                {
+                    x
+                       .CompiledIndent.Count.Should()
+                       .Be(0, "The root is not indented.");
+                }
+                else
+                {
+                    x
+                       .CompiledIndent.Count.Should()
+                       .Be(x.Value.Height + 1);
+                }
+            }
+        );
+
         printNodes
            .ToTreeString()
            .Log();
     }
+
+
+    [Test]
+    public void TestSerialization()
+    {
+        using var scope = new AssertionScope { FormattingOptions = { MaxDepth = 100 } };
+        var n = TreeNode.JsonParse<string>(JsonData)!;
+        n
+           .Should()
+           .NotBeNull();
+       
+    }
+
+
 }
 
 public partial class PrintTreeTest
 {
+    private const string JsonData = """
+                                    {
+                                      "Parent": null,
+                                      "Children": [
+                                        {
+                                          "Parent": null,
+                                          "Children": [
+                                            {
+                                              "Parent": null,
+                                              "Children": [
+                                                {
+                                                  "Parent": null,
+                                                  "Children": [],
+                                                  "Height": 3,
+                                                  "Index": 0,
+                                                  "Value": ".idea"
+                                                }
+                                              ],
+                                              "Height": 2,
+                                              "Index": 0,
+                                              "Value": ".idea.PowerShellStandardModule1"
+                                            }
+                                          ],
+                                          "Height": 1,
+                                          "Index": 0,
+                                          "Value": ".idea"
+                                        },
+                                        {
+                                          "Parent": null,
+                                          "Children": [
+                                            {
+                                              "Parent": null,
+                                              "Children": [],
+                                              "Height": 2,
+                                              "Index": 0,
+                                              "Value": "Attributes"
+                                            },
+                                            {
+                                              "Parent": null,
+                                              "Children": [
+                                                {
+                                                  "Parent": null,
+                                                  "Children": [
+                                                    {
+                                                      "Parent": null,
+                                                      "Children": [],
+                                                      "Height": 4,
+                                                      "Index": 0,
+                                                      "Value": "net6.0"
+                                                    },
+                                                    {
+                                                      "Parent": null,
+                                                      "Children": [],
+                                                      "Height": 4,
+                                                      "Index": 1,
+                                                      "Value": "net8.0"
+                                                    },
+                                                    {
+                                                      "Parent": null,
+                                                      "Children": [],
+                                                      "Height": 4,
+                                                      "Index": 2,
+                                                      "Value": "netstandard2.0"
+                                                    }
+                                                  ],
+                                                  "Height": 3,
+                                                  "Index": 0,
+                                                  "Value": "Debug"
+                                                },
+                                                {
+                                                  "Parent": null,
+                                                  "Children": [
+                                                    {
+                                                      "Parent": null,
+                                                      "Children": [
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [
+                                                            {
+                                                              "Parent": null,
+                                                              "Children": [],
+                                                              "Height": 6,
+                                                              "Index": 0,
+                                                              "Value": "publish"
+                                                            }
+                                                          ],
+                                                          "Height": 5,
+                                                          "Index": 0,
+                                                          "Value": "win-x64"
+                                                        }
+                                                      ],
+                                                      "Height": 4,
+                                                      "Index": 0,
+                                                      "Value": "net8.0"
+                                                    }
+                                                  ],
+                                                  "Height": 3,
+                                                  "Index": 1,
+                                                  "Value": "Release"
+                                                }
+                                              ],
+                                              "Height": 2,
+                                              "Index": 1,
+                                              "Value": "bin"
+                                            },
+                                            {
+                                              "Parent": null,
+                                              "Children": [
+                                                {
+                                                  "Parent": null,
+                                                  "Children": [],
+                                                  "Height": 3,
+                                                  "Index": 0,
+                                                  "Value": "Bfs"
+                                                },
+                                                {
+                                                  "Parent": null,
+                                                  "Children": [],
+                                                  "Height": 3,
+                                                  "Index": 1,
+                                                  "Value": "Fuzzy"
+                                                },
+                                                {
+                                                  "Parent": null,
+                                                  "Children": [],
+                                                  "Height": 3,
+                                                  "Index": 2,
+                                                  "Value": "PrintTree"
+                                                },
+                                                {
+                                                  "Parent": null,
+                                                  "Children": [],
+                                                  "Height": 3,
+                                                  "Index": 3,
+                                                  "Value": "Sample"
+                                                }
+                                              ],
+                                              "Height": 2,
+                                              "Index": 2,
+                                              "Value": "Commands"
+                                            },
+                                            {
+                                              "Parent": null,
+                                              "Children": [],
+                                              "Height": 2,
+                                              "Index": 3,
+                                              "Value": "Delegates"
+                                            },
+                                            {
+                                              "Parent": null,
+                                              "Children": [
+                                                {
+                                                  "Parent": null,
+                                                  "Children": [],
+                                                  "Height": 3,
+                                                  "Index": 0,
+                                                  "Value": "Extensions"
+                                                }
+                                              ],
+                                              "Height": 2,
+                                              "Index": 4,
+                                              "Value": "Lib"
+                                            },
+                                            {
+                                              "Parent": null,
+                                              "Children": [],
+                                              "Height": 2,
+                                              "Index": 5,
+                                              "Value": "Models"
+                                            },
+                                            {
+                                              "Parent": null,
+                                              "Children": [
+                                                {
+                                                  "Parent": null,
+                                                  "Children": [
+                                                    {
+                                                      "Parent": null,
+                                                      "Children": [
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 0,
+                                                          "Value": "ref"
+                                                        },
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 1,
+                                                          "Value": "refint"
+                                                        }
+                                                      ],
+                                                      "Height": 4,
+                                                      "Index": 0,
+                                                      "Value": "net6.0"
+                                                    },
+                                                    {
+                                                      "Parent": null,
+                                                      "Children": [
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 0,
+                                                          "Value": "ref"
+                                                        },
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 1,
+                                                          "Value": "refint"
+                                                        }
+                                                      ],
+                                                      "Height": 4,
+                                                      "Index": 1,
+                                                      "Value": "net8.0"
+                                                    },
+                                                    {
+                                                      "Parent": null,
+                                                      "Children": [],
+                                                      "Height": 4,
+                                                      "Index": 2,
+                                                      "Value": "netstandard2.0"
+                                                    }
+                                                  ],
+                                                  "Height": 3,
+                                                  "Index": 0,
+                                                  "Value": "Debug"
+                                                },
+                                                {
+                                                  "Parent": null,
+                                                  "Children": [
+                                                    {
+                                                      "Parent": null,
+                                                      "Children": [
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [
+                                                            {
+                                                              "Parent": null,
+                                                              "Children": [],
+                                                              "Height": 6,
+                                                              "Index": 0,
+                                                              "Value": "ref"
+                                                            },
+                                                            {
+                                                              "Parent": null,
+                                                              "Children": [],
+                                                              "Height": 6,
+                                                              "Index": 1,
+                                                              "Value": "refint"
+                                                            }
+                                                          ],
+                                                          "Height": 5,
+                                                          "Index": 0,
+                                                          "Value": "win-x64"
+                                                        }
+                                                      ],
+                                                      "Height": 4,
+                                                      "Index": 0,
+                                                      "Value": "net8.0"
+                                                    }
+                                                  ],
+                                                  "Height": 3,
+                                                  "Index": 1,
+                                                  "Value": "Release"
+                                                }
+                                              ],
+                                              "Height": 2,
+                                              "Index": 6,
+                                              "Value": "obj"
+                                            },
+                                            {
+                                              "Parent": null,
+                                              "Children": [],
+                                              "Height": 2,
+                                              "Index": 7,
+                                              "Value": "Structs"
+                                            }
+                                          ],
+                                          "Height": 1,
+                                          "Index": 1,
+                                          "Value": "PowerShellStandardModule1"
+                                        },
+                                        {
+                                          "Parent": null,
+                                          "Children": [
+                                            {
+                                              "Parent": null,
+                                              "Children": [
+                                                {
+                                                  "Parent": null,
+                                                  "Children": [
+                                                    {
+                                                      "Parent": null,
+                                                      "Children": [
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 0,
+                                                          "Value": "cs"
+                                                        },
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 1,
+                                                          "Value": "de"
+                                                        },
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 2,
+                                                          "Value": "es"
+                                                        },
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 3,
+                                                          "Value": "fr"
+                                                        },
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 4,
+                                                          "Value": "it"
+                                                        },
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 5,
+                                                          "Value": "ja"
+                                                        },
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 6,
+                                                          "Value": "ko"
+                                                        },
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 7,
+                                                          "Value": "pl"
+                                                        },
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 8,
+                                                          "Value": "pt-BR"
+                                                        },
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 9,
+                                                          "Value": "ru"
+                                                        }
+                                                      ],
+                                                      "Height": 4,
+                                                      "Index": 0,
+                                                      "Value": "net8.0"
+                                                    }
+                                                  ],
+                                                  "Height": 3,
+                                                  "Index": 0,
+                                                  "Value": "Debug"
+                                                }
+                                              ],
+                                              "Height": 2,
+                                              "Index": 0,
+                                              "Value": "bin"
+                                            },
+                                            {
+                                              "Parent": null,
+                                              "Children": [
+                                                {
+                                                  "Parent": null,
+                                                  "Children": [
+                                                    {
+                                                      "Parent": null,
+                                                      "Children": [
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 0,
+                                                          "Value": "ref"
+                                                        },
+                                                        {
+                                                          "Parent": null,
+                                                          "Children": [],
+                                                          "Height": 5,
+                                                          "Index": 1,
+                                                          "Value": "refint"
+                                                        }
+                                                      ],
+                                                      "Height": 4,
+                                                      "Index": 0,
+                                                      "Value": "net8.0"
+                                                    }
+                                                  ],
+                                                  "Height": 3,
+                                                  "Index": 0,
+                                                  "Value": "Debug"
+                                                }
+                                              ],
+                                              "Height": 2,
+                                              "Index": 1,
+                                              "Value": "obj"
+                                            }
+                                          ],
+                                          "Height": 1,
+                                          "Index": 2,
+                                          "Value": "TestProject1"
+                                        }
+                                      ],
+                                      "Height": 0,
+                                      "Index": 0,
+                                      "Value": "PowerShellStandardModule1"
+                                    }
+                                    """;
+
     IEnumerable<TestNode> GetChildren(TestNode node) => node.Children;
 
     private void InitData()

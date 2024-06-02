@@ -361,6 +361,23 @@ public static class Extensions
 
         return map;
     }
+
+    public static IEnumerable<(T, T)> Sliding<T>(this IEnumerable<T> src)
+    {
+        using var iterator = src.GetEnumerator();
+
+
+        if (!iterator.MoveNext()) yield break;
+        
+        var prev = iterator.Current;
+
+        while (iterator.MoveNext())
+        {
+            yield return (prev, iterator.Current);
+            prev = iterator.Current;
+        }
+        
+    }
 }
 
 public static class Stack

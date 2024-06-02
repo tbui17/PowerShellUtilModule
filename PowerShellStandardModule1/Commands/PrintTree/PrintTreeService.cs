@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -14,9 +13,6 @@ namespace PowerShellStandardModule1.Commands.PrintTree;
 
 public partial class PrintTreeService
 {
-    
-
-
     public required DirectoryInfo StartingDirectory { get; set; }
     public StringValueSelector StringValueSelector { get; set; } = DefaultStringValueSelector;
     public int Height { get; set; } = 3;
@@ -28,6 +24,7 @@ public partial class PrintTreeService
 
     private static readonly Func<DirectoryInfo, IEnumerable<DirectoryInfo>> BaseGetter =
         ChildGetterFactory.CreateDirectoryChildGetter();
+
 
     private Func<AbstractNode<T>, IEnumerable<T>> CreateGetter<T>(Func<T, IEnumerable<T>> baseGetter)
     {
@@ -95,34 +92,9 @@ public partial class PrintTreeService
     public string Invoke() =>
         CreatePrintNodes()
            .ToTreeString();
-
-
-    
 }
 
 public partial class PrintTreeService
 {
-    public static Dictionary<string, StringValueSelector> DirectoryPropertyStringSelectors = new()
-    {
-        ["Name"] = DefaultStringValueSelector,
-        ["FullName"] = x => x.Value.FullName,
-        ["Extension"] = x => x.Value.Extension,
-        ["CreationTime"] = x => x.Value.CreationTime.ToString(CultureInfo.InvariantCulture),
-        ["LastAccessTime"] = x => x.Value.LastAccessTime.ToString(CultureInfo.InvariantCulture),
-        ["LastWriteTime"] = x => x.Value.LastWriteTime.ToString(CultureInfo.InvariantCulture),
-        ["Attributes"] = x => x.Value.Attributes.ToString(),
-        ["Exists"] = x => x.Value.Exists.ToString(),
-        ["Root"] = x => x.Value.Root.ToString(),
-        ["Parent"] = x => x.Value.Parent?.FullName ?? "",
-        ["ParentName"] = x => x.Value.Parent?.Name ?? "",
-        ["ParentFullName"] = x => x.Value.Parent?.FullName ?? "",
-        ["ParentExtension"] = x => x.Value.Parent?.Extension ?? "",
-        ["ParentCreationTime"] = x => x.Value.Parent?.CreationTime.ToString(CultureInfo.InvariantCulture) ?? "",
-        ["ParentLastAccessTime"] = x => x.Value.Parent?.LastAccessTime.ToString(CultureInfo.InvariantCulture) ?? "",
-        ["ParentLastWriteTime"] = x => x.Value.Parent?.LastWriteTime.ToString(CultureInfo.InvariantCulture) ?? "",
-        ["ParentAttributes"] = x => x.Value.Parent?.Attributes.ToString() ?? "",
-        ["ParentExists"] = x => x.Value.Parent?.Exists.ToString() ?? "",
-        ["ParentRoot"] = x => x.Value.Parent?.Root.ToString() ?? "",
-    };
     public static string DefaultStringValueSelector(TreeNode<DirectoryInfo> node) => node.Value.Name;
 }

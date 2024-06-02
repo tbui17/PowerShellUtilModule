@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using PowerShellStandardModule1.Lib.Extensions;
 using PowerShellStandardModule1.Models;
-using static PowerShellStandardModule1.Lib.Extensions.Extensions;
 
 namespace PowerShellStandardModule1.Commands.PrintTree;
 

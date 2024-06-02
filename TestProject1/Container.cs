@@ -1,7 +1,6 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 
-namespace PowerShellStandardModule1;
+namespace TestProject1;
 
 public static class Container
 {
