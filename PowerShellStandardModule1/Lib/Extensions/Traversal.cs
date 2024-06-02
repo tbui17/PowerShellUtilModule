@@ -77,7 +77,7 @@ public static class Traversal
             var current = stack.Pop();
             yield return current.Value;
 
-            var children = adaptedGetter(current).ToImmutableList();
+            var children = adaptedGetter(current).ToList();
 
             current.Children = children;
             stack.PushRange(children);
