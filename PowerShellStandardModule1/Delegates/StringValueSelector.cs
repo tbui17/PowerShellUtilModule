@@ -13,10 +13,9 @@ public static class StringValueSelectorFactory
     {
         return StringSelector;
 
-        string StringSelector(TreeNode<DirectoryInfo> directory)
-        {
-            var res = stringSelector.Invoke(directory.Value);
-            return PsUtil.SerializePsResult(res);
-        }
+        string StringSelector(TreeNode<DirectoryInfo> node) =>
+            stringSelector
+               .InvokeWithValue(node.Value)
+               .SerializePsResult();
     }
 }

@@ -3,6 +3,7 @@ using System.IO;
 using System.Management.Automation;
 using System.Threading;
 using PowerShellStandardModule1.Delegates;
+using PowerShellStandardModule1.Lib;
 using NodeOrderer =
     System.Func<
         System.Collections.Generic.IEnumerable<PowerShellStandardModule1.Models.TreeNode<System.IO.DirectoryInfo>>,
@@ -95,6 +96,12 @@ namespace PowerShellStandardModule1.Commands.PrintTree
         )]
         public SwitchParameter Descending { get; set; }
 
+        [Parameter(
+            HelpMessage =
+                "Type: Func<DirectoryInfo, bool> Script block which determines whether or not to include a node. Defaults to always true."
+        )]
+        public ScriptBlock? Where { get; set; }
+
 
         private CancellationTokenSource _cts = new();
 
@@ -112,6 +119,18 @@ namespace PowerShellStandardModule1.Commands.PrintTree
                 ? PrintTreeService.DefaultStringValueSelector
                 : StringSelector.ToStringValueSelector();
 
+        private Func<DirectoryInfo, bool> CreateFilter()
+        {
+            return Where is null
+                ? _ => true
+                : Filter;
+
+            bool Filter(DirectoryInfo info) =>
+                Where
+                   .InvokeWithValue(info)
+                   .ValidateGetFirst<bool>();
+        }
+
 
         protected override void ProcessRecord()
         {
@@ -127,7 +146,8 @@ namespace PowerShellStandardModule1.Commands.PrintTree
                 Limit = Constrain(Limit),
                 Token = _cts.Token,
                 RootNodeWidth = RootNodeWidth,
-                StringValueSelector = CreateSelector()
+                StringValueSelector = CreateSelector(),
+                Filter = CreateFilter()
             };
 
 

@@ -29,6 +29,8 @@ public partial class PrintTreeService
 
     public bool Descending { get; set; } = false;
 
+    public Func<DirectoryInfo, bool> Filter { get; set; } = _ => true;
+
     private static readonly Func<DirectoryInfo, IEnumerable<DirectoryInfo>> BaseGetter =
         ChildGetterFactory.CreateDirectoryChildGetter();
 
@@ -38,7 +40,7 @@ public partial class PrintTreeService
         {
             return DefaultNodeOrderer;
         }
-        
+
         return Descending
             ? orderer.Compose(x => x.Reverse())
             : orderer;
@@ -76,6 +78,7 @@ public partial class PrintTreeService
            .BfsDetailed(StartingDirectory, CreateGetter(BaseGetter))
            .TakeWhile(_ => !Token.IsCancellationRequested)
            .TakeWhile(x => x.Height < Height)
+           .Where(x => Filter(x.Value))
            .Take(Limit)
            .ToImmutableList(); // must materialize to populate children
     }
