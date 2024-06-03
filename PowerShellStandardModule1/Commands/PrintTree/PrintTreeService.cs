@@ -27,6 +27,8 @@ public partial class PrintTreeService
 
     public Func<DirectoryInfo, bool> Filter { get; set; } = _ => true;
 
+    public bool Within;
+
     private static readonly Func<DirectoryInfo, IEnumerable<DirectoryInfo>> BaseGetter =
         ChildGetterFactory.CreateDirectoryChildGetter();
 
@@ -67,7 +69,7 @@ public partial class PrintTreeService
 
     private Func<AbstractNode<DirectoryInfo>, IEnumerable<DirectoryInfo>> CreateGetter()
     {
-        var filteredGetter = BaseGetter.AndThen(x => x.Where(Filter));
+        var filteredGetter = Within ? BaseGetter : BaseGetter.AndThen(x => x.Where(Filter));
 
         // width limit should only count for nodes that pass the filter, so it must come after filter operation
         var filteredNodeWidthConstrainedGetter = AddNodeWidthConstraint(filteredGetter);
@@ -123,9 +125,12 @@ public partial class PrintTreeService
     {
         var visited = new HashSet<DirectoryTreeNode>();
 
-        nodes
-           .Where(predicate)
-           .ForEach(MarkAncestors);
+
+        foreach (var node in nodes)
+        {
+            if (!predicate(node)) continue;
+            MarkAncestors(node);
+        }
 
         return visited;
 

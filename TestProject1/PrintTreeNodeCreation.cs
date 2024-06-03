@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Execution;
+using Newtonsoft.Json;
 using PowerShellStandardModule1.Commands.PrintTree;
 using PowerShellStandardModule1.Lib.Extensions;
 using PowerShellStandardModule1.Models;
@@ -15,21 +16,18 @@ public class PrintTreeNodeCreation
     [SetUp]
     public void Setup()
     {
-        instance = new PrintTreeService
-        {
-            StartingDirectory = Directory
-        };
+        instance = new PrintTreeService { StartingDirectory = Directory };
     }
 
     [Test]
     public void BaseTest()
     {
-        var height = 6;
-        var nodeWidth = 10;
+        var height = 100;
+        var nodeWidth = 100;
         var width = 999;
-        var take = 20;
+        var take = 1000;
         var rootNodeWidth = 100;
-        
+
         instance.Height = height;
         instance.NodeWidth = nodeWidth;
         instance.Width = width;
@@ -37,23 +35,78 @@ public class PrintTreeNodeCreation
         instance.RootNodeWidth = rootNodeWidth;
 
 
-        var nodes = instance.CreateTreeNodes();
+        var immutableListOfBfsNodes = instance.CreateTreeNodes();
+        // var coreNodes = PrintTreeService.GetBranchesSatisfyingFilter(
+        //     immutableListOfBfsNodes, x => x.Value.Name.Contains('b')
+        // );
 
-        var dirTreeNode = nodes.First();
+        var visited = new HashSet<DirectoryTreeNode>();
 
-        var root = dirTreeNode.ToPrintNode();
-        
-        root.StringValueSelector = x => x.Value.Name;
-        var set = PrintTreeService.GetBranchesSatisfyingFilter(nodes, x => x.Value.Name.Contains('a'));
+        var predicate =
+            new Predicate<DirectoryTreeNode>(x => x.Value.Name.Contains('b', StringComparison.OrdinalIgnoreCase));
+        var nodes = immutableListOfBfsNodes;
+        var s = @"C:\Users\PCS\RiderProjects\PowerShellStandardModule1";
 
-        root.ChildProvider = x => x.Value.Children.Where(x => set.Contains(x));
-        root.ToPreOrderPrintNodes().ToTreeString().Log();
+        foreach (var node in nodes)
+        {
+            if (!predicate(node)) continue;
+            MarkAncestors(node);
+        }
 
-        
+
+        foreach (var node in nodes)
+        {
+            node.Children = node
+               .Children.Where(x => visited.Contains(x))
+               .ToList();
+        }
+
+        var r = nodes[0]
+           .ToPrintNode();
+        r.StringValueSelector = x => x.Value.Name;
+
+        r
+           .ToPreOrderPrintNodes()
+           .ToTreeString()
+           .Log();
+
+
+        void MarkAncestors(DirectoryTreeNode? node)
+        {
+            while (node is not null && !visited.Contains(node))
+            {
+                visited.Add(node);
+                node = node.Parent;
+            }
+        }
+
+        //
+        //
+        //
+        // coreNodes
+        //    .Select(x => x.Value.Name)
+        //    .Should()
+        //    .Contain("PowerShellStandardModule1");
+        //
+        //
+        // var root = immutableListOfBfsNodes[0];
+        //
+        // var queue = new Queue<DirectoryTreeNode>();
+        // queue.Enqueue(root);
+        //
+        // while (queue.Count > 0)
+        // {
+        //     var next = queue.Dequeue();
+        //     var res = next.Children.Where(coreNodes.Contains).ToList();
+        //     next.Children = res;
+        //     res.ForEach(queue.Enqueue);
+        // }
+        //
+        //
+        // root.ToPrintNode().ToPreOrderPrintNodes().ToTreeString().Log();
 
 
         // instance.CreatePrintNodes().ToTreeString().Log();
-
     }
 
 
