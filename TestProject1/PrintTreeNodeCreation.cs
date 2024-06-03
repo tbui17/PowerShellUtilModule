@@ -2,6 +2,7 @@
 using FluentAssertions.Execution;
 using PowerShellStandardModule1.Commands.PrintTree;
 using PowerShellStandardModule1.Lib.Extensions;
+using PowerShellStandardModule1.Models;
 
 namespace TestProject1;
 
@@ -25,7 +26,7 @@ public class PrintTreeNodeCreation
     {
         var height = 6;
         var nodeWidth = 10;
-        var width = 10;
+        var width = 999;
         var take = 20;
         var rootNodeWidth = 100;
         
@@ -34,9 +35,24 @@ public class PrintTreeNodeCreation
         instance.Width = width;
         instance.Limit = take;
         instance.RootNodeWidth = rootNodeWidth;
+
+
+        var nodes = instance.CreateTreeNodes();
+
+        var dirTreeNode = nodes.First();
+
+        var root = dirTreeNode.ToPrintNode();
+        
+        root.StringValueSelector = x => x.Value.Name;
+        var set = PrintTreeService.GetBranchesSatisfyingFilter(nodes, x => x.Value.Name.Contains('a'));
+
+        root.ChildProvider = x => x.Value.Children.Where(x => set.Contains(x));
+        root.ToPreOrderPrintNodes().ToTreeString().Log();
+
         
 
-        instance.CreatePrintNodes().ToTreeString().Log();
+
+        // instance.CreatePrintNodes().ToTreeString().Log();
 
     }
 
@@ -46,7 +62,7 @@ public class PrintTreeNodeCreation
     {
         var height = 6;
         var nodeWidth = 10;
-        var width = 10;
+        var width = 50;
         var take = 20;
         var rootNodeWidth = 100;
 

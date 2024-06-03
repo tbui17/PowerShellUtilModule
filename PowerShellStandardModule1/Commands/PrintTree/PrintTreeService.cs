@@ -27,15 +27,6 @@ public partial class PrintTreeService
 
     public Func<DirectoryInfo, bool> Filter { get; set; } = _ => true;
 
-    private Func<DirectoryInfo, bool> BfsFilter =>
-        Within
-            ? _ => true
-            : Filter;
-    
-
-    public bool Within { get; init; }
-
-
     private static readonly Func<DirectoryInfo, IEnumerable<DirectoryInfo>> BaseGetter =
         ChildGetterFactory.CreateDirectoryChildGetter();
 
@@ -76,7 +67,7 @@ public partial class PrintTreeService
 
     private Func<AbstractNode<DirectoryInfo>, IEnumerable<DirectoryInfo>> CreateGetter()
     {
-        var filteredGetter = BaseGetter.AndThen(x => x.Where(BfsFilter));
+        var filteredGetter = BaseGetter.AndThen(x => x.Where(Filter));
 
         // width limit should only count for nodes that pass the filter, so it must come after filter operation
         var filteredNodeWidthConstrainedGetter = AddNodeWidthConstraint(filteredGetter);
@@ -104,12 +95,36 @@ public partial class PrintTreeService
         return result;
     }
 
-    private HashSet<DirectoryTreeNode> GetBranchesSatisfyingFilter(IImmutableList<DirectoryTreeNode> nodes)
+
+    public IEnumerable<DirectoryPrintNode> CreatePrintNodes() =>
+        CreateTreeNodes()
+           .Take(1)
+           .SelectMany(CreatePrintNodes);
+
+    public IEnumerable<DirectoryPrintNode> CreatePrintNodes(DirectoryTreeNode treeNode)
+    {
+        // tag existing tree using pre order traversal to produce padding/branch data for printing tree and produce pre order sequence
+
+        // if user stops during bfs, do not begin traversal
+        if (Token.IsCancellationRequested) return [];
+        var root = CreateRootNode(treeNode);
+
+        return root
+           .ToPreOrderPrintNodes()
+           .TakeWhile(_ => !Token.IsCancellationRequested)
+            // flattened sequence represents lines of output, trim excess lines. the output should be trimmed down based on preorder rather than breadth-first ordering
+           .Take(Width); 
+    }
+
+    public static HashSet<DirectoryTreeNode> GetBranchesSatisfyingFilter(
+        IImmutableList<DirectoryTreeNode> nodes,
+        Func<DirectoryTreeNode, bool> predicate
+    )
     {
         var visited = new HashSet<DirectoryTreeNode>();
 
         nodes
-           .Where(x => Filter(x.Value))
+           .Where(predicate)
            .ForEach(MarkAncestors);
 
         return visited;
@@ -120,66 +135,25 @@ public partial class PrintTreeService
         }
     }
 
-
-    public DirectoryPrintNodeEnumerable CreatePrintNodes()
-    {
-        var nodes = CreateTreeNodes();
-        var provider = CreateChildProvider(nodes);
-        return nodes.SelectMany(x => CreatePrintNodes(x, provider));
-    }
-
-
-    private DirectoryPrintNodeEnumerable CreatePrintNodes(
-        DirectoryTreeNode treeNode,
-        Func<DirectoryPrintNode, DirectoryTreeNodeEnumerable> childProvider
-    )
-    {
-        // tag existing tree using pre order traversal to produce padding/branch data for printing tree and produce pre order sequence
-
-
-        // if user stops during bfs, do not begin traversal
-        if (Token.IsCancellationRequested) return [];
-        var root = CreateRootNode(treeNode, childProvider);
-
-        return root
-           .ToPreOrderPrintNodes()
-           .TakeWhile(_ => !Token.IsCancellationRequested)
-           .Take(
-                Width
-            ); // flattened sequence represents lines of output, trim excess lines. the output should be trimmed down based on preorder rather than breadth-first ordering
-    }
-
-    private DirectoryPrintNode CreateRootNode(
-        DirectoryTreeNode treeNode,
-        Func<DirectoryPrintNode, DirectoryTreeNodeEnumerable> childProvider
-    )
+    private DirectoryPrintNode CreateRootNode(DirectoryTreeNode treeNode)
     {
         // inject projection and children ordering logic
+
+
+        var orderer = CreateOrderer();
         var root = treeNode.ToPrintNode();
         root.StringValueSelector = StringValueSelector;
-        root.ChildProvider = childProvider;
+
+
+        root.ChildProvider = x =>
+        {
+            var children = x.Value.Children;
+            return orderer(children);
+        };
+
         return root;
     }
 
-    private Func<DirectoryPrintNode, DirectoryTreeNodeEnumerable> CreateChildProvider(
-        IImmutableList<DirectoryTreeNode> list
-    )
-    {
-        var processors = new[] { CreatePrintNodeFilter(list), CreateOrderer() };
-
-        return x => ApplyProcessors(x.Value.Children);
-
-
-        DirectoryTreeNodeEnumerable ApplyProcessors(DirectoryTreeNodeEnumerable children) =>
-            processors.Aggregate(children, (acc, x) => x(acc));
-    }
-
-    private DirectoryTreeNodeEnumerableProcessor CreatePrintNodeFilter(IImmutableList<DirectoryTreeNode> list)
-    {
-        if (!Within) return x => x;
-        var set = GetBranchesSatisfyingFilter(list);
-        return x => x.Where(set.Contains);
-    }
 
     public string Invoke() =>
         CreatePrintNodes()
@@ -203,36 +177,5 @@ public partial class PrintTreeService
             ["Root"] = x => x.OrderBy(n => n.Value.Root)
         };
 
-    public static DirectoryTreeNodeEnumerable DefaultNodeOrderer(DirectoryTreeNodeEnumerable node) => node;
+    public static IEnumerable<DirectoryTreeNode> DefaultNodeOrderer(IEnumerable<DirectoryTreeNode> node) => node;
 }
-
-// public class WithinUtil
-// {
-//   
-//
-//     public bool Within { get; init; }
-//     public Func<DirectoryInfo, bool> Filter { get; init; } = _ => true;
-//
-//     private HashSet<DirectoryTreeNode> Visited { get; } = [];
-//     
-//     
-//
-//
-//     private void GetBranchesSatisfyingFilter(IImmutableList<DirectoryTreeNode> nodes)
-//     {
-//         if (!Within)
-//         {
-//             return;
-//         }
-//
-//
-//         nodes
-//            .Where(x => Filter(x.Value))
-//            .ForEach(Climb);
-//
-//         void Climb(DirectoryTreeNode? node)
-//         {
-//             while (node is not null && !Visited.Add(node)) node = node.Parent;
-//         }
-//     }
-// }
