@@ -7,29 +7,7 @@ namespace PowerShellStandardModule1.Lib;
 
 public static class PsUtil
 {
-    public static string SerializePsResult(this IReadOnlyCollection<PSObject> psResult) =>
-        ValidatePsResult(psResult)
-           .ToString();
-
-    public static PSObject ValidatePsResult(this IReadOnlyCollection<PSObject> psResult)
-    {
-        if (psResult.Count is 0)
-        {
-            var ex = new PSInvalidOperationException(
-                $"The scriptblock did not return a result. It should return at least return a string. {psResult}"
-            );
-            throw ex;
-        }
-
-        var first = psResult.First();
-        if (first is null)
-        {
-            var ex = new PSInvalidOperationException($"The scriptblock returned a null value. {psResult}");
-            throw ex;
-        }
-
-        return first;
-    }
+    public static string SerializePsResult(this IReadOnlyCollection<PSObject> psResult) => psResult.FirstOrDefault()?.ToString() ?? "";
 
 
     public static Collection<PSObject> InvokeWithValue(this ScriptBlock block, object? value)
@@ -38,10 +16,10 @@ public static class PsUtil
         return block.InvokeWithContext(new(), [variable]);
     }
 
-    public static PSObject ValidateGetFirst(this Collection<PSObject> src) => ValidatePsResult(src);
+    public static PSObject GetFirst(this Collection<PSObject> src) => src.First();
 
-    public static T ValidateGetFirst<T>(this Collection<PSObject> src) =>
-        ValidateGetFirst(src)
+    public static T GetFirst<T>(this Collection<PSObject> src) =>
+        GetFirst(src)
            .BaseObject is T t
             ? t
             : throw new PSInvalidOperationException(

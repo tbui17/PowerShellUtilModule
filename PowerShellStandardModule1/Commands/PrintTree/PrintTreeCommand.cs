@@ -6,19 +6,14 @@ using PowerShellStandardModule1.Lib;
 
 namespace PowerShellStandardModule1.Commands.PrintTree;
 
-
 public partial class PrintTreeCommand : PSCmdlet
 {
-    
-    private const string Set1 = "Set1";
-    private const string Set2 = "Set2";
     private string? _startingDirectory;
 
     private CancellationTokenSource _cts = new();
 
     public CancellationToken Token => _cts.Token;
 
-       
 
     private static int Constrain(int value) => int.Clamp(value, 0, int.MaxValue);
 
@@ -26,6 +21,7 @@ public partial class PrintTreeCommand : PSCmdlet
         StringSelector is null
             ? PrintTreeService.DefaultStringValueSelector
             : ToStringValueSelector(StringSelector);
+
     public static StringValueSelector ToStringValueSelector(ScriptBlock stringSelector)
     {
         return StringSelector;
@@ -45,7 +41,7 @@ public partial class PrintTreeCommand : PSCmdlet
         bool Filter(DirectoryInfo info) =>
             Where
                .InvokeWithValue(info)
-               .ValidateGetFirst<bool>();
+               .GetFirst<bool>();
     }
 
     protected override void BeginProcessing()
@@ -55,9 +51,6 @@ public partial class PrintTreeCommand : PSCmdlet
 
     protected override void ProcessRecord()
     {
-        
-
-
         var instance = new PrintTreeService
         {
             StartingDirectory = new DirectoryInfo(StartingDirectory),
@@ -74,12 +67,18 @@ public partial class PrintTreeCommand : PSCmdlet
             Within = Within
         };
 
-
         try
         {
             var strResult = instance.Invoke();
             WriteObject(strResult);
         }
+
+        catch (OperationCanceledException)
+        {
+            var record = new InformationRecord("Operation was cancelled.", "PrintTreeCommand.OperationCancelled");
+            WriteInformation(record);
+        }
+
         catch (DirectoryNotFoundException e)
         {
             WriteError(
@@ -88,7 +87,6 @@ public partial class PrintTreeCommand : PSCmdlet
                     StartingDirectory
                 )
             );
-            
         }
 
         catch (PSInvalidOperationException e)
@@ -98,7 +96,6 @@ public partial class PrintTreeCommand : PSCmdlet
                 StringSelector
             );
             WriteError(record);
-            
         }
 
         catch (Exception e)
@@ -110,9 +107,6 @@ public partial class PrintTreeCommand : PSCmdlet
                 )
             );
         }
-
-
-        
     }
 
     protected override void StopProcessing()

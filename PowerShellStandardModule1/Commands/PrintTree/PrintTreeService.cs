@@ -33,10 +33,8 @@ public partial class PrintTreeService
 
     private DirectoryTreeNodeEnumerableProcessor CreateOrderer()
     {
-        if (!NodeOrderers.TryGetValue(OrderBy, out var orderer))
-        {
-            return DefaultNodeOrderer;
-        }
+
+        var orderer = NodeOrderers.GetValueOrDefault(OrderBy,DefaultNodeOrderer);
 
         return Descending
             ? orderer.AndThen(x => x.Reverse())
@@ -90,7 +88,7 @@ public partial class PrintTreeService
 
         var result = Traversal
            .BfsDetailed(StartingDirectory, CreateGetter())
-           .TakeWhile(_ => !Token.IsCancellationRequested)
+           .TapEach(_ => Token.ThrowIfCancellationRequested())
            .Take(Limit)
            .TakeWhile(x => x.Height < Height)
            .ToList(); // must materialize to populate children
@@ -125,12 +123,12 @@ public partial class PrintTreeService
         // tag existing tree using pre order traversal to produce padding/branch data for printing tree and produce pre order sequence
 
         // if user stops during bfs, do not begin traversal
-        if (Token.IsCancellationRequested) return [];
+        Token.ThrowIfCancellationRequested();
         var root = CreateRootNode(treeNode);
 
         return root
            .ToPreOrderPrintNodes()
-           .TakeWhile(_ => !Token.IsCancellationRequested)
+           .TapEach(_ => Token.ThrowIfCancellationRequested())
             // flattened sequence represents lines of output, trim excess lines. the output should be trimmed down based on preorder rather than breadth-first ordering
            .Take(Width);
     }
@@ -142,15 +140,16 @@ public partial class PrintTreeService
 
         nodes
            .Where(x => Filter(x.Value))
-           .TakeWhile(_ => !Token.IsCancellationRequested)
+           .TapEach(_ => Token.ThrowIfCancellationRequested())
            .ForEach(MarkAncestors);
 
         return visited;
 
         void MarkAncestors(DirectoryTreeNode? node)
         {
-            while (!Token.IsCancellationRequested && node is not null && !visited.Contains(node))
+            while (node is not null && !visited.Contains(node))
             {
+                Token.ThrowIfCancellationRequested();
                 visited.Add(node);
                 node = node.Parent;
             }

@@ -376,6 +376,15 @@ public static class Extensions
         }
         
     }
+    
+    public static IEnumerable<T> TapEach<T>(this IEnumerable<T> source, Action<T> action)
+    {
+        foreach (var item in source)
+        {
+            action(item);
+            yield return item;
+        }
+    }
 }
 
 public static class Stack

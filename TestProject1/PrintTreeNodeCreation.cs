@@ -2,7 +2,6 @@
 using FluentAssertions.Execution;
 using PowerShellStandardModule1.Commands.PrintTree;
 using PowerShellStandardModule1.Lib.Extensions;
-using PowerShellStandardModule1.Models;
 
 namespace TestProject1;
 
