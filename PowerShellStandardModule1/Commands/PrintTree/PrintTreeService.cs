@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using PowerShellStandardModule1.Delegates;
 using PowerShellStandardModule1.Lib;
 using PowerShellStandardModule1.Lib.Extensions;
 using PowerShellStandardModule1.Models;
 
 namespace PowerShellStandardModule1.Commands.PrintTree;
-
-using NodeOrderer = Func<IEnumerable<DirectoryTreeNode>, IEnumerable<DirectoryTreeNode>>;
 
 public partial class PrintTreeService
 {
@@ -31,10 +27,19 @@ public partial class PrintTreeService
 
     public Func<DirectoryInfo, bool> Filter { get; set; } = _ => true;
 
+    private Func<DirectoryInfo, bool> BfsFilter =>
+        Within
+            ? _ => true
+            : Filter;
+    
+
+    public bool Within { get; init; }
+
+
     private static readonly Func<DirectoryInfo, IEnumerable<DirectoryInfo>> BaseGetter =
         ChildGetterFactory.CreateDirectoryChildGetter();
 
-    private NodeOrderer CreateOrderer()
+    private DirectoryTreeNodeEnumerableProcessor CreateOrderer()
     {
         if (!NodeOrderers.TryGetValue(OrderBy, out var orderer))
         {
@@ -42,7 +47,7 @@ public partial class PrintTreeService
         }
 
         return Descending
-            ? orderer.Compose(x => x.Reverse())
+            ? orderer.AndThen(x => x.Reverse())
             : orderer;
     }
 
@@ -71,8 +76,7 @@ public partial class PrintTreeService
 
     private Func<AbstractNode<DirectoryInfo>, IEnumerable<DirectoryInfo>> CreateGetter()
     {
-       
-        var filteredGetter = BaseGetter.Compose(x => x.Where(Filter));
+        var filteredGetter = BaseGetter.AndThen(x => x.Where(BfsFilter));
 
         // width limit should only count for nodes that pass the filter, so it must come after filter operation
         var filteredNodeWidthConstrainedGetter = AddNodeWidthConstraint(filteredGetter);
@@ -90,27 +94,52 @@ public partial class PrintTreeService
         }
 
 
-        return Traversal
+        var result = Traversal
            .BfsDetailed(StartingDirectory, CreateGetter())
            .TakeWhile(_ => !Token.IsCancellationRequested)
            .Take(Limit)
            .TakeWhile(x => x.Height < Height)
            .ToImmutableList(); // must materialize to populate children
+
+        return result;
+    }
+
+    private HashSet<DirectoryTreeNode> GetBranchesSatisfyingFilter(IImmutableList<DirectoryTreeNode> nodes)
+    {
+        var visited = new HashSet<DirectoryTreeNode>();
+
+        nodes
+           .Where(x => Filter(x.Value))
+           .ForEach(MarkAncestors);
+
+        return visited;
+
+        void MarkAncestors(DirectoryTreeNode? node)
+        {
+            while (node is not null && !visited.Add(node)) node = node.Parent;
+        }
     }
 
 
-    public IEnumerable<DirectoryPrintNode> CreatePrintNodes() =>
-        CreateTreeNodes()
-           .Take(1)
-           .SelectMany(CreatePrintNodes);
+    public DirectoryPrintNodeEnumerable CreatePrintNodes()
+    {
+        var nodes = CreateTreeNodes();
+        var provider = CreateChildProvider(nodes);
+        return nodes.SelectMany(x => CreatePrintNodes(x, provider));
+    }
 
-    public IEnumerable<DirectoryPrintNode> CreatePrintNodes(DirectoryTreeNode treeNode)
+
+    private DirectoryPrintNodeEnumerable CreatePrintNodes(
+        DirectoryTreeNode treeNode,
+        Func<DirectoryPrintNode, DirectoryTreeNodeEnumerable> childProvider
+    )
     {
         // tag existing tree using pre order traversal to produce padding/branch data for printing tree and produce pre order sequence
 
+
         // if user stops during bfs, do not begin traversal
         if (Token.IsCancellationRequested) return [];
-        var root = CreateRootNode(treeNode);
+        var root = CreateRootNode(treeNode, childProvider);
 
         return root
            .ToPreOrderPrintNodes()
@@ -120,19 +149,37 @@ public partial class PrintTreeService
             ); // flattened sequence represents lines of output, trim excess lines. the output should be trimmed down based on preorder rather than breadth-first ordering
     }
 
-    private DirectoryPrintNode CreateRootNode(DirectoryTreeNode treeNode)
+    private DirectoryPrintNode CreateRootNode(
+        DirectoryTreeNode treeNode,
+        Func<DirectoryPrintNode, DirectoryTreeNodeEnumerable> childProvider
+    )
     {
         // inject projection and children ordering logic
-
-        var orderer = CreateOrderer();
-        var root = treeNode.ToPrintNode() with
-        {
-            StringValueSelector = StringValueSelector.Invoke,
-            ChildProvider = x => x.Value.Children.Pipe(orderer)
-        };
+        var root = treeNode.ToPrintNode();
+        root.StringValueSelector = StringValueSelector;
+        root.ChildProvider = childProvider;
         return root;
     }
 
+    private Func<DirectoryPrintNode, DirectoryTreeNodeEnumerable> CreateChildProvider(
+        IImmutableList<DirectoryTreeNode> list
+    )
+    {
+        var processors = new[] { CreatePrintNodeFilter(list), CreateOrderer() };
+
+        return x => ApplyProcessors(x.Value.Children);
+
+
+        DirectoryTreeNodeEnumerable ApplyProcessors(DirectoryTreeNodeEnumerable children) =>
+            processors.Aggregate(children, (acc, x) => x(acc));
+    }
+
+    private DirectoryTreeNodeEnumerableProcessor CreatePrintNodeFilter(IImmutableList<DirectoryTreeNode> list)
+    {
+        if (!Within) return x => x;
+        var set = GetBranchesSatisfyingFilter(list);
+        return x => x.Where(set.Contains);
+    }
 
     public string Invoke() =>
         CreatePrintNodes()
@@ -143,18 +190,49 @@ public partial class PrintTreeService
 {
     public static string DefaultStringValueSelector(DirectoryTreeNode node) => node.Value.Name;
 
-    public static readonly Dictionary<string, NodeOrderer> NodeOrderers = new(StringComparer.OrdinalIgnoreCase)
-    {
-        ["Name"] = DefaultNodeOrderer,
-        ["CreationTime"] = x => x.OrderBy(n => n.Value.CreationTime),
-        ["LastAccessTime"] = x => x.OrderBy(n => n.Value.LastAccessTime),
-        ["LastWriteTime"] = x => x.OrderBy(n => n.Value.LastWriteTime),
-        ["Extension"] = x => x.OrderBy(n => n.Value.Extension),
-        ["Attributes"] = x => x.OrderBy(n => n.Value.Attributes),
-        ["Exists"] = x => x.OrderBy(n => n.Value.Exists),
-        ["Root"] = x => x.OrderBy(n => n.Value.Root)
-    };
+    public static readonly Dictionary<string, DirectoryTreeNodeEnumerableProcessor> NodeOrderers =
+        new(StringComparer.OrdinalIgnoreCase)
+        {
+            ["Name"] = DefaultNodeOrderer,
+            ["CreationTime"] = x => x.OrderBy(n => n.Value.CreationTime),
+            ["LastAccessTime"] = x => x.OrderBy(n => n.Value.LastAccessTime),
+            ["LastWriteTime"] = x => x.OrderBy(n => n.Value.LastWriteTime),
+            ["Extension"] = x => x.OrderBy(n => n.Value.Extension),
+            ["Attributes"] = x => x.OrderBy(n => n.Value.Attributes),
+            ["Exists"] = x => x.OrderBy(n => n.Value.Exists),
+            ["Root"] = x => x.OrderBy(n => n.Value.Root)
+        };
 
-    public static IEnumerable<DirectoryTreeNode> DefaultNodeOrderer(IEnumerable<DirectoryTreeNode> node) =>
-        node;
+    public static DirectoryTreeNodeEnumerable DefaultNodeOrderer(DirectoryTreeNodeEnumerable node) => node;
 }
+
+// public class WithinUtil
+// {
+//   
+//
+//     public bool Within { get; init; }
+//     public Func<DirectoryInfo, bool> Filter { get; init; } = _ => true;
+//
+//     private HashSet<DirectoryTreeNode> Visited { get; } = [];
+//     
+//     
+//
+//
+//     private void GetBranchesSatisfyingFilter(IImmutableList<DirectoryTreeNode> nodes)
+//     {
+//         if (!Within)
+//         {
+//             return;
+//         }
+//
+//
+//         nodes
+//            .Where(x => Filter(x.Value))
+//            .ForEach(Climb);
+//
+//         void Climb(DirectoryTreeNode? node)
+//         {
+//             while (node is not null && !Visited.Add(node)) node = node.Parent;
+//         }
+//     }
+// }
