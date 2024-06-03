@@ -17,6 +17,16 @@ public class TreeNode<T> : AbstractNode<T>
     {
         return (TreeNode<T>)MemberwiseClone();
     }
+
+    public IEnumerable<TreeNode<T>> Ancestors()
+    {
+        var node = this;
+        while (node.Parent is not null)
+        {
+            yield return node.Parent;
+            node = node.Parent;
+        }
+    }
 };
 
 public static class TreeNode

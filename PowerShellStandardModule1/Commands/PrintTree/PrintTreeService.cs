@@ -94,7 +94,7 @@ public partial class PrintTreeService
            .Take(Limit)
            .TakeWhile(x => x.Height < Height)
            .ToList(); // must materialize to populate children
-        
+
         ProcessResult(result);
 
         return result;
@@ -104,7 +104,7 @@ public partial class PrintTreeService
     {
         if (!Within) return;
 
-        HashSet<DirectoryTreeNode> branches = GetBranchesSatisfyingFilter(result, x => Filter(x.Value));
+        HashSet<DirectoryTreeNode> branches = GetBranchesSatisfyingFilter(result);
         foreach (var node in result)
         {
             node.Children = node
@@ -135,31 +135,29 @@ public partial class PrintTreeService
            .Take(Width);
     }
 
-    public static HashSet<DirectoryTreeNode> GetBranchesSatisfyingFilter(
-        DirectoryTreeNodeEnumerable nodes,
-        Func<DirectoryTreeNode, bool> predicate
-    )
+    private HashSet<DirectoryTreeNode> GetBranchesSatisfyingFilter(DirectoryTreeNodeEnumerable nodes)
     {
         var visited = new HashSet<DirectoryTreeNode>();
 
 
-        foreach (var node in nodes)
-        {
-            if (!predicate(node)) continue;
-            MarkAncestors(node);
-        }
+        nodes
+           .Where(x => Filter(x.Value))
+           .TakeWhile(_ => !Token.IsCancellationRequested)
+           .ForEach(MarkAncestors);
 
         return visited;
 
         void MarkAncestors(DirectoryTreeNode? node)
         {
-            while (node is not null && !visited.Contains(node))
+            while (!Token.IsCancellationRequested && node is not null && !visited.Contains(node))
             {
                 visited.Add(node);
                 node = node.Parent;
             }
         }
     }
+
+   
 
     private DirectoryPrintNode CreateRootNode(DirectoryTreeNode treeNode)
     {
@@ -169,13 +167,8 @@ public partial class PrintTreeService
         var orderer = CreateOrderer();
         var root = treeNode.ToPrintNode();
         root.StringValueSelector = StringValueSelector;
+        root.ChildProvider = x => x.Value.Children.Thru(orderer);
 
-
-        root.ChildProvider = x =>
-        {
-            var children = x.Value.Children;
-            return orderer(children);
-        };
 
         return root;
     }
