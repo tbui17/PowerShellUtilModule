@@ -73,28 +73,28 @@ public partial class PrintTreeCommand
                       Name, CreationTime, LastAccessTime, LastWriteTime, Extension, Attributes, Exists, Root
                       Defaults to Name.
                       If an invalid option is selected, it will default to name.
-                      """,
-        ParameterSetName = Set1
+                      """
+        
     )]
     public string OrderBy { get; set; } = "Name";
 
     [Parameter(
-        HelpMessage = "Sort order is ascending by default. Enable to sort in descending order.",
-        ParameterSetName = Set1
+        HelpMessage = "Sort order is ascending by default. Enable to sort in descending order."
+        
     )]
     public SwitchParameter Descending { get; set; }
 
     [Parameter(
         HelpMessage =
-            "Type: Func<DirectoryInfo, bool> Script block which determines whether or not to include a node. Defaults to always true.",
-        ParameterSetName = Set2
+            "Type: Func<DirectoryInfo, bool> Script block which determines whether or not to include a node. Defaults to always true."
+        
     )]
     public ScriptBlock? Where { get; set; }
 
     [Parameter(
         HelpMessage =
-            "Modifies behavior of Where clause. All ancestor directories of nodes that meet this filter will be included.",
-        ParameterSetName = Set2
+            "Modifies behavior of Where clause. All ancestor directories of nodes that meet this filter will be included."
+        
     )]
     public SwitchParameter Within { get; set; }
 }
