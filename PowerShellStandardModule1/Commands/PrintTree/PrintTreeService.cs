@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -69,7 +68,9 @@ public partial class PrintTreeService
 
     private Func<AbstractNode<DirectoryInfo>, IEnumerable<DirectoryInfo>> CreateGetter()
     {
-        var filteredGetter = Within ? BaseGetter : BaseGetter.AndThen(x => x.Where(Filter));
+        var filteredGetter = Within
+            ? BaseGetter
+            : BaseGetter.AndThen(x => x.Where(Filter));
 
         // width limit should only count for nodes that pass the filter, so it must come after filter operation
         var filteredNodeWidthConstrainedGetter = AddNodeWidthConstraint(filteredGetter);
@@ -77,7 +78,7 @@ public partial class PrintTreeService
         return filteredNodeWidthConstrainedGetter;
     }
 
-    public IImmutableList<DirectoryTreeNode> CreateTreeNodes()
+    public IReadOnlyList<DirectoryTreeNode> CreateTreeNodes()
     {
         // build up tree meeting most requirements
 
@@ -92,18 +93,34 @@ public partial class PrintTreeService
            .TakeWhile(_ => !Token.IsCancellationRequested)
            .Take(Limit)
            .TakeWhile(x => x.Height < Height)
-           .ToImmutableList(); // must materialize to populate children
+           .ToList(); // must materialize to populate children
+        
+        ProcessResult(result);
 
         return result;
     }
 
+    void ProcessResult(IList<DirectoryTreeNode> result)
+    {
+        if (!Within) return;
 
-    public IEnumerable<DirectoryPrintNode> CreatePrintNodes() =>
+        HashSet<DirectoryTreeNode> branches = GetBranchesSatisfyingFilter(result, x => Filter(x.Value));
+        foreach (var node in result)
+        {
+            node.Children = node
+               .Children
+               .Where(branches.Contains)
+               .ToList();
+        }
+    }
+
+
+    public DirectoryPrintNodeEnumerable CreatePrintNodes() =>
         CreateTreeNodes()
            .Take(1)
            .SelectMany(CreatePrintNodes);
 
-    public IEnumerable<DirectoryPrintNode> CreatePrintNodes(DirectoryTreeNode treeNode)
+    public DirectoryPrintNodeEnumerable CreatePrintNodes(DirectoryTreeNode treeNode)
     {
         // tag existing tree using pre order traversal to produce padding/branch data for printing tree and produce pre order sequence
 
@@ -115,11 +132,11 @@ public partial class PrintTreeService
            .ToPreOrderPrintNodes()
            .TakeWhile(_ => !Token.IsCancellationRequested)
             // flattened sequence represents lines of output, trim excess lines. the output should be trimmed down based on preorder rather than breadth-first ordering
-           .Take(Width); 
+           .Take(Width);
     }
 
     public static HashSet<DirectoryTreeNode> GetBranchesSatisfyingFilter(
-        IImmutableList<DirectoryTreeNode> nodes,
+        DirectoryTreeNodeEnumerable nodes,
         Func<DirectoryTreeNode, bool> predicate
     )
     {
@@ -136,7 +153,11 @@ public partial class PrintTreeService
 
         void MarkAncestors(DirectoryTreeNode? node)
         {
-            while (node is not null && !visited.Add(node)) node = node.Parent;
+            while (node is not null && !visited.Contains(node))
+            {
+                visited.Add(node);
+                node = node.Parent;
+            }
         }
     }
 
@@ -182,5 +203,5 @@ public partial class PrintTreeService
             ["Root"] = x => x.OrderBy(n => n.Value.Root)
         };
 
-    public static IEnumerable<DirectoryTreeNode> DefaultNodeOrderer(IEnumerable<DirectoryTreeNode> node) => node;
+    public static DirectoryTreeNodeEnumerable DefaultNodeOrderer(DirectoryTreeNodeEnumerable node) => node;
 }

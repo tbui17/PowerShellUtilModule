@@ -11,6 +11,7 @@ public partial class PrintTreeCommand : PSCmdlet
 {
     
     private const string Set1 = "Set1";
+    private const string Set2 = "Set2";
     private string? _startingDirectory;
 
     private CancellationTokenSource _cts = new();
@@ -69,7 +70,8 @@ public partial class PrintTreeCommand : PSCmdlet
             StringValueSelector = CreateSelector(),
             Filter = CreateFilter(),
             OrderBy = OrderBy,
-            Descending = Descending
+            Descending = Descending,
+            Within = Within
         };
 
 

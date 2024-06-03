@@ -86,7 +86,15 @@ public partial class PrintTreeCommand
 
     [Parameter(
         HelpMessage =
-            "Type: Func<DirectoryInfo, bool> Script block which determines whether or not to include a node. Defaults to always true."
+            "Type: Func<DirectoryInfo, bool> Script block which determines whether or not to include a node. Defaults to always true.",
+        ParameterSetName = Set2
     )]
     public ScriptBlock? Where { get; set; }
+
+    [Parameter(
+        HelpMessage =
+            "Modifies behavior of Where clause. All ancestor directories of nodes that meet this filter will be included.",
+        ParameterSetName = Set2
+    )]
+    public SwitchParameter Within { get; set; }
 }
