@@ -8,11 +8,15 @@ using Newtonsoft.Json;
 
 namespace PowerShellStandardModule1.Models;
 
-
-public record TreeNode<T> : AbstractNode<T>
+public class TreeNode<T> : AbstractNode<T>
 {
     public TreeNode<T>? Parent { get; set; }
     public IList<TreeNode<T>> Children { get; set; } = [];
+
+    public TreeNode<T> Clone()
+    {
+        return (TreeNode<T>)MemberwiseClone();
+    }
 };
 
 public static class TreeNode
@@ -28,14 +32,16 @@ public static class TreeNode
                .ToList()
         };
 
-    public static TreeNode<T> ToSerializable<T>(this TreeNode<T> node) =>
-        node with
-        {
-            Parent = null,
-            Children = node
-               .Children.Select(x => x.ToSerializable())
-               .ToList()
-        };
+    public static TreeNode<T> ToSerializable<T>(this TreeNode<T> node)
+    {
+        var clone = node.Clone();
+        clone.Parent = null;
+        clone.Children = node
+           .Children.Select(x => x.ToSerializable())
+           .ToList();
+        return clone;
+    }
+
 
     public static TreeNode<T> RestoreParents<T>(this TreeNode<T> node)
     {

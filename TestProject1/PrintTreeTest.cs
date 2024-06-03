@@ -2,14 +2,13 @@
 using FluentAssertions;
 using FluentAssertions.Execution;
 using PowerShellStandardModule1.Commands.PrintTree;
-using PowerShellStandardModule1.Delegates;
 using PowerShellStandardModule1.Lib.Extensions;
 using PowerShellStandardModule1.Models;
 using TestNode = PowerShellStandardModule1.Models.TreeNode<string>;
 
 namespace TestProject1;
 
-using ChildProvider = Func<PrintNode<DirectoryInfo>, IEnumerable<TreeNode<DirectoryInfo>>>;
+using ChildProvider = Func<DirectoryPrintNode, IEnumerable<DirectoryTreeNode>>;
 
 public partial class PrintTreeTest
 {
@@ -166,11 +165,8 @@ public partial class PrintTreeTest
         res
            .Should()
            .HaveCountGreaterThan(0);
-        var root = res[0];
 
-        var printNodes = instance
-           .CreatePrintNodes(root)
-           .ToList();
+        var printNodes = instance.CreatePrintNodes().ToList();
 
 
         using var scope = new AssertionScope();

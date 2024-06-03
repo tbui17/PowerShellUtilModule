@@ -2,7 +2,6 @@
 using System.IO;
 using System.Management.Automation;
 using System.Threading;
-using PowerShellStandardModule1.Delegates;
 using PowerShellStandardModule1.Lib;
 
 namespace PowerShellStandardModule1.Commands.PrintTree;
@@ -25,7 +24,16 @@ public partial class PrintTreeCommand : PSCmdlet
     private StringValueSelector CreateSelector() =>
         StringSelector is null
             ? PrintTreeService.DefaultStringValueSelector
-            : StringSelector.ToStringValueSelector();
+            : ToStringValueSelector(StringSelector);
+    public static StringValueSelector ToStringValueSelector(ScriptBlock stringSelector)
+    {
+        return StringSelector;
+
+        string StringSelector(DirectoryTreeNode node) =>
+            stringSelector
+               .InvokeWithValue(node.Value)
+               .SerializePsResult();
+    }
 
     private Func<DirectoryInfo, bool> CreateFilter()
     {

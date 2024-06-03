@@ -1,6 +1,6 @@
 ﻿namespace PowerShellStandardModule1.Models;
 
-public abstract record AbstractNode<T>
+public abstract class AbstractNode<T>
 {
     public int Height { get; set; }
     public int Index { get; set; }

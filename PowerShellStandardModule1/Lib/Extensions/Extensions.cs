@@ -45,7 +45,7 @@ public static class Extensions
 
     public static bool NotEmpty<T>(this Stack<T> stack) => stack.Count != 0;
 
-    public static TReturn Pipe<T, TReturn>(this T src, Func<T, TReturn> fn) => fn(src);
+    public static TReturn Thru<T, TReturn>(this T src, Func<T, TReturn> fn) => fn(src);
 
     public static T Tap<T>(this T src, Action<T> fn)
     {
@@ -79,11 +79,17 @@ public static class Extensions
         return (left, right);
     }
 
-    public static Func<T, TReturn> Compose<T, TIntermediate, TReturn>(
+    public static Func<T, TReturn> AndThen<T, TIntermediate, TReturn>(
         this Func<T, TIntermediate> fn1,
         Func<TIntermediate, TReturn> fn2
     ) =>
         x => fn2(fn1(x));
+    
+    public static Func<T, TReturn> Compose<T, TIntermediate, TReturn>(
+        this Func<TIntermediate, TReturn> fn1,
+        Func<T, TIntermediate> fn2
+    ) =>
+        x => fn1(fn2(x));
 
 
     public static string StringJoin<T>(this IEnumerable<T> items, string separator) => string.Join(separator, items);

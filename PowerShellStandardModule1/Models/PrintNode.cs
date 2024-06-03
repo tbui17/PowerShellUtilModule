@@ -45,7 +45,7 @@ public static class IndentExtensions
            .StringJoin("");
 }
 
-public record PrintNode<T>
+public class PrintNode<T>
 {
     public required TreeNode<T> Value;
     public int Index;
@@ -108,13 +108,20 @@ public record PrintNode<T>
         return child;
     }
 
-    private static PrintNode<T> DefaultChildConstructor(PrintNode<T> parent, TreeNode<T> node, int index) =>
-        parent with
-        {
-            Value = node,
-            Index = index,
-            Parent = parent
-        };
+    public PrintNode<T> Clone()
+    {
+        return (PrintNode<T>)MemberwiseClone();
+    }
+
+    private static PrintNode<T> DefaultChildConstructor(PrintNode<T> parent, TreeNode<T> node, int index)
+    {
+        var n = parent.Clone();
+        n.Value = node;
+        n.Index = index;
+        n.Parent = parent;
+        return n;
+    }
+        
 }
 
 public static class PrintNode

@@ -20,4 +20,8 @@
       </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Delegates\" />
+    </ItemGroup>
+
 </Project>
