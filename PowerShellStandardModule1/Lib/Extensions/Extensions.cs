@@ -97,7 +97,7 @@ public static class Extensions
     public static StringBuilder ToStringBuilder(this IEnumerable<string> strings) =>
         strings.Aggregate(new StringBuilder(), (sb, x) => sb.AppendLine(x));
 
-    public static void SetFieldValue<T>(this T src, string key, object value) where T : notnull
+    public static void SetFieldValue<T>(this T src, string key, object? value) where T : notnull
     {
         var prop = src
                .GetType()
@@ -115,7 +115,7 @@ public static class Extensions
         return prop.GetValue(src);
     }
 
-    public static void SetPropertyValue<T>(this T src, string key, object value) where T : notnull
+    public static void SetPropertyValue<T>(this T src, string key, object? value) where T : notnull
     {
         var prop = src
                .GetType()
@@ -367,6 +367,15 @@ public static class Extensions
     }
 
     public static bool IsEmpty<T>(this IList<T> source) => source.Count == 0;
+
+    public static void MergeInto(this object source, object target)
+    {
+        foreach (var (key, value) in source.ToPairsFromProperties())
+        {
+            target.SetPropertyValue(key, value);
+        }
+        
+    }
 }
 
 public static class Stack
