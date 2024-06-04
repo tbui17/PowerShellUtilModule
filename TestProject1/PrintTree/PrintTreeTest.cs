@@ -7,7 +7,7 @@ using TestNode = PowerShellStandardModule1.Models.TreeNode<string>;
 
 namespace TestProject1.PrintTree;
 
-public partial class PrintTreeTest
+public partial class PrintTreeTest : ContainerInit
 {
     private TestNode _root = null!;
 
@@ -18,23 +18,7 @@ public partial class PrintTreeTest
     [SetUp]
     public void Setup()
     {
-        Init(Initializer);
         InitData();
-    }
-
-    private static void Initializer(ContainerBuilder b)
-    {
-        b.Register<StringValueSelector>(_ => x => x.Value.Name);
-
-        b.RegisterInstance(Directory);
-        b
-           .RegisterType<PrintTreeService>()
-           .PropertiesAutowired();
-
-        b
-           .RegisterType<PrintTreeCommand>()
-           .WithProperty("StartingDirectory", Directory.Name)
-           .PropertiesAutowired();
     }
 
     private static DirectoryInfo? GetSolutionDirectory(string? currentPath = null)

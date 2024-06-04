@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using PowerShellStandardModule1.Commands.PrintTree;
 
 namespace TestProject1;
 
@@ -9,7 +10,7 @@ public static class Container
 
 
     public static T Resolve<T>() where T : notnull => Provider.Resolve<T>();
-    
+
     public static ILifetimeScope BeginLifetimeScope() => Provider.BeginLifetimeScope();
 
     public static void Init(Action<ContainerBuilder> initializer, bool force = false)
@@ -30,4 +31,6 @@ public static class Container
         var provider = builder.Build();
         _provider = provider;
     }
+
+    
 }

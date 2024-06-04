@@ -7,7 +7,7 @@ namespace PowerShellStandardModule1.Lib;
 
 public static class FsUtil
 {
-    public static IEnumerable<FileSystemInfo> GetDirectoryFileSystemInfoChildren(
+    public static IEnumerable<FileSystemInfo> GetChildren(
         DirectoryInfo directory,
         string searchPattern = "*",
         EnumerationOptions? options = null
@@ -33,5 +33,14 @@ public static class FsUtil
         }
 
         return results;
+    }
+
+    public static IEnumerable<FileSystemInfo> GetChildren(this FileSystemInfo fsItem)
+    {
+        return fsItem switch
+        {
+            DirectoryInfo dir => GetChildren(dir),
+            _ => []
+        };
     }
 }

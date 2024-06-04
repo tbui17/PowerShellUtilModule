@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -392,8 +393,33 @@ public static class Extensions
     public static Func<T, bool> Invert<T>(this Func<T, bool> fn) => x => !fn(x);
 
     public static Func<T, bool> AggregateAny<T>(this IEnumerable<Func<T, bool>> fns) => x => fns.Any(fn => fn(x));
-    
+
     public static Func<T, bool> AggregateAll<T>(this IEnumerable<Func<T, bool>> fns) => x => fns.All(fn => fn(x));
+
+    public static IEnumerable<PropertyInfo> GetPropertiesOfType<T>(this object obj)
+    {
+        var type = obj.GetType();
+
+
+        var properties = type.GetProperties();
+        foreach (var property in properties)
+        {
+            if (property.PropertyType == typeof(T) && property.CanWrite)
+            {
+                yield return property;
+            }
+        }
+    }
+    
+    public static IEnumerable GetPropertyValues(this object obj)
+    {
+        var type = obj.GetType();
+        var properties = type.GetProperties();
+        foreach (var property in properties)
+        {
+            yield return property.GetValue(obj);
+        }
+    }
 }
 
 public static class Stack

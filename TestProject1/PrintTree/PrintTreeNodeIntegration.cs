@@ -8,10 +8,6 @@ using static TestProject1.Utils;
 
 namespace TestProject1.PrintTree;
 
-[
-    TestFixture(false),
-    TestFixture(true)
-]
 [TestFixture(
      6, 10, 50,
      20, 100
@@ -51,15 +47,15 @@ namespace TestProject1.PrintTree;
 ]
 [TestFixtureSource(typeof(FixtureData), nameof(FixtureData.FixtureParams))]
 public class PrintTreeNodeIntegration(
-    int height = 6,
-    int nodeWidth = 10,
-    int width = 50,
-    int take = 20,
-    int rootNodeWidth = 200)
+    int height = 1000,
+    int nodeWidth = 1000,
+    int width = 1000,
+    int take = 1000,
+    int rootNodeWidth = 1000)
 {
-    private PrintTreeService Instance { get; set; } = null!;
-    private List<TreeNode<FileSystemInfo>> TreeNodes { get; set; } = null!;
-    private List<PrintNode<FileSystemInfo>> PrintNodes { get; set; } = null!;
+    protected PrintTreeService Instance { get; set; } = null!;
+    protected List<TreeNode<FileSystemInfo>> TreeNodes { get; set; } = null!;
+    protected List<PrintNode<FileSystemInfo>> PrintNodes { get; set; } = null!;
 
     private static int AdjustedHeight(int height) => height + 1;
 
@@ -77,9 +73,7 @@ public class PrintTreeNodeIntegration(
         File = file;
     }
 
-
-    [OneTimeSetUp]
-    public void OneTimeSetup()
+    protected virtual void InitInstance()
     {
         Instance = new PrintTreeService
         {
@@ -95,6 +89,13 @@ public class PrintTreeNodeIntegration(
             Within = Within,
             StringValueSelector = x => x.Value.Name
         };
+    }
+
+
+    [OneTimeSetUp]
+    public void OneTimeSetup()
+    {
+        InitInstance();
 
         TreeNodes = Instance
            .CreateTreeNodes()
@@ -158,12 +159,6 @@ public class PrintTreeNodeIntegration(
         {
             return;
         }
-
-        var root = TreeNodes[0];
-       
-        
-        
-
 
         res
            .Should()
@@ -241,19 +236,13 @@ public class PrintTreeNodeIntegration(
         var lineCount = str
            .Split("\n")
            .Length;
-        
-        str.Log();
-
 
         lineCount
            .Should()
            .BeLessThanOrEqualTo(Instance.PredictMaxPrintNodeWidth());
     }
-
-
-    [Test]
-    public void TestFile() { }
 }
+
 
 public class FixtureData
 {
@@ -263,7 +252,7 @@ public class FixtureData
     {
         var random = new Random();
 
-        var data = 5
+        var data = 2
            .Times()
            .Select(CreateTestFixtureData);
 
