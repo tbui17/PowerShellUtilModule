@@ -91,62 +91,6 @@ public partial class PrintTreeService
         return bfs.Invoke(StartingDirectory);
     }
 
-    private FileSystemInfoTreeNodeEnumerable Bfs()
-    {
-        var queue = new Queue<FileSystemInfoTreeNode>();
-        queue.Enqueue(new FileSystemInfoTreeNode { Value = StartingDirectory });
-
-        var widthIsWithinLimits = CreateWidthIsWithinLimitsFunction();
-        var filter = widthIsWithinLimits.CopySignature(x => Filter(x.Value));
-        var shouldNotContinue = new[] { widthIsWithinLimits, filter }
-           .Select(x => x.Invert())
-           .AggregateAny();
-
-
-        var count = 0;
-
-        bool ShouldBreak(FileSystemInfoTreeNode node)
-        {
-            Token.ThrowIfCancellationRequested();
-            return node.Height > Height || count > Limit;
-        }
-
-
-        while (queue.Count > 0)
-        {
-            var next = queue.Dequeue();
-            yield return next;
-            if (next.Value is not DirectoryInfo dir) continue;
-
-            var newChildHeight = next.Height + 1;
-
-
-            var count1 = count;
-            var nodes = FsUtil
-               .GetDirectoryFileSystemInfoChildren(dir)
-               .Select(
-                    (x, i) => new FileSystemInfoTreeNode
-                    {
-                        Value = x,
-                        Height = newChildHeight,
-                        Index = i,
-                        Parent = next,
-                        Count = count1 + 1 + i
-                    }
-                );
-
-
-            foreach (var node in nodes)
-            {
-                count++;
-                if (ShouldBreak(node)) yield break;
-                if (shouldNotContinue(node)) continue;
-
-                node.Parent?.Children.Add(node);
-                queue.Enqueue(node);
-            }
-        }
-    }
 
     void ProcessResult(IList<FileSystemInfoTreeNode> result)
     {
