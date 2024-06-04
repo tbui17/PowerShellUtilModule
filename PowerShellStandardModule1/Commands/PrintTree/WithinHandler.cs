@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using PowerShellStandardModule1.Lib.Extensions;
 
 namespace PowerShellStandardModule1.Commands.PrintTree;
 
-public class WithinHandler(PrintTreeService printTreeService)
+public class WithinHandler(bool within, Func<FileSystemInfo, bool> filter, CancellationToken cancellationToken)
 {
     public void ProcessResult(IList<FileSystemInfoTreeNode> result)
     {
-        if (!printTreeService.Within) return;
+        
+        if (!within) return;
 
         var branches = GetBranchesSatisfyingFilter(result);
         foreach (var node in result)
@@ -27,8 +29,8 @@ public class WithinHandler(PrintTreeService printTreeService)
         var visited = new HashSet<FileSystemInfoTreeNode>();
 
         nodes
-           .Where(x => printTreeService.Filter(x.Value))
-           .TapEach(_ => printTreeService.Token.ThrowIfCancellationRequested())
+           .Where(x => filter(x.Value))
+           .TapEach(_ => cancellationToken.ThrowIfCancellationRequested())
            .ForEach(MarkAncestors);
 
         return visited;
@@ -37,7 +39,7 @@ public class WithinHandler(PrintTreeService printTreeService)
         {
             while (node is not null && !visited.Contains(node))
             {
-                printTreeService.Token.ThrowIfCancellationRequested();
+                cancellationToken.ThrowIfCancellationRequested();
                 visited.Add(node);
                 node = node.Parent;
             }
@@ -46,8 +48,8 @@ public class WithinHandler(PrintTreeService printTreeService)
 
     public Func<FileSystemInfo, bool> GetBfsFilter()
     {
-        return printTreeService.Within
-            ? printTreeService.Filter
+        return within
+            ? filter
             : _ => true;
     }
 }

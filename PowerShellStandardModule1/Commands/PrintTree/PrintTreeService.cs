@@ -10,39 +10,98 @@ namespace PowerShellStandardModule1.Commands.PrintTree;
 
 public partial class PrintTreeService
 {
-    public required DirectoryInfo StartingDirectory { get; set; }
-    public StringValueSelector StringValueSelector { get; set; } = DefaultStringValueSelector;
-    public int Height { get; set; } = 3;
-    public int Width { get; set; } = int.MaxValue;
-    public int NodeWidth { get; set; } = int.MaxValue;
-    public int Limit { get; set; } = int.MaxValue;
-    public CancellationToken Token { get; set; } = CancellationToken.None;
-    public int RootNodeWidth { get; set; } = -1;
+    public required DirectoryInfo StartingDirectory { get; init; }
+    public StringValueSelector StringValueSelector { get; init; } = DefaultStringValueSelector;
+    public int Height { get; init; } = 3;
+    public int Width { get; init; } = int.MaxValue;
+    public int NodeWidth { get; init; } = int.MaxValue;
+    public int Limit { get; init; } = int.MaxValue;
+    public CancellationToken Token { get; init; } = CancellationToken.None;
+    public int RootNodeWidth { get; init; } = -1;
 
-    public string OrderBy { get; set; } = "Name";
+    public string OrderBy { get; init; } = "Name";
 
-    public bool Descending { get; set; }
+    public bool Descending { get; init; }
 
-    public Func<FileSystemInfo, bool> Filter { get; set; } = _ => true;
+    public Func<FileSystemInfo, bool> Filter { get; init; } = _ => true;
 
-    public bool Within { get; set; }
+    public bool Within { get; init; }
 
     public bool File { get; set; }
 
-    public WithinHandler WithinHandler { get; init; }
-    public FilterCreator FilterCreator { get; init; }
 
-    public Func<FileSystemInfo, IEnumerable<FileSystemInfo>> ChildProvider { get; init; } = FsUtil.GetChildren;
-    
-    public PrintTreeImpl TreeImpl { get; }
-    public BfsImpl Impl { get; }
+    private Func<FileSystemInfo, IEnumerable<FileSystemInfo>> ChildProvider { get; init; } = FsUtil.GetChildren;
 
-    public PrintTreeService()
+    private PrintNodeImpl? PrintNodeImpl { get; set; }
+    private BfsImplFs? BfsImpl { get; set; }
+
+    private WithinHandler? WithinHandler { get; set; }
+    private WidthFilterCreator? FilterCreator { get; set; }
+
+    private FileFilterCreator? FileFilterCreator { get; set; }
+
+    public void Init()
     {
-        WithinHandler = new WithinHandler(this);
-        FilterCreator = new FilterCreator(this);
-        TreeImpl = new PrintTreeImpl(this);
-        Impl = new BfsImpl(this);
+        WithinHandler = new WithinHandler(
+            within: Within, filter: Filter,
+            cancellationToken: Token
+        );
+
+        FilterCreator = new WidthFilterCreator(
+            nodeWidth: NodeWidth, rootNodeWidth: RootNodeWidth,
+            width: RootNodeWidth
+        );
+
+        FileFilterCreator = new FileFilterCreator(shouldFilterFiles: File);
+
+        PrintNodeImpl = new PrintNodeImpl(
+            orderer: CreateOrderer(),
+            width: Width,
+            stringValueSelector: StringValueSelector,
+            token: Token
+        );
+        
+        BfsImpl = new BfsImplFs(
+            shouldContinueFilter: CreateShouldContinueFilter(
+                withinHandler: WithinHandler, widthFilterCreator: FilterCreator, fileFilterCreator: FileFilterCreator
+            ),
+            childProvider: ChildProvider,
+            startingDirectory: StartingDirectory, cancellationToken: Token, height: Height,
+            limit: Limit
+        );
+    }
+
+    private static Func<FileSystemInfoTreeNode, bool> CreateShouldContinueFilter(
+        WithinHandler withinHandler,
+        WidthFilterCreator widthFilterCreator,
+        FileFilterCreator fileFilterCreator
+    )
+    {
+        Func<FileSystemInfoTreeNode, bool>[] nodeFilters =
+            [CreateAdaptedFilter(), widthFilterCreator.CreateWidthIsWithinLimitsFilter()];
+
+        Func<FileSystemInfoTreeNode, bool> aggregateFilter = nodeFilters.AggregateAll();
+
+        return aggregateFilter;
+
+        Func<FileSystemInfoTreeNode, bool> CreateAdaptedFilter()
+        {
+            List<Func<FileSystemInfo, bool>> filters = [fileFilterCreator.CreateFilter(), withinHandler.GetBfsFilter()];
+
+            Func<FileSystemInfo, bool> allFilter = filters.AggregateAll();
+
+            Func<FileSystemInfoTreeNode, bool> adaptedFilter = allFilter.Compose((FileSystemInfoTreeNode x) => x.Value);
+            return adaptedFilter;
+        }
+    }
+
+    private FileSystemInfoTreeNodeEnumerableProcessor CreateOrderer()
+    {
+        FileSystemInfoTreeNodeEnumerableProcessor orderer = NodeOrderers.GetValueOrDefault(OrderBy, DefaultNodeOrderer);
+
+        return Descending
+            ? orderer.AndThen(x => x.Reverse())
+            : orderer;
     }
 
     public IReadOnlyList<FileSystemInfoTreeNode> CreateTreeNodes()
@@ -54,27 +113,41 @@ public partial class PrintTreeService
             throw new DirectoryNotFoundException($"Directory not found: {StartingDirectory}");
         }
 
+        if (BfsImpl is null || WithinHandler is null)
+        {
+            throw new InvalidOperationException("Service not initialized");
+        }
 
-        return Impl
-           .Bfs()
+
+        return BfsImpl
+           .Invoke()
            .ToList()
            .Tap(WithinHandler.ProcessResult);
     }
 
 
-    public FileSystemInfoPrintNodeEnumerable CreatePrintNodes() =>
-        CreateTreeNodes()
+    public FileSystemInfoPrintNodeEnumerable CreatePrintNodes()
+    {
+        if (PrintNodeImpl is null)
+        {
+            throw new InvalidOperationException("Service not initialized");
+        }
+
+        return CreateTreeNodes()
            .Take(1)
-           .SelectMany(TreeImpl.CreatePrintNodes);
+           .SelectMany(PrintNodeImpl.CreatePrintNodes);
+    }
 
 
     public int PredictMaxPrintNodeWidth()
     {
         var parameters = new[] { RootNodeWidth, NodeWidth, Width };
 
-        return RootNodeWidth <= -1
+        var num = RootNodeWidth <= -1
             ? Width
             : parameters.Max();
+
+        return Math.Max(1, num);
     }
 
     public int PredictMaxItemCount()
@@ -100,7 +173,7 @@ public partial class PrintTreeService
 {
     public static string DefaultStringValueSelector(FileSystemInfoTreeNode node) => node.Value.Name;
 
-    public static readonly Dictionary<string, DirectoryTreeNodeEnumerableProcessor> NodeOrderers =
+    private static readonly Dictionary<string, FileSystemInfoTreeNodeEnumerableProcessor> NodeOrderers =
         new(StringComparer.OrdinalIgnoreCase)
         {
             ["Name"] = DefaultNodeOrderer,
@@ -111,6 +184,6 @@ public partial class PrintTreeService
             ["Attributes"] = x => x.OrderBy(n => n.Value.Attributes),
             ["Exists"] = x => x.OrderBy(n => n.Value.Exists)
         };
-    
+
     public static DirectoryTreeNodeEnumerable DefaultNodeOrderer(DirectoryTreeNodeEnumerable node) => node;
 }

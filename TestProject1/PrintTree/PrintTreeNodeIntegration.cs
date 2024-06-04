@@ -1,6 +1,6 @@
 ﻿using System.Collections;
+using AutoFixture;
 using FluentAssertions;
-using FluentAssertions.Execution;
 using PowerShellStandardModule1.Commands.PrintTree;
 using PowerShellStandardModule1.Lib.Extensions;
 using PowerShellStandardModule1.Models;
@@ -21,8 +21,16 @@ namespace TestProject1.PrintTree;
      1, 1
  ),
  TestFixture(
+     0, 0, 0,
+     0, 0
+ ),
+ TestFixture(
      int.MaxValue, int.MaxValue, int.MaxValue,
      int.MaxValue, int.MaxValue
+ ),
+ TestFixture(
+     int.MinValue, int.MinValue, int.MinValue,
+     int.MinValue, int.MinValue
  ),
  TestFixture(
      15288, 31876, 5,
@@ -43,8 +51,10 @@ namespace TestProject1.PrintTree;
  TestFixture(
      6, 3, 9,
      69783, 7
- )
+ ),
+    TestFixture(10940,14592,0,-6,96171)
 ]
+
 [TestFixtureSource(typeof(FixtureData), nameof(FixtureData.FixtureParams))]
 public class PrintTreeNodeIntegration(
     int height = 1000,
@@ -58,23 +68,14 @@ public class PrintTreeNodeIntegration(
     protected List<PrintNode<FileSystemInfo>> PrintNodes { get; set; } = null!;
 
     private static int AdjustedHeight(int height) => height + 1;
+    
 
 
-    public bool File { get; set; }
 
-    public CancellationToken Token { get; } = default;
-
-    public bool Descending { get; set; }
-    public bool Within { get; set; }
-
-
-    public PrintTreeNodeIntegration(bool file) : this()
-    {
-        File = file;
-    }
 
     protected virtual void InitInstance()
     {
+
         Instance = new PrintTreeService
         {
             StartingDirectory = GetSolutionDirectory(),
@@ -83,16 +84,13 @@ public class PrintTreeNodeIntegration(
             Width = width,
             Limit = take,
             RootNodeWidth = rootNodeWidth,
-            File = File,
-            Token = Token,
-            Descending = Descending,
-            Within = Within,
             StringValueSelector = x => x.Value.Name
         };
+        Instance.Init();
     }
 
 
-    [OneTimeSetUp]
+    [SetUp]
     public void OneTimeSetup()
     {
         InitInstance();
@@ -105,43 +103,29 @@ public class PrintTreeNodeIntegration(
         PrintNodes = Instance
            .CreatePrintNodes()
            .ToList();
-
-
-        using var scope = new AssertionScope();
-
-        TreeNodes
-           .Should()
-           .NotBeEmpty();
-
-
-        PrintNodes
-           .Should()
-           .NotBeEmpty();
     }
 
-    [Test]
-    public void TestTreeNodesCreation()
-    {
-        TreeNodes
-           .Should()
-           .HaveCountGreaterThan(0);
-    }
 
     [Test]
     public void TestTreeNodesCount()
     {
         TreeNodes
            .Should()
-           .HaveCountLessThanOrEqualTo(take);
+           .HaveCountLessThanOrEqualTo(take.MinZero());
     }
 
     [Test]
     public void TestTreeNodesHeight()
     {
+        if (TreeNodes.IsEmpty())
+        {
+            return;
+        }
+
         TreeNodes
            .Should()
            .AllSatisfy(
-                x => x
+                node => node
                    .Height.Should()
                    .BeLessThanOrEqualTo(height)
             );
@@ -173,6 +157,11 @@ public class PrintTreeNodeIntegration(
     [Test]
     public void TestPrintNodesRootCount()
     {
+        if (PrintNodes.IsEmpty())
+        {
+            return;
+        }
+
         PrintNodes
            .Count(x => x.IsRoot)
            .Should()
@@ -184,12 +173,17 @@ public class PrintTreeNodeIntegration(
     {
         PrintNodes
            .Count.Should()
-           .BeLessThanOrEqualTo(width);
+           .BeLessThanOrEqualTo(width.MinZero());
     }
 
     [Test]
     public void TestPrintNodesIndexUniqueness()
     {
+        if (PrintNodes.IsEmpty())
+        {
+            return;
+        }
+
         PrintNodes
            .GroupBy(x => x.Value.Parent)
            .Should()
@@ -205,22 +199,27 @@ public class PrintTreeNodeIntegration(
     [Test]
     public void TestPrintNodesIndentation()
     {
+        if (PrintNodes.IsEmpty())
+        {
+            return;
+        }
+
         PrintNodes
            .Should()
            .AllSatisfy(
-                x =>
+                node =>
                 {
-                    if (x.Value.Height == 0)
+                    if (node.Value.Height == 0)
                     {
-                        x
+                        node
                            .CompiledIndent.Count.Should()
                            .Be(0, "The root is not indented.");
                     }
                     else
                     {
-                        x
+                        node
                            .CompiledIndent.Count.Should()
-                           .Be(AdjustedHeight(x.Value.Height));
+                           .Be(AdjustedHeight(node.Value.Height));
                     }
                 }
             );
@@ -236,13 +235,15 @@ public class PrintTreeNodeIntegration(
         var lineCount = str
            .Split("\n")
            .Length;
+        
+        str.Log();
+
 
         lineCount
            .Should()
            .BeLessThanOrEqualTo(Instance.PredictMaxPrintNodeWidth());
     }
 }
-
 
 public class FixtureData
 {
@@ -252,7 +253,7 @@ public class FixtureData
     {
         var random = new Random();
 
-        var data = 2
+        var data = 10
            .Times()
            .Select(CreateTestFixtureData);
 
@@ -264,7 +265,19 @@ public class FixtureData
                 N(), N()
             );
 
-        int N() => Next(High());
+        int N() => CreateValue();
+
+        int CreateValue()
+        {
+            var seed = random.Next(0, 100);
+            var val = Next(seed);
+
+            return (seed % 2) switch
+            {
+                0 => val,
+                _ => -val
+            };
+        }
 
         int Next(int randomNumberGeneratorSeed) =>
             randomNumberGeneratorSeed % 2 == 0
@@ -273,6 +286,6 @@ public class FixtureData
 
         int High() => random.Next(0, 100000);
 
-        int Low() => random.Next(1, 10);
+        int Low() => random.Next(0, 10);
     }
 }

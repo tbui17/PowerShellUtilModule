@@ -60,17 +60,17 @@ public partial class PrintTreeCommand
     [Parameter(
         HelpMessage =
             """
-            Type: Func<DirectoryInfo,object> A scriptblock to select the string to display for each node. It should return a serializable object at minimum. Defaults to the Name property.
-            Properties of the DirectoryInfo object are available here
-            https://learn.microsoft.com/en-us/dotnet/api/system.io.directoryinfo?view=net-8.0
+            Type: Func<FileSystemInfo,object> A scriptblock to select the string to display for each node. It should return a serializable object at minimum. Defaults to the Name property.
+            Properties of the FileSystemInfo object are available here
+            https://learn.microsoft.com/en-us/dotnet/api/system.io.filesysteminfo?view=net-8.0
             """
     )]
     public ScriptBlock? StringSelector { get; set; }
 
     [Parameter(
         HelpMessage = """
-                      The property to sort by of a DirectoryInfo object. Available options are:
-                      Name, CreationTime, LastAccessTime, LastWriteTime, Extension, Attributes, Exists, Root
+                      The property to sort by of a FileSystemInfo object. Available options are:
+                      Name, CreationTime, LastAccessTime, LastWriteTime, Extension, Attributes
                       Defaults to Name.
                       If an invalid option is selected, it will default to name.
                       """
@@ -82,7 +82,7 @@ public partial class PrintTreeCommand
 
     [Parameter(
         HelpMessage =
-            "Type: Func<DirectoryInfo, bool> Script block which determines whether or not to include a directory. Defaults to always true."
+            "Type: Func<FileSystemInfo, bool> Script block which determines whether or not to include a directory. Defaults to always true."
     )]
     public ScriptBlock? Where { get; set; }
 
@@ -92,37 +92,8 @@ public partial class PrintTreeCommand
     )]
     public SwitchParameter Within { get; set; }
 
-    [Parameter(HelpMessage = "Enable to show files in the tree.")]
+    [Parameter(HelpMessage = "Enable to also receive files. Related options such as StringSelector or Where will also receive files.")]
     public SwitchParameter File { get; set; }
-
-    [Parameter(
-        HelpMessage =
-            """
-            Type: Func<FileInfo, bool> Script block which determines whether or not to include a file.
-            If the -File switch is not enabled when this is defined, then FWithin will automatically be enabled.
-            If the -File switch is enabled but this is not defined, then defaults to always true.
-            """
-    )]
-    public ScriptBlock? FWhere { get; set; }
-
-    [Parameter(
-        HelpMessage =
-            "Modifies behavior of FWhere clause. All ancestor directories of files that meet this filter will be included."
-    )]
-    public SwitchParameter FWithin { get; set; }
-
-    // TODO: add options
-    [Parameter(
-        HelpMessage = "The property to sort by for files. Does nothing if File is not enabled. Defaults to name."
-    )]
-    public string FOrderBy { get; set; } = "Name";
-
-    [Parameter(
-        HelpMessage = """
-                      Type: Func<FileInfo,object> A scriptblock to select the string to display for each file node. It should return a serializable object at minimum. Defaults to the Name property.
-                      Properties of the FileInfo object are available here
-                      https://learn.microsoft.com/en-us/dotnet/api/system.io.fileinfo?view=net-8.0
-                      """
-    )]
-    public ScriptBlock? FStringSelector { get; set; }
+    
+    
 }

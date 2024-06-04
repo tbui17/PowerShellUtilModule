@@ -93,7 +93,7 @@ public static class Extensions
         x => fn1(fn2(x));
 
 
-    public static string StringJoin<T>(this IEnumerable<T> items, string separator) => string.Join(separator, items);
+    public static string StringJoin<T>(this IEnumerable<T> items, string separator = "") => string.Join(separator, items);
 
     public static StringBuilder ToStringBuilder(this IEnumerable<string> strings) =>
         strings.Aggregate(new StringBuilder(), (sb, x) => sb.AppendLine(x));
@@ -420,6 +420,8 @@ public static class Extensions
             yield return property.GetValue(obj);
         }
     }
+    
+    public static int MinZero(this int value) => Math.Max(0, value);
 }
 
 public static class Stack

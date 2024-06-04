@@ -10,7 +10,7 @@ public class BfsExecutor<T>
     public Func<TreeNode<T>, bool> Filter { get; set; } = _ => true;
     public Func<TreeNode<T>, bool> ShouldBreak { get; set; } = _ => true;
     public Func<T, IEnumerable<T>> ChildProvider { get; set; } = _ => [];
-    public int Count { get; private set; }
+    private int Count { get; set; }
     private Queue<TreeNode<T>> Queue { get; } = new();
 
     public IEnumerable<TreeNode<T>> Invoke(T root)

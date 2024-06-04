@@ -133,19 +133,43 @@ public partial class PrintTreeTest : ContainerInit
             NodeWidth = 500,
             RootNodeWidth = 500
         };
+        instance.Init();
 
         // given flat list of nodes, from a tree, when they are grouped by their parent, there will be partitions that will scope the tests
         var res = instance.CreatePrintNodes();
+        
 
         using var scope = new AssertionScope();
         res
            .GroupBy(x => x.Parent)
-           .ForEach(
+           .Should()
+           .AllSatisfy(
                 x => x
                    .Select(x2 => x2.Value.Value.CreationTime)
                    .Should()
                    .BeInDescendingOrder()
             );
+    }
+
+    [Test]
+    public void TestBfs()
+    {
+        var instance = new PrintTreeService
+        {
+            StartingDirectory = Directory,
+            Descending = true,
+            OrderBy = "creationtime",
+            Height = 500,
+            Limit = 500,
+            Width = 500,
+            NodeWidth = 500,
+            RootNodeWidth = 500
+        };
+        instance.Init();
+        var res = instance.CreateTreeNodes();
+        res
+           .Count.Should()
+           .BeGreaterThan(5);
     }
 }
 

@@ -77,8 +77,10 @@ public partial class PrintTreeCommand : PSCmdlet
             Filter = CreateFilter(),
             OrderBy = OrderBy,
             Descending = Descending,
-            Within = Within
+            Within = Within,
+            File = File
         };
+        instance.Init();
 
 
         try
