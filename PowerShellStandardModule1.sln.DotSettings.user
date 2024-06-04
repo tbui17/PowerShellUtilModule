@@ -1,26 +1,16 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\PCS\AppData\Local\JetBrains\Rider2023.3\resharper-host\temp\Rider\vAny\CoverageData\_PowerShellStandardModule1.1915167387\Snapshot\snapshot.utdcvr</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6b246aec_002D2a5b_002D49ee_002D8a9c_002D445c534ff157/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="PrintTreeTest #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeTest&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeNodeCreation&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=45f7943d_002De52b_002D4e9e_002Db083_002D9ccf9010f33c/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="1" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;And&gt;&#xD;
+    &lt;Namespace&gt;TestProject1.PrintTree&lt;/Namespace&gt;&#xD;
+    &lt;Project Location="C:\Users\PCS\RiderProjects\PowerShellStandardModule1\TestProject1" Presentation="&amp;lt;TestProject1&amp;gt;" /&gt;&#xD;
+  &lt;/And&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=78b60576_002Dd47d_002D48a1_002Dabce_002D00168a1854b6/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="PrintTreeTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeTest&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=aefa03ea_002D6630_002D45d8_002D837f_002Deb8741702d32/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="1" Name="PrintTreeNodeCreation" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeNodeCreation&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d9daccee_002D96a3_002D4a9c_002Dbae9_002D070864b66938/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestTreeRunner" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::18305C93-550E-448E-A8F9-6DB936D8F72F::net8.0::TestProject1.PrintTreeTest.TestTreeRunner&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
+	
+	
+	
+	
+	
 	
 	
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Globber/@EntryIndexedValue">True</s:Boolean>

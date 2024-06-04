@@ -15,7 +15,7 @@ public class ReflectionTests
             Height = 1,
             NodeWidth = 2,
             Width = 3,
-            Take = 4
+            Limit = 4
         };
 
 

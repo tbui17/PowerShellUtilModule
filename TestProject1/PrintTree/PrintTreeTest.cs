@@ -3,18 +3,13 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using PowerShellStandardModule1.Commands.PrintTree;
 using PowerShellStandardModule1.Lib.Extensions;
-using PowerShellStandardModule1.Models;
 using TestNode = PowerShellStandardModule1.Models.TreeNode<string>;
 
-namespace TestProject1;
-
-using ChildProvider = Func<DirectoryPrintNode, IEnumerable<DirectoryTreeNode>>;
+namespace TestProject1.PrintTree;
 
 public partial class PrintTreeTest
 {
     private TestNode _root = null!;
-
-    private ChildProvider _childProvider = PrintNode.DefaultChildProvider;
 
     private static readonly DirectoryInfo Directory =
         GetSolutionDirectory() ?? throw new InvalidOperationException("Solution directory not found.");
@@ -27,7 +22,7 @@ public partial class PrintTreeTest
         InitData();
     }
 
-    private void Initializer(ContainerBuilder b)
+    private static void Initializer(ContainerBuilder b)
     {
         b.Register<StringValueSelector>(_ => x => x.Value.Name);
 
@@ -172,7 +167,6 @@ public partial class PrintTreeTest
 
 public partial class PrintTreeTest
 {
-
     IEnumerable<TestNode> GetChildren(TestNode node) => node.Children;
 
     private void InitData()

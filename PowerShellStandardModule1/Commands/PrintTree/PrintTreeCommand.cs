@@ -26,19 +26,19 @@ public partial class PrintTreeCommand : PSCmdlet
     {
         return StringSelector;
 
-        string StringSelector(DirectoryTreeNode node) =>
+        string StringSelector(FileSystemInfoTreeNode node) =>
             stringSelector
                .InvokeWithValue(node.Value)
                .SerializePsResult();
     }
 
-    private Func<DirectoryInfo, bool> CreateFilter()
+    private Func<FileSystemInfo, bool> CreateFilter()
     {
         return Where is null
             ? _ => true
             : Filter;
 
-        bool Filter(DirectoryInfo info) =>
+        bool Filter(FileSystemInfo info) =>
             Where
                .InvokeWithValue(info)
                .GetFirst<bool>();
@@ -51,6 +51,19 @@ public partial class PrintTreeCommand : PSCmdlet
 
     protected override void ProcessRecord()
     {
+        var dir = new DirectoryInfo(StartingDirectory);
+        if (!dir.Exists)
+        {
+            var e = new DirectoryNotFoundException($"Directory not found: {StartingDirectory}");
+            WriteError(
+                new ErrorRecord(
+                    e, "DirectoryNotFound", ErrorCategory.ObjectNotFound,
+                    StartingDirectory
+                )
+            );
+            return;
+        }
+
         var instance = new PrintTreeService
         {
             StartingDirectory = new DirectoryInfo(StartingDirectory),
@@ -66,6 +79,7 @@ public partial class PrintTreeCommand : PSCmdlet
             Descending = Descending,
             Within = Within
         };
+
 
         try
         {

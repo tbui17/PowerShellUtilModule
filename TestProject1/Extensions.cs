@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 
 namespace TestProject1;
 
-
 internal static class Extensions
 {
     public static TReturn Thru<T, TReturn>(this T src, Func<T, TReturn> fn) => fn(src);
@@ -49,6 +48,8 @@ internal static class Extensions
 
         return map;
     }
+
+    public static IEnumerable<int> Times(this int count) => Enumerable.Range(0, count);
 }
 
 public class DirectoryInfoConverter : JsonConverter<DirectoryInfo>

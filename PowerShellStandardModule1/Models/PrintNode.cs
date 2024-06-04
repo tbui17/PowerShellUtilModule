@@ -128,7 +128,7 @@ public static class PrintNode
 {
     public static PrintNode<T> ToPrintNode<T>(this TreeNode<T> node) => From(node);
 
-    public static PrintNode<T> From<T>(TreeNode<T> node) => new() { Value = node };
+    public static PrintNode<T> From<T>(TreeNode<T> node) => new() { Value = node};
 
     public static string DefaultStringValueSelector<T>(AbstractNode<T> node) =>
         node.Value?.ToString() ?? Indents.None.Value();

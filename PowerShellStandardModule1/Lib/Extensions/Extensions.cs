@@ -84,7 +84,7 @@ public static class Extensions
         Func<TIntermediate, TReturn> fn2
     ) =>
         x => fn2(fn1(x));
-    
+
     public static Func<T, TReturn> Compose<T, TIntermediate, TReturn>(
         this Func<TIntermediate, TReturn> fn1,
         Func<T, TIntermediate> fn2
@@ -368,15 +368,16 @@ public static class Extensions
 
     public static bool IsEmpty<T>(this IList<T> source) => source.Count == 0;
 
+    public static bool NotEmpty<T>(this Queue<T> source) => source.Count != 0;
+
     public static void MergeInto(this object source, object target)
     {
         foreach (var (key, value) in source.ToPairsFromProperties())
         {
             target.SetPropertyValue(key, value);
         }
-        
     }
-    
+
     public static IEnumerable<T> TapEach<T>(this IEnumerable<T> source, Action<T> action)
     {
         foreach (var item in source)
@@ -385,6 +386,14 @@ public static class Extensions
             yield return item;
         }
     }
+
+    public static Func<T, TReturn> CopySignature<T, TReturn>(this Func<T, TReturn> _, Func<T, TReturn> func) => func;
+
+    public static Func<T, bool> Invert<T>(this Func<T, bool> fn) => x => !fn(x);
+
+    public static Func<T, bool> AggregateAny<T>(this IEnumerable<Func<T, bool>> fns) => x => fns.Any(fn => fn(x));
+    
+    public static Func<T, bool> AggregateAll<T>(this IEnumerable<Func<T, bool>> fns) => x => fns.All(fn => fn(x));
 }
 
 public static class Stack

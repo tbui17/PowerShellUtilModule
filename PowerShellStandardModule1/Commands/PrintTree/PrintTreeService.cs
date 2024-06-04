@@ -9,6 +9,8 @@ using PowerShellStandardModule1.Models;
 
 namespace PowerShellStandardModule1.Commands.PrintTree;
 
+delegate FileSystemInfoTreeNodeEnumerable NodeWidthFilter(FileSystemInfoTreeNodeEnumerable node);
+
 public partial class PrintTreeService
 {
     public required DirectoryInfo StartingDirectory { get; set; }
@@ -24,59 +26,22 @@ public partial class PrintTreeService
 
     public bool Descending { get; set; }
 
-    public Func<DirectoryInfo, bool> Filter { get; set; } = _ => true;
+    public Func<FileSystemInfo, bool> Filter { get; set; } = _ => true;
 
     public bool Within;
 
-    private static readonly Func<DirectoryInfo, IEnumerable<DirectoryInfo>> BaseGetter =
-        ChildGetterFactory.CreateDirectoryChildGetter();
+    public bool File = false;
 
     private DirectoryTreeNodeEnumerableProcessor CreateOrderer()
     {
-
-        var orderer = NodeOrderers.GetValueOrDefault(OrderBy,DefaultNodeOrderer);
+        var orderer = NodeOrderers.GetValueOrDefault(OrderBy, DefaultNodeOrderer);
 
         return Descending
             ? orderer.AndThen(x => x.Reverse())
             : orderer;
     }
 
-
-    private Func<AbstractNode<T>, IEnumerable<T>> AddNodeWidthConstraint<T>(Func<T, IEnumerable<T>> baseGetter)
-    {
-        // if is root, take * RootNodeWidth else take * NodeWidth unless NodeWidth is negative then all are treated as regular nodes
-
-        return RootNodeWidth < 0
-            ? NodeGetter
-            : MixedGetter;
-
-        IEnumerable<T> NodeGetter(AbstractNode<T> node) =>
-            baseGetter(node.Value)
-               .Take(NodeWidth);
-
-        IEnumerable<T> RootGetter(AbstractNode<T> node) =>
-            baseGetter(node.Value)
-               .Take(RootNodeWidth);
-
-        IEnumerable<T> MixedGetter(AbstractNode<T> node) =>
-            node.Height == 0
-                ? RootGetter(node)
-                : NodeGetter(node);
-    }
-
-    private Func<AbstractNode<DirectoryInfo>, IEnumerable<DirectoryInfo>> CreateGetter()
-    {
-        var filteredGetter = Within
-            ? BaseGetter
-            : BaseGetter.AndThen(x => x.Where(Filter));
-
-        // width limit should only count for nodes that pass the filter, so it must come after filter operation
-        var filteredNodeWidthConstrainedGetter = AddNodeWidthConstraint(filteredGetter);
-
-        return filteredNodeWidthConstrainedGetter;
-    }
-
-    public IReadOnlyList<DirectoryTreeNode> CreateTreeNodes()
+    public IReadOnlyList<FileSystemInfoTreeNode> CreateTreeNodes()
     {
         // build up tree meeting most requirements
 
@@ -86,23 +51,108 @@ public partial class PrintTreeService
         }
 
 
-        var result = Traversal
-           .BfsDetailed(StartingDirectory, CreateGetter())
-           .TapEach(_ => Token.ThrowIfCancellationRequested())
-           .Take(Limit)
-           .TakeWhile(x => x.Height < Height)
-           .ToList(); // must materialize to populate children
-
-        ProcessResult(result);
-
-        return result;
+        return Bfs2()
+           .ToList()
+           .Tap(ProcessResult);
     }
 
-    void ProcessResult(IList<DirectoryTreeNode> result)
+    private Func<FileSystemInfoTreeNode, bool> CreateWidthIsWithinLimitsFunction() =>
+        RootNodeWidth < 0
+            ? StandardNodeLimiter
+            : MixedNodeLimiter;
+
+    private bool StandardNodeLimiter(FileSystemInfoTreeNode node) => node.Index < NodeWidth;
+    private bool RootNodeLimiter(FileSystemInfoTreeNode node) => node.Index < RootNodeWidth;
+
+    private bool MixedNodeLimiter(FileSystemInfoTreeNode node) =>
+        node.Height <= 1
+            ? RootNodeLimiter(node)
+            : StandardNodeLimiter(node);
+
+
+    private FileSystemInfoTreeNodeEnumerable Bfs2()
+    {
+        var widthIsWithinLimits = CreateWidthIsWithinLimitsFunction();
+        var filter = widthIsWithinLimits.CopySignature(x => Filter(x.Value));
+        var shouldContinue = new[] { widthIsWithinLimits, filter }
+           .AggregateAll();
+        var bfs = new BfsExecutor<FileSystemInfo>
+        {
+            Filter = shouldContinue,
+            ItemProvider = fsItem => fsItem is DirectoryInfo dir
+                ? FsUtil.GetDirectoryFileSystemInfoChildren(dir)
+                : [],
+            ShouldBreak = node =>
+            {
+                Token.ThrowIfCancellationRequested();
+                return node.Height <= Height && node.Count <= Limit;
+            }
+        };
+        return bfs.Invoke(StartingDirectory);
+    }
+
+    private FileSystemInfoTreeNodeEnumerable Bfs()
+    {
+        var queue = new Queue<FileSystemInfoTreeNode>();
+        queue.Enqueue(new FileSystemInfoTreeNode { Value = StartingDirectory });
+
+        var widthIsWithinLimits = CreateWidthIsWithinLimitsFunction();
+        var filter = widthIsWithinLimits.CopySignature(x => Filter(x.Value));
+        var shouldNotContinue = new[] { widthIsWithinLimits, filter }
+           .Select(x => x.Invert())
+           .AggregateAny();
+
+
+        var count = 0;
+
+        bool ShouldBreak(FileSystemInfoTreeNode node)
+        {
+            Token.ThrowIfCancellationRequested();
+            return node.Height > Height || count > Limit;
+        }
+
+
+        while (queue.Count > 0)
+        {
+            var next = queue.Dequeue();
+            yield return next;
+            if (next.Value is not DirectoryInfo dir) continue;
+
+            var newChildHeight = next.Height + 1;
+
+
+            var count1 = count;
+            var nodes = FsUtil
+               .GetDirectoryFileSystemInfoChildren(dir)
+               .Select(
+                    (x, i) => new FileSystemInfoTreeNode
+                    {
+                        Value = x,
+                        Height = newChildHeight,
+                        Index = i,
+                        Parent = next,
+                        Count = count1 + 1 + i
+                    }
+                );
+
+
+            foreach (var node in nodes)
+            {
+                count++;
+                if (ShouldBreak(node)) yield break;
+                if (shouldNotContinue(node)) continue;
+
+                node.Parent?.Children.Add(node);
+                queue.Enqueue(node);
+            }
+        }
+    }
+
+    void ProcessResult(IList<FileSystemInfoTreeNode> result)
     {
         if (!Within) return;
 
-        HashSet<DirectoryTreeNode> branches = GetBranchesSatisfyingFilter(result);
+        var branches = GetBranchesSatisfyingFilter(result);
         foreach (var node in result)
         {
             node.Children = node
@@ -113,12 +163,12 @@ public partial class PrintTreeService
     }
 
 
-    public DirectoryPrintNodeEnumerable CreatePrintNodes() =>
+    public FileSystemInfoPrintNodeEnumerable CreatePrintNodes() =>
         CreateTreeNodes()
            .Take(1)
            .SelectMany(CreatePrintNodes);
 
-    public DirectoryPrintNodeEnumerable CreatePrintNodes(DirectoryTreeNode treeNode)
+    public FileSystemInfoPrintNodeEnumerable CreatePrintNodes(FileSystemInfoTreeNode treeNode)
     {
         // tag existing tree using pre order traversal to produce padding/branch data for printing tree and produce pre order sequence
 
@@ -133,10 +183,9 @@ public partial class PrintTreeService
            .Take(Width);
     }
 
-    private HashSet<DirectoryTreeNode> GetBranchesSatisfyingFilter(DirectoryTreeNodeEnumerable nodes)
+    private HashSet<FileSystemInfoTreeNode> GetBranchesSatisfyingFilter(FileSystemInfoTreeNodeEnumerable nodes)
     {
-        var visited = new HashSet<DirectoryTreeNode>();
-
+        var visited = new HashSet<FileSystemInfoTreeNode>();
 
         nodes
            .Where(x => Filter(x.Value))
@@ -145,7 +194,7 @@ public partial class PrintTreeService
 
         return visited;
 
-        void MarkAncestors(DirectoryTreeNode? node)
+        void MarkAncestors(FileSystemInfoTreeNode? node)
         {
             while (node is not null && !visited.Contains(node))
             {
@@ -156,9 +205,8 @@ public partial class PrintTreeService
         }
     }
 
-   
 
-    private DirectoryPrintNode CreateRootNode(DirectoryTreeNode treeNode)
+    private FileSystemInfoPrintNode CreateRootNode(FileSystemInfoTreeNode treeNode)
     {
         // inject projection and children ordering logic
 
@@ -172,6 +220,28 @@ public partial class PrintTreeService
         return root;
     }
 
+    public int PredictMaxPrintNodeWidth()
+    {
+        var parameters = new[] { RootNodeWidth, NodeWidth, Width };
+
+        return RootNodeWidth <= -1
+            ? Width
+            : parameters.Max();
+    }
+
+    public int PredictMaxItemCount()
+    {
+        var parameters = new[]
+        {
+            Height,
+            NodeWidth,
+            RootNodeWidth,
+            Width,
+            Limit
+        };
+        return Math.Max(0, parameters.Min());
+    }
+
 
     public string Invoke() =>
         CreatePrintNodes()
@@ -180,7 +250,7 @@ public partial class PrintTreeService
 
 public partial class PrintTreeService
 {
-    public static string DefaultStringValueSelector(DirectoryTreeNode node) => node.Value.Name;
+    public static string DefaultStringValueSelector(FileSystemInfoTreeNode node) => node.Value.Name;
 
     public static readonly Dictionary<string, DirectoryTreeNodeEnumerableProcessor> NodeOrderers =
         new(StringComparer.OrdinalIgnoreCase)
@@ -191,9 +261,56 @@ public partial class PrintTreeService
             ["LastWriteTime"] = x => x.OrderBy(n => n.Value.LastWriteTime),
             ["Extension"] = x => x.OrderBy(n => n.Value.Extension),
             ["Attributes"] = x => x.OrderBy(n => n.Value.Attributes),
-            ["Exists"] = x => x.OrderBy(n => n.Value.Exists),
-            ["Root"] = x => x.OrderBy(n => n.Value.Root)
+            ["Exists"] = x => x.OrderBy(n => n.Value.Exists)
         };
 
     public static DirectoryTreeNodeEnumerable DefaultNodeOrderer(DirectoryTreeNodeEnumerable node) => node;
+}
+
+public class BfsExecutor<T>
+{
+    public Func<TreeNode<T>, bool> Filter { get; set; } = _ => true;
+    public Func<TreeNode<T>, bool> ShouldBreak { get; set; } = _ => true;
+    public Func<T, IEnumerable<T>> ItemProvider { get; set; } = _ => [];
+    public int Count { get; private set; }
+    private Queue<TreeNode<T>> Queue { get; } = new();
+
+    public IEnumerable<TreeNode<T>> Invoke(T root)
+    {
+        Queue.Clear();
+        Queue.Enqueue(new TreeNode<T> { Value = root });
+
+        while (Queue.Count > 0)
+        {
+            var next = Queue.Dequeue();
+            yield return next;
+
+
+            var newChildHeight = next.Height + 1;
+
+
+            var count = Count;
+            var nodes = ItemProvider(next.Value)
+               .Select(
+                    (x, i) => new TreeNode<T>
+                    {
+                        Value = x,
+                        Height = newChildHeight,
+                        Index = i,
+                        Parent = next,
+                        Count = count + i + 1
+                    }
+                );
+
+            foreach (var node in nodes)
+            {
+                Count++;
+                if (ShouldBreak(node)) yield break;
+                if (!Filter(node)) continue;
+
+                node.Parent?.Children.Add(node);
+                Queue.Enqueue(node);
+            }
+        }
+    }
 }
