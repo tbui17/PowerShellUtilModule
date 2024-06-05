@@ -13,7 +13,7 @@ public static class FsUtil
         EnumerationOptions? options = null
     )
     {
-        options ??= ChildGetterFactory.DefaultEnumerationOptions;
+        options ??= DirectoryUtil.DefaultEnumerationOptions;
         List<FileSystemInfo> results = [];
 
 
@@ -43,4 +43,6 @@ public static class FsUtil
             _ => []
         };
     }
+    
+    
 }

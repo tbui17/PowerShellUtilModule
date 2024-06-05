@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d34cbfe3-307c-4ff6-bf3e-624ae5bb9add" name="Changes" comment="complete">
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/indexLayout.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1.sln" beforeDir="false" afterPath="$PROJECT_DIR$/PowershellUtilsSolution.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Attributes/Clamp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Attributes/Clamp.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/Bfs/BfsCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Bfs/BfsCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/Bfs/BfsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Bfs/BfsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/Fuzzy/SelectFuzzyCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Fuzzy/SelectFuzzyCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/BfsExecutor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/BfsExecutor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/BfsImplFs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/BfsImplFs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/FileFilterCreator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/FileFilterCreator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/Params.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/Params.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/PrintNodeImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintNodeImpl.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/PrintTreeCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintTreeCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/PrintTreeExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintTreeExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintTreeService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/WidthFilterCreator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/WidthFilterCreator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/WithinHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/WithinHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/Sample/TestSampleCmdletCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Sample/TestSampleCmdletCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/GlobalUsings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/GlobalUsings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Lib/ChildGetterFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Lib/DirectoryUtil.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Lib/Extensions/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Lib/Extensions/Extensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Lib/Extensions/Traversal.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Lib/Extensions/Traversal.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Lib/FsUtil.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Lib/FsUtil.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Lib/PsUtil.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Lib/PsUtil.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Lib/Traverser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Lib/Traverser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Models/AbstractNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Models/AbstractNode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Models/FuzzyResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Models/FuzzyResult.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Models/PrintNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Models/PrintNode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Models/TreeNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Models/TreeNode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/PowerShellStandardModule1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/PowerShellUtils.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestProject1/BfsTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/BfsTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestProject1/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/Extensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestProject1/PrintTree/PrintTreeTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/PrintTree/PrintTreeTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestProject1/PrintTree/TestFiles.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/PrintTree/TestFiles.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestProject1/ReflectionTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/ReflectionTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestProject1/TestProject1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/TestProject1.csproj" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/087e15321bb712ef6fe8b0ba6f8bd12facf92629/src/libraries/System.Private.CoreLib/src/System/IO/Directory.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/087e15321bb712ef6fe8b0ba6f8bd12facf92629/src/libraries/System.Private.CoreLib/src/System/IO/Enumeration/FileSystemEnumerable.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/087e15321bb712ef6fe8b0ba6f8bd12facf92629/src/libraries/System.Private.CoreLib/src/System/IO/Enumeration/FileSystemEnumerableFactory.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/087e15321bb712ef6fe8b0ba6f8bd12facf92629/src/libraries/System.Private.CoreLib/src/System/IO/Enumeration/FileSystemName.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/087e15321bb712ef6fe8b0ba6f8bd12facf92629/src/libraries/System.Private.CoreLib/src/System/IO/EnumerationOptions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/3b8b000a0e115700b18265d8ec8c6307056dc94d/src/libraries/System.Collections.Immutable/src/System/Collections/Immutable/ImmutableList.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/3b8b000a0e115700b18265d8ec8c6307056dc94d/src/libraries/System.Collections.Immutable/src/System/Collections/Immutable/ImmutableList_1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/3b8b000a0e115700b18265d8ec8c6307056dc94d/src/libraries/System.Private.CoreLib/src/System/IO/DirectoryInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/3b8b000a0e115700b18265d8ec8c6307056dc94d/src/libraries/System.Private.CoreLib/src/System/IO/FileSystemInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/3b8b000a0e115700b18265d8ec8c6307056dc94d/src/libraries/System.Private.CoreLib/src/System/Range.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/06aed6c3ac50471789584e40142d90ac70000/25/300b9e09/WildcardPattern.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/06aed6c3ac50471789584e40142d90ac70000/c1/873b1ff9/InternalCommand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/06aed6c3ac50471789584e40142d90ac70000/f5/96daac9d/Cmdlet.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/93ad1732e6bb4cc0a5b6f0de2317699584908/47/8beba5a2/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc26fff0972243259d3923e1643ef5b65ae00/11/660dd14c/ILifetimeScope.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc26fff0972243259d3923e1643ef5b65ae00/8a/b993bbc2/ResolutionExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d3a451850004403293b134b9fe18ce3fc8f920/81/2bfd29ba/IEnumerable`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3e6b53ae822e76777e34881525964f17a4451fcabdbdd658656321309e81/RegistrationExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9f81973119ead34e02615c76e9bd7a496d935de573d2a36d7ed817a37985a5f/ILifetimeScope.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b6e1e72416231da56fba3e586538d9aecc52be6ed01fa9dc6a45d577ba2b42/Fuzz.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/BfsCommand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/BfsRunner.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/ChildGetterFactory.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/BfsExecutor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/FilterCreator.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/Params.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/Params.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/Params.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeCommand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeCommand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeCommand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeImpl.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Extensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Extensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Lib/Extensions/Extensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Lib/Extensions/Extensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Lib/Extensions/Extensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Lib/Extensions/Extensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Lib/Extensions/Traversal.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Lib/Extensions/Traversal.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Lib/PsUtil.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Models/AbstractNode.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Models/AbstractNode.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Models/PrintNode.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/PrintTreeExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/PrintTreeExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Structs/PrintNode.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Structs/PrintNode.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Structs/PrintNode.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/FuzzyTests.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/PrintTree/ContainerInit.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/PrintTreeNodeCreation.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/PrintTreeNodeCreation.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/PrintTreeTest.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2gj1F5WQFx6Ik4H2l8bwSCSVhnx" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "15df96d2-0790-4c41-8c01-c0d76026c50a.executor": "Debug",
+    "45f7943d-e52b-4e9e-b083-9ccf9010f33c.executor": "Debug",
+    "55af06c5-12ed-4d62-b3ab-cbafb7e2cf61.executor": "Run",
+    "78b60576-d47d-48a1-abce-00168a1854b6.executor": "Debug",
+    "Publish to folder.Publish PowerShellStandardModule1 to folder.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "aefa03ea-6630-45d8-837f-eb8741702d32.executor": "Debug",
+    "d9daccee-96a3-4a9c-bae9-070864b66938.executor": "Run",
+    "eb7ee465-1aef-4dc5-8a01-44692aa3c5ee.executor": "Debug",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "advanced.settings",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\PCS\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
+      "C:\\Users\\PCS\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
+      "C:\\Users\\PCS\\AppData\\Local\\Symbols\\src"
+    ]
+  }
+}]]></component>
+  <component name="RunManager" selected="Publish to folder.Publish PowerShellStandardModule1 to folder">
+    <configuration name="Publish PowerShellStandardModule1 to folder" type="DotNetFolderPublish" factoryName="Publish to folder">
+      <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="win-x64" target_folder="$PROJECT_DIR$/PowerShellStandardModule1/bin/Release/net8.0/win-x64/publish" target_framework="net8.0" uuid_high="2919431367781992381" uuid_low="-4778637796803289091" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Publish to folder.Publish PowerShellStandardModule1 to folder" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d34cbfe3-307c-4ff6-bf3e-624ae5bb9add" name="Changes" comment="" />
+      <created>1716196066776</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1716196066776</updated>
+      <workItem from="1716196067935" duration="52696000" />
+      <workItem from="1716288423567" duration="20407000" />
+      <workItem from="1716397811405" duration="2682000" />
+      <workItem from="1716401956395" duration="1510000" />
+      <workItem from="1717003758332" duration="371000" />
+      <workItem from="1717004644797" duration="675000" />
+      <workItem from="1717006281406" duration="2648000" />
+      <workItem from="1717014677390" duration="37539000" />
+      <workItem from="1717058070570" duration="327078000" />
+    </task>
+    <task id="LOCAL-00001" summary="Implemented bfs file search;&#10;Fuzzy requires nuget installation, powershell has issues resolving circular dependencies, but this is separate issue from the repository.">
+      <option name="closed" value="true" />
+      <created>1716280626652</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1716280626653</updated>
+    </task>
+    <task id="LOCAL-00002" summary="update unit test">
+      <option name="closed" value="true" />
+      <created>1716283015062</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1716283015062</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Add helper extension methods">
+      <option name="closed" value="true" />
+      <created>1716330992539</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1716330992539</updated>
+    </task>
+    <task id="LOCAL-00004" summary="- Add limit and timeout&#10;- Error handling during BFS, allows continued search on fail&#10;-Update unit tests">
+      <option name="closed" value="true" />
+      <created>1716331088558</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1716331088558</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Update git tracking">
+      <option name="closed" value="true" />
+      <created>1716331134378</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1716331134378</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Fix display issues in powershell console - serialize to PSObject">
+      <option name="closed" value="true" />
+      <created>1716400495916</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1716400495916</updated>
+    </task>
+    <task id="LOCAL-00007" summary="fix directory bug">
+      <option name="closed" value="true" />
+      <created>1717005277823</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1717005277823</updated>
+    </task>
+    <task id="LOCAL-00008" summary="c">
+      <option name="closed" value="true" />
+      <created>1717087573476</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1717087573476</updated>
+    </task>
+    <task id="LOCAL-00009" summary="c1">
+      <option name="closed" value="true" />
+      <created>1717097225414</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1717097225414</updated>
+    </task>
+    <task id="LOCAL-00010" summary="strjoin">
+      <option name="closed" value="true" />
+      <created>1717100430750</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1717100430750</updated>
+    </task>
+    <task id="LOCAL-00011" summary="commit">
+      <option name="closed" value="true" />
+      <created>1717110096256</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1717110096256</updated>
+    </task>
+    <task id="LOCAL-00012" summary="c">
+      <option name="closed" value="true" />
+      <created>1717134853394</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1717134853394</updated>
+    </task>
+    <task id="LOCAL-00013" summary="c1">
+      <option name="closed" value="true" />
+      <created>1717274604800</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1717274604800</updated>
+    </task>
+    <task id="LOCAL-00014" summary="c">
+      <option name="closed" value="true" />
+      <created>1717275279087</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1717275279087</updated>
+    </task>
+    <task id="LOCAL-00015" summary="stable">
+      <option name="closed" value="true" />
+      <created>1717301875029</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1717301875029</updated>
+    </task>
+    <task id="LOCAL-00016" summary="c">
+      <option name="closed" value="true" />
+      <created>1717311466325</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1717311466325</updated>
+    </task>
+    <task id="LOCAL-00017" summary="c">
+      <option name="closed" value="true" />
+      <created>1717316593987</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1717316593987</updated>
+    </task>
+    <task id="LOCAL-00018" summary="c1">
+      <option name="closed" value="true" />
+      <created>1717321810303</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1717321810303</updated>
+    </task>
+    <task id="LOCAL-00019" summary="c">
+      <option name="closed" value="true" />
+      <created>1717345631592</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1717345631592</updated>
+    </task>
+    <task id="LOCAL-00020" summary="change to list impl">
+      <option name="closed" value="true" />
+      <created>1717348042045</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1717348042045</updated>
+    </task>
+    <task id="LOCAL-00021" summary="fix order by">
+      <option name="closed" value="true" />
+      <created>1717357006708</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1717357006708</updated>
+    </task>
+    <task id="LOCAL-00022" summary="global usings">
+      <option name="closed" value="true" />
+      <created>1717369987724</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1717369987724</updated>
+    </task>
+    <task id="LOCAL-00023" summary="cx">
+      <option name="closed" value="true" />
+      <created>1717384307816</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1717384307816</updated>
+    </task>
+    <task id="LOCAL-00024" summary="c1">
+      <option name="closed" value="true" />
+      <created>1717384314762</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1717384314762</updated>
+    </task>
+    <task id="LOCAL-00025" summary="c">
+      <option name="closed" value="true" />
+      <created>1717387058864</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1717387058864</updated>
+    </task>
+    <task id="LOCAL-00026" summary="a">
+      <option name="closed" value="true" />
+      <created>1717389655315</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1717389655315</updated>
+    </task>
+    <task id="LOCAL-00027" summary="c1">
+      <option name="closed" value="true" />
+      <created>1717396478296</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1717396478296</updated>
+    </task>
+    <task id="LOCAL-00028" summary="add within">
+      <option name="closed" value="true" />
+      <created>1717399150541</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1717399150541</updated>
+    </task>
+    <task id="LOCAL-00029" summary="remove parameterset">
+      <option name="closed" value="true" />
+      <created>1717399256204</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1717399256204</updated>
+    </task>
+    <task id="LOCAL-00030" summary="cleanup">
+      <option name="closed" value="true" />
+      <created>1717402309601</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1717402309601</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Directory only">
+      <option name="closed" value="true" />
+      <created>1717436222493</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1717436222493</updated>
+    </task>
+    <task id="LOCAL-00032" summary="c">
+      <option name="closed" value="true" />
+      <created>1717482445532</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1717482445532</updated>
+    </task>
+    <task id="LOCAL-00033" summary="del">
+      <option name="closed" value="true" />
+      <created>1717482463587</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1717482463587</updated>
+    </task>
+    <task id="LOCAL-00034" summary="refactor1">
+      <option name="closed" value="true" />
+      <created>1717495332737</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1717495332737</updated>
+    </task>
+    <task id="LOCAL-00035" summary="c">
+      <option name="closed" value="true" />
+      <created>1717534390226</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1717534390226</updated>
+    </task>
+    <task id="LOCAL-00036" summary="c6">
+      <option name="closed" value="true" />
+      <created>1717547849514</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1717547849514</updated>
+    </task>
+    <task id="LOCAL-00037" summary="complete">
+      <option name="closed" value="true" />
+      <created>1717550649899</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1717550649899</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Implemented bfs file search;&#10;Fuzzy requires nuget installation, powershell has issues resolving circular dependencies, but this is separate issue from the repository." />
+    <MESSAGE value="update unit test" />
+    <MESSAGE value="Add helper extension methods" />
+    <MESSAGE value="- Add limit and timeout&#10;- Error handling during BFS, allows continued search on fail&#10;-Update unit tests" />
+    <MESSAGE value="Update git tracking" />
+    <MESSAGE value="Fix display issues in powershell console - serialize to PSObject" />
+    <MESSAGE value="fix directory bug" />
+    <MESSAGE value="strjoin" />
+    <MESSAGE value="commit" />
+    <MESSAGE value="stable" />
+    <MESSAGE value="change to list impl" />
+    <MESSAGE value="fix order by" />
+    <MESSAGE value="global usings" />
+    <MESSAGE value="cx" />
+    <MESSAGE value="a" />
+    <MESSAGE value="c1" />
+    <MESSAGE value="add within" />
+    <MESSAGE value="remove parameterset" />
+    <MESSAGE value="cleanup" />
+    <MESSAGE value="Directory only" />
+    <MESSAGE value="del" />
+    <MESSAGE value="refactor1" />
+    <MESSAGE value="c" />
+    <MESSAGE value="c6" />
+    <MESSAGE value="complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="complete" />
+  </component>
+  <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="Frame#TestProject1.Tests.TestBfs" memberName="this" />
+        <PinnedItemInfo parentTag="Frame#TestProject1.Tests.TestBfs" memberName="res" />
+        <PinnedItemInfo parentTag="Frame#TestProject1.PrintTree.FixtureData.get_FixtureParams" memberName="data" />
+        <PinnedItemInfo parentTag="Frame#TestProject1.Tests+DirectoriesTests.TestFn" memberName="exceptions" />
+        <PinnedItemInfo parentTag="Frame#TestProject1.PrintTree.PrintFilesTest.TestFiles" memberName="scope" />
+        <PinnedItemInfo parentTag="Frame#TestProject1.Tests.TestGlobSequenceHasResult" memberName="s" />
+        <PinnedItemInfo parentTag="Type#System.Delegate" memberName="Method" />
+        <PinnedItemInfo parentTag="Frame#TestProject1.PrintTreeNodeCreation.BaseTest" memberName="parent" />
+        <PinnedItemInfo parentTag="Frame#TestProject1.PrintTreeTest+&lt;&gt;c.&lt;TestTreeRunner&gt;b__7_6" memberName="group" />
+      </pinned-members>
+    </pin-to-top-manager>
+    <watches-manager>
+      <configuration name="RiderUnitTests">
+        <watch expression="res" />
+        <watch expression="new System.Collections.Generic.ICollectionDebugView&lt;Newtonsoft.Json.Linq.JToken&gt;($result).Items[1]" />
+        <watch expression="sb" />
+        <watch expression="new System.Collections.Generic.ICollectionDebugView&lt;PowerShellStandardModule1.Models.TreeNode&lt;System.IO.DirectoryInfo&gt;&gt;(f).Items[2]" />
+        <watch expression="new System.Linq.SystemCore_EnumerableDebugView&lt;NUnit.Framework.TestFixtureData&gt;(data).Items[0]" />
+        <watch expression="this.&lt;node&gt;5__4.Value" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

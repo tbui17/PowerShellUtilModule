@@ -32,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PowerShellStandardModule1\PowerShellStandardModule1.csproj" />
+      <ProjectReference Include="..\PowerShellUtils\PowerShellUtils.csproj" />
     </ItemGroup>
 
     <ItemGroup>

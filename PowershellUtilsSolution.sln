@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellStandardModule1", "PowerShellStandardModule1\PowerShellStandardModule1.csproj", "{2883E75C-76C7-47BD-BDAE-DE3DFB48DFFD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellUtils", "PowerShellUtils\PowerShellUtils.csproj", "{2883E75C-76C7-47BD-BDAE-DE3DFB48DFFD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{18305C93-550E-448E-A8F9-6DB936D8F72F}"
 EndProject

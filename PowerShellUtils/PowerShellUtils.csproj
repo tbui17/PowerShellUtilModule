@@ -2,13 +2,13 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <AssemblyName>PowerShellStandardModule1</AssemblyName>
         <Nullable>enable</Nullable>
+        <PackageId>PowerShellUtils</PackageId>
+        <RootNamespace>PowerShellStandardModule1</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="FuzzySharp" Version="2.0.2" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="PowerShellStandard.Library" Version="5.1.0-preview-06">
             <PrivateAssets>All</PrivateAssets>
         </PackageReference>

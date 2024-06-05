@@ -25,8 +25,8 @@ public class BfsController(
     public readonly int Limit = Math.Max(0, limit);
 
     private readonly DirectoryChildGetter _childGetter = directoryChildGetter ??
-                                                         ChildGetterFactory.CreateDirectoryChildGetter(
-                                                             ChildGetterFactory.DefaultEnumerationOptions
+                                                         DirectoryUtil.CreateDirectoryChildGetter(
+                                                             DirectoryUtil.DefaultEnumerationOptions
                                                          );
 
     private readonly DirectoryInfo _startingDirectory = new(startingDirectory);

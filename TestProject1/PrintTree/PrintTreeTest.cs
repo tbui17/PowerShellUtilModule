@@ -164,8 +164,7 @@ public partial class PrintTreeTest : ContainerInit
             nodeWidth: 500,
             rootNodeWidth: 500
         );
-
-        instance.Init();
+        
         var res = instance.CreateTreeNodes();
         res
            .Count.Should()

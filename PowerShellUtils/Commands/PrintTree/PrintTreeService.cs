@@ -43,22 +43,25 @@ public partial class PrintTreeService
     }
 
 
-    public DirectoryInfo StartingDirectory { get;  }
-    public StringValueSelector StringValueSelector { get;  }
-    public int Height { get;  }
-    public int Width { get;  }
-    public int NodeWidth { get;  }
-    public int Limit { get;  }
-    public CancellationToken Token { get;  }
-    public int RootNodeWidth { get;  }
-    public string OrderBy { get;  }
-    public bool Descending { get;  }
-    public Func<FileSystemInfo, bool> Filter { get;  }
-    public bool Within { get;  }
-    public bool File { get;  }
+    public DirectoryInfo StartingDirectory { get; }
+    public StringValueSelector StringValueSelector { get; }
+    public int Height { get; }
+    public int Width { get; }
+    public int NodeWidth { get; }
+    public int Limit { get; }
+    public CancellationToken Token { get; }
+    public int RootNodeWidth { get; }
+    public string OrderBy { get; }
+    public bool Descending { get; }
+    public Func<FileSystemInfo, bool> Filter { get; }
+    public bool Within { get; }
+    public bool File { get; }
 
 
-    private Func<FileSystemInfo, IEnumerable<FileSystemInfo>> ChildProvider { get;  } = FsUtil.GetChildren;
+    private Func<FileSystemInfo, IEnumerable<FileSystemInfo>> ChildProvider =>
+        File
+            ? FsUtil.GetChildren
+            : DirectoryUtil.GetChildren;
 
     private PrintNodeImpl? PrintNodeImpl { get; set; }
     private BfsImplFs? BfsImpl { get; set; }
@@ -67,7 +70,7 @@ public partial class PrintTreeService
     private WidthFilterCreator? FilterCreator { get; set; }
 
 
-    public void Init()
+    private void Init()
     {
         WithinHandler = new WithinHandler(
             within: Within, filter: Filter,
@@ -90,8 +93,10 @@ public partial class PrintTreeService
             limit: Limit
         );
     }
+    
+    
 
-    public Func<FileSystemInfoTreeNode, bool> CreateShouldContinueFilter(WidthFilterCreator widthFilterCreator)
+    private Func<FileSystemInfoTreeNode, bool> CreateShouldContinueFilter(WidthFilterCreator widthFilterCreator)
     {
         Func<FileSystemInfoTreeNode, bool>[] nodeFilters =
             [CreateAdaptedFilter(), widthFilterCreator.CreateWidthIsWithinLimitsFilter()];
@@ -109,11 +114,7 @@ public partial class PrintTreeService
                 filters.Add(Filter);
             }
 
-            if (!File)
-            {
-                filters.Add(x => x is DirectoryInfo);
-            }
-
+          
 
             Func<FileSystemInfo, bool> allFilter = filters.AggregateAll();
 

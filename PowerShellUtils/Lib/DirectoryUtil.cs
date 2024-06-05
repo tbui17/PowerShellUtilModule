@@ -5,7 +5,7 @@ using System.IO;
 
 namespace PowerShellStandardModule1.Lib;
 
-public static class ChildGetterFactory
+public static class DirectoryUtil
 {
     public static readonly EnumerationOptions DefaultEnumerationOptions = new()
     {
@@ -23,12 +23,12 @@ public static class ChildGetterFactory
         string pattern = "*"
     ) =>
         (directory) =>
-            GetDirectoryChildren(() => directory.EnumerateDirectories(pattern, enumerationOptions));
+            GetChildren(() => directory.EnumerateDirectories(pattern, enumerationOptions));
 
     public static Func<DirectoryInfo, IEnumerable<DirectoryInfo>> CreateDirectoryChildGetter(string pattern = "*") =>
         CreateDirectoryChildGetter(DefaultEnumerationOptions, pattern);
 
-    public static List<DirectoryInfo> GetDirectoryChildren(Func<IEnumerable<DirectoryInfo>> directoryGetter)
+    public static List<DirectoryInfo> GetChildren(Func<IEnumerable<DirectoryInfo>> directoryGetter)
     {
         List<DirectoryInfo> results = [];
 
@@ -50,4 +50,34 @@ public static class ChildGetterFactory
 
         return results;
     }
+
+    public static List<DirectoryInfo> GetChildren(DirectoryInfo directory)
+    {
+        List<DirectoryInfo> results = [];
+
+
+        try
+        {
+            var source = directory.EnumerateDirectories("*", DefaultEnumerationOptions);
+
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var item in source)
+            {
+                results.Add(item);
+            }
+        }
+        catch (Exception e) when (e is UnauthorizedAccessException or DirectoryNotFoundException)
+        {
+            Debug.WriteLine(e);
+        }
+
+        return results;
+    }
+
+    public static IEnumerable<FileSystemInfo> GetChildren(FileSystemInfo fsItem) =>
+        fsItem switch
+        {
+            DirectoryInfo dir => GetChildren(dir),
+            _ => []
+        };
 }

@@ -4,6 +4,7 @@ using Autofac;
 using Autofac.Builder;
 using AutoMapper;
 using Newtonsoft.Json;
+using PowerShellStandardModule1.Models;
 
 namespace TestProject1;
 
@@ -77,4 +78,47 @@ public class DirectoryInfoConverter : JsonConverter<DirectoryInfo>
         var path = (string)reader.Value!;
         return new DirectoryInfo(path);
     }
+}
+
+
+
+public static class TreeNode
+{
+    public static TreeNode<TValue> ToSerializable<T, TValue>(this TreeNode<T> node, Func<T, TValue> selector) =>
+        new()
+        {
+            Value = selector(node.Value),
+            Height = node.Height,
+            Index = node.Index,
+            Children = node
+               .Children.Select(x => x.ToSerializable(selector))
+               .ToList()
+        };
+
+    public static TreeNode<T> ToSerializable<T>(this TreeNode<T> node)
+    {
+        var clone = node.Clone();
+        clone.Parent = null;
+        clone.Children = node
+           .Children.Select(x => x.ToSerializable())
+           .ToList();
+        return clone;
+    }
+
+
+    public static TreeNode<T> RestoreParents<T>(this TreeNode<T> node)
+    {
+        foreach (var child in node.Children)
+        {
+            child.Parent = node;
+            child.RestoreParents();
+        }
+
+        return node;
+    }
+
+    public static TreeNode<T>? JsonParse<T>(string json) =>
+        JsonConvert
+           .DeserializeObject<TreeNode<T>>(json)
+          ?.RestoreParents();
 }

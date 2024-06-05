@@ -51,8 +51,8 @@ public class Tests
         Func<IEnumerable<DirectoryInfo>> shouldCatch = () => throw new DirectoryNotFoundException("Should catch");
         Func<IEnumerable<DirectoryInfo>> shouldNotCatch = () => throw new ApplicationException("Should not catch");
 
-        var shouldCatchCase = void () => ChildGetterFactory.GetDirectoryChildren(shouldCatch);
-        var shouldNotCatchCase = void () => ChildGetterFactory.GetDirectoryChildren(shouldNotCatch);
+        var shouldCatchCase = void () => DirectoryUtil.GetChildren(shouldCatch);
+        var shouldNotCatchCase = void () => DirectoryUtil.GetChildren(shouldNotCatch);
 
         shouldCatchCase.Should().NotThrow();
         shouldNotCatchCase.Should().Throw<ApplicationException>();

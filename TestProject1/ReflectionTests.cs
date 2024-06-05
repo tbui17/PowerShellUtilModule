@@ -75,7 +75,7 @@ public class ReflectionTests
 }
 
 [AutoGenerateBuilder]
-internal class TestClass
+public partial class TestClass
 {
     public int Height { get; set; }
     public int NodeWidth { get; set; }
