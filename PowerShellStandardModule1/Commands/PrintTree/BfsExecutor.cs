@@ -7,7 +7,7 @@ namespace PowerShellStandardModule1.Commands.PrintTree;
 
 public class BfsExecutor<T>
 {
-    public Func<TreeNode<T>, bool> Filter { get; set; } = _ => true;
+    public Func<TreeNode<T>, bool> ShouldPass { get; set; } = _ => true;
     public Func<TreeNode<T>, bool> ShouldBreak { get; set; } = _ => true;
     public Func<T, IEnumerable<T>> ChildProvider { get; set; } = _ => [];
     private int Count { get; set; }
@@ -41,11 +41,14 @@ public class BfsExecutor<T>
                     }
                 );
 
+      
+
             foreach (var node in nodes)
             {
+                
                 Count++;
                 if (ShouldBreak(node)) yield break;
-                if (!Filter(node)) continue;
+                if (!ShouldPass(node)) continue;
 
                 node.Parent?.Children.Add(node);
                 Queue.Enqueue(node);

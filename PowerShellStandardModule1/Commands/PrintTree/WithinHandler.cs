@@ -49,7 +49,7 @@ public class WithinHandler(bool within, Func<FileSystemInfo, bool> filter, Cance
     public Func<FileSystemInfo, bool> GetBfsFilter()
     {
         return within
-            ? filter
-            : _ => true;
+            ? _ => true
+            : filter;
     }
 }

@@ -19,7 +19,7 @@ public class BfsImplFs(
         
         return new BfsExecutor<FileSystemInfo>
         {
-            Filter = shouldContinueFilter,
+            ShouldPass = shouldContinueFilter,
             ChildProvider = childProvider,
             ShouldBreak = ShouldBreak
         }.Invoke(startingDirectory);

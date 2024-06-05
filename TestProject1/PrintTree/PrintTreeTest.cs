@@ -1,8 +1,10 @@
-﻿using Autofac;
+﻿using System.Reflection;
+using Autofac;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using PowerShellStandardModule1.Commands.PrintTree;
 using PowerShellStandardModule1.Lib.Extensions;
+using PowerShellStandardModule1.Models;
 using TestNode = PowerShellStandardModule1.Models.TreeNode<string>;
 
 namespace TestProject1.PrintTree;
@@ -137,7 +139,7 @@ public partial class PrintTreeTest : ContainerInit
 
         // given flat list of nodes, from a tree, when they are grouped by their parent, there will be partitions that will scope the tests
         var res = instance.CreatePrintNodes();
-        
+
 
         using var scope = new AssertionScope();
         res
@@ -158,7 +160,6 @@ public partial class PrintTreeTest : ContainerInit
         {
             StartingDirectory = Directory,
             Descending = true,
-            OrderBy = "creationtime",
             Height = 500,
             Limit = 500,
             Width = 500,
@@ -171,6 +172,106 @@ public partial class PrintTreeTest : ContainerInit
            .Count.Should()
            .BeGreaterThan(5);
     }
+
+    [Test]
+    public void TestFilters()
+    {
+        using var scope = new AssertionScope();
+        Func<FileSystemInfo, bool> filter = x => x.Name.Contains("print", StringComparison.OrdinalIgnoreCase);
+        var withinHandler = new WithinHandler(within: true, filter: filter, cancellationToken: CancellationToken.None);
+        var widthFilterCreator = new WidthFilterCreator(nodeWidth: 15, rootNodeWidth: 25);
+        var fileFilterCreator = new FileFilterCreator(false);
+
+        fileFilterCreator
+           .CreateFilter()
+           .Invoke(new FileInfo("a"))
+           .Should()
+           .BeFalse();
+
+        fileFilterCreator
+           .CreateFilter()
+           .Invoke(new DirectoryInfo("a"))
+           .Should()
+           .BeTrue();
+
+
+        FileSystemInfo dir = new DirectoryInfo("name12345");
+
+        withinHandler
+           .GetBfsFilter()(dir)
+           .Should()
+           .BeTrue();
+        
+        var widthFilter = widthFilterCreator
+           .CreateWidthIsWithinLimitsFilter();
+
+        var instance1 = new TreeNode<FileSystemInfo>
+        {
+            Value = new DirectoryInfo("a"),
+            Index = 500
+        };
+        
+
+        widthFilter(instance1)
+           .Should()
+           .BeFalse();
+        
+        var instance2 = new TreeNode<FileSystemInfo>
+        {
+            Value = new DirectoryInfo("a"),
+            Index = 18,
+            Height = 10
+        };
+
+        widthFilter(instance2)
+           .Should()
+           .BeFalse();
+        
+        var widthFilterCreator2 = new WidthFilterCreator(nodeWidth: 50, rootNodeWidth: 15);
+        
+        var instance3 = new TreeNode<FileSystemInfo>
+        {
+            Value = new DirectoryInfo("a"),
+            Index = 12,
+            Height = 1
+        };
+
+        widthFilterCreator2
+           .CreateWidthIsWithinLimitsFilter()(instance3).Should().BeTrue();
+        
+        widthFilterCreator2
+           .CreateWidthIsWithinLimitsFilter()(instance2).Should().BeTrue();
+    }
+
+  
+
+    [Test]
+    public void TestWithin()
+    {
+        var instance = new PrintTreeService
+        {
+            StartingDirectory = Directory,
+            Descending = true,
+            Height = 500,
+            Limit = 500,
+            Width = 500,
+            NodeWidth = 500,
+            RootNodeWidth = 500,
+            Within = true,
+            Filter = x => x.Name.Contains("print", StringComparison.OrdinalIgnoreCase)
+        };
+        instance.Init();
+        var res = instance.CreateTreeNodes();
+        using var scope = new AssertionScope();
+        res
+           .Should()
+           .Contain(x => x.Value.Name.Contains("PrintTree", StringComparison.OrdinalIgnoreCase));
+        res
+           .Count.Should()
+           .BeGreaterThan(2);
+    }
+
+   
 }
 
 public partial class PrintTreeTest

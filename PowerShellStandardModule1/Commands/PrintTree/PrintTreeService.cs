@@ -10,7 +10,32 @@ namespace PowerShellStandardModule1.Commands.PrintTree;
 
 public partial class PrintTreeService
 {
-    public required DirectoryInfo StartingDirectory { get; init; }
+    public PrintTreeService(
+        DirectoryInfo startingDirectory,
+        int height = 3,
+        int width = int.MaxValue,
+        int nodeWidth = int.MaxValue,
+        int limit = int.MaxValue,
+        int rootNodeWidth = -1,
+        string orderBy = "Name",
+        bool descending = false,
+        bool within = false,
+        bool file = false
+    )
+    {
+        StartingDirectory = startingDirectory;
+        Height = height;
+        Width = width;
+        NodeWidth = nodeWidth;
+        Limit = limit;
+        RootNodeWidth = rootNodeWidth;
+        OrderBy = orderBy;
+        Descending = descending;
+        Within = within;
+        File = file;
+    }
+
+    public  DirectoryInfo StartingDirectory { get; init; }
     public StringValueSelector StringValueSelector { get; init; } = DefaultStringValueSelector;
     public int Height { get; init; } = 3;
     public int Width { get; init; } = int.MaxValue;
@@ -27,7 +52,7 @@ public partial class PrintTreeService
 
     public bool Within { get; init; }
 
-    public bool File { get; set; }
+    public bool File { get; init; }
 
 
     private Func<FileSystemInfo, IEnumerable<FileSystemInfo>> ChildProvider { get; init; } = FsUtil.GetChildren;
@@ -38,7 +63,6 @@ public partial class PrintTreeService
     private WithinHandler? WithinHandler { get; set; }
     private WidthFilterCreator? FilterCreator { get; set; }
 
-    private FileFilterCreator? FileFilterCreator { get; set; }
 
     public void Init()
     {
@@ -47,12 +71,7 @@ public partial class PrintTreeService
             cancellationToken: Token
         );
 
-        FilterCreator = new WidthFilterCreator(
-            nodeWidth: NodeWidth, rootNodeWidth: RootNodeWidth,
-            width: RootNodeWidth
-        );
-
-        FileFilterCreator = new FileFilterCreator(shouldFilterFiles: File);
+        FilterCreator = new WidthFilterCreator(nodeWidth: NodeWidth, rootNodeWidth: RootNodeWidth);
 
         PrintNodeImpl = new PrintNodeImpl(
             orderer: CreateOrderer(),
@@ -60,22 +79,16 @@ public partial class PrintTreeService
             stringValueSelector: StringValueSelector,
             token: Token
         );
-        
+
         BfsImpl = new BfsImplFs(
-            shouldContinueFilter: CreateShouldContinueFilter(
-                withinHandler: WithinHandler, widthFilterCreator: FilterCreator, fileFilterCreator: FileFilterCreator
-            ),
+            shouldContinueFilter: CreateShouldContinueFilter(widthFilterCreator: FilterCreator),
             childProvider: ChildProvider,
             startingDirectory: StartingDirectory, cancellationToken: Token, height: Height,
             limit: Limit
         );
     }
 
-    private static Func<FileSystemInfoTreeNode, bool> CreateShouldContinueFilter(
-        WithinHandler withinHandler,
-        WidthFilterCreator widthFilterCreator,
-        FileFilterCreator fileFilterCreator
-    )
+    public Func<FileSystemInfoTreeNode, bool> CreateShouldContinueFilter(WidthFilterCreator widthFilterCreator)
     {
         Func<FileSystemInfoTreeNode, bool>[] nodeFilters =
             [CreateAdaptedFilter(), widthFilterCreator.CreateWidthIsWithinLimitsFilter()];
@@ -86,7 +99,18 @@ public partial class PrintTreeService
 
         Func<FileSystemInfoTreeNode, bool> CreateAdaptedFilter()
         {
-            List<Func<FileSystemInfo, bool>> filters = [fileFilterCreator.CreateFilter(), withinHandler.GetBfsFilter()];
+            List<Func<FileSystemInfo, bool>> filters = [];
+            if (!Within)
+            {
+                // if within is not enabled, apply filter to all nodes. otherwise, it will be used in child removal portion.
+                filters.Add(Filter);
+            }
+
+            if (!File)
+            {
+                filters.Add(x => x is DirectoryInfo);
+            }
+
 
             Func<FileSystemInfo, bool> allFilter = filters.AggregateAll();
 
@@ -144,7 +168,7 @@ public partial class PrintTreeService
         var parameters = new[] { RootNodeWidth, NodeWidth, Width };
 
         var num = RootNodeWidth <= -1
-            ? Width
+            ? Math.Max(NodeWidth, Width)
             : parameters.Max();
 
         return Math.Max(1, num);

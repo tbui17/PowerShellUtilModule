@@ -52,9 +52,15 @@ namespace TestProject1.PrintTree;
      6, 3, 9,
      69783, 7
  ),
-    TestFixture(10940,14592,0,-6,96171)
+ TestFixture(
+     10940, 14592, 0,
+     -6, 96171
+ ),
+ TestFixture(
+     21570, 52612, -3,
+     82888, -9
+ )
 ]
-
 [TestFixtureSource(typeof(FixtureData), nameof(FixtureData.FixtureParams))]
 public class PrintTreeNodeIntegration(
     int height = 1000,
@@ -68,25 +74,20 @@ public class PrintTreeNodeIntegration(
     protected List<PrintNode<FileSystemInfo>> PrintNodes { get; set; } = null!;
 
     private static int AdjustedHeight(int height) => height + 1;
-    
-
-
 
 
     protected virtual void InitInstance()
     {
-
-        Instance = new PrintTreeService
-        {
-            StartingDirectory = GetSolutionDirectory(),
-            Height = height,
-            NodeWidth = nodeWidth,
-            Width = width,
-            Limit = take,
-            RootNodeWidth = rootNodeWidth,
-            StringValueSelector = x => x.Value.Name
-        };
-        Instance.Init();
+       
+        
+        Instance = new PrintTreeService(
+            startingDirectory: GetSolutionDirectory(),
+            height: height,
+            nodeWidth: nodeWidth,
+            width: width,
+            limit: take,
+            rootNodeWidth: rootNodeWidth
+        );
     }
 
 
@@ -143,6 +144,7 @@ public class PrintTreeNodeIntegration(
         {
             return;
         }
+
 
         res
            .Should()
@@ -235,7 +237,7 @@ public class PrintTreeNodeIntegration(
         var lineCount = str
            .Split("\n")
            .Length;
-        
+
         str.Log();
 
 

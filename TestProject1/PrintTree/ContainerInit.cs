@@ -22,6 +22,12 @@ public class ContainerInit
         b
            .RegisterType<PrintTreeService>()
            .WithProperty(x => x.StartingDirectory, directory)
+           
+           .PropertiesAutowired();
+        
+        b
+           .RegisterType<PrintTreeService>()
+           .WithProperty(x => x.StartingDirectory, directory)
            .OnActivated(x => x.Instance.Init())
            .PropertiesAutowired();
 

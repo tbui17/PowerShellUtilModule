@@ -1,5 +1,7 @@
 ﻿using System.Dynamic;
 using System.Linq.Expressions;
+using Autofac;
+using Autofac.Builder;
 using AutoMapper;
 using Newtonsoft.Json;
 
@@ -50,6 +52,11 @@ internal static class Extensions
     }
 
     public static IEnumerable<int> Times(this int count) => Enumerable.Range(0, count);
+
+    public static IRegistrationBuilder<T, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterNamed<T>(this ContainerBuilder b, string name) where T : notnull
+    {
+        return b.RegisterType<T>().Named<T>(name);
+    }
 }
 
 public class DirectoryInfoConverter : JsonConverter<DirectoryInfo>

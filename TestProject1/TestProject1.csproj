@@ -14,6 +14,10 @@
         <PackageReference Include="AutoFixture" Version="4.18.1" />
         <PackageReference Include="AutoMapper" Version="13.0.1" />
         <PackageReference Include="FluentAssertions" Version="6.12.0" />
+        <PackageReference Include="FluentBuilder" Version="0.9.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="LanguageExt.Core" Version="4.4.8" />
         <PackageReference Include="LanguageExt.Transformers" Version="4.4.8" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>

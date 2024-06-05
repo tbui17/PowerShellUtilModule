@@ -2,11 +2,11 @@
 
 namespace PowerShellStandardModule1.Commands.PrintTree;
 
-public class WidthFilterCreator(int nodeWidth, int rootNodeWidth, int width)
+public class WidthFilterCreator(int nodeWidth, int rootNodeWidth)
 {
 
     public Func<FileSystemInfoTreeNode, bool> CreateWidthIsWithinLimitsFilter() =>
-        width < 0
+        rootNodeWidth < 0
             ? StandardNodeLimiter
             : MixedNodeLimiter;
 

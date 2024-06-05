@@ -93,7 +93,8 @@ public static class Extensions
         x => fn1(fn2(x));
 
 
-    public static string StringJoin<T>(this IEnumerable<T> items, string separator = "") => string.Join(separator, items);
+    public static string StringJoin<T>(this IEnumerable<T> items, string separator = "") =>
+        string.Join(separator, items);
 
     public static StringBuilder ToStringBuilder(this IEnumerable<string> strings) =>
         strings.Aggregate(new StringBuilder(), (sb, x) => sb.AppendLine(x));
@@ -396,11 +397,8 @@ public static class Extensions
 
     public static Func<T, bool> AggregateAll<T>(this IEnumerable<Func<T, bool>> fns) => x => fns.All(fn => fn(x));
 
-    public static IEnumerable<PropertyInfo> GetPropertiesOfType<T>(this object obj)
+    public static IEnumerable<PropertyInfo> GetPropertiesOfType<T>(this Type type)
     {
-        var type = obj.GetType();
-
-
         var properties = type.GetProperties();
         foreach (var property in properties)
         {
@@ -410,7 +408,13 @@ public static class Extensions
             }
         }
     }
-    
+
+    public static IEnumerable<PropertyInfo> GetPropertiesOfType<T>(this object obj)
+    {
+        var type = obj.GetType();
+        return type.GetPropertiesOfType<T>();
+    }
+
     public static IEnumerable GetPropertyValues(this object obj)
     {
         var type = obj.GetType();
@@ -420,7 +424,7 @@ public static class Extensions
             yield return property.GetValue(obj);
         }
     }
-    
+
     public static int MinZero(this int value) => Math.Max(0, value);
 }
 
