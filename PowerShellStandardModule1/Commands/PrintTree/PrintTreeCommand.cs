@@ -64,23 +64,25 @@ public partial class PrintTreeCommand : PSCmdlet
             return;
         }
 
-        var instance = new PrintTreeService
-        {
-            StartingDirectory = new DirectoryInfo(StartingDirectory),
-            Height = Constrain(Height),
-            NodeWidth = Constrain(NodeWidth),
-            Width = Constrain(Width),
-            Limit = Constrain(Limit),
-            Token = Token,
-            RootNodeWidth = RootNodeWidth,
-            StringValueSelector = CreateSelector(),
-            Filter = CreateFilter(),
-            OrderBy = OrderBy,
-            Descending = Descending,
-            Within = Within,
-            File = File
-        };
-        instance.Init();
+     
+        var instance = new PrintTreeService(
+            startingDirectory: new DirectoryInfo(StartingDirectory),
+            height: Constrain(Height),
+            nodeWidth: Constrain(NodeWidth),
+            width: Constrain(Width),
+            limit: Constrain(Limit),
+            token: Token,
+            rootNodeWidth: RootNodeWidth,
+            stringValueSelector: CreateSelector(),
+            filter: CreateFilter(),
+            orderBy: OrderBy,
+            descending: Descending,
+            within: Within,
+            file: File
+        );
+        
+        
+        
 
 
         try

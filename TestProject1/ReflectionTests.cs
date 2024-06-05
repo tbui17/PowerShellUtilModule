@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentAssertions;
+using FluentBuilder;
 using PowerShellStandardModule1.Commands.PrintTree;
 using PowerShellStandardModule1.Lib.Extensions;
 
@@ -24,9 +25,12 @@ public class ReflectionTests
            .SelectValues(x => x + 100)
            .ToDictionary();
 
-        var instance = new PrintTreeService
+        var instance = new TestClass()
         {
-            StartingDirectory = new DirectoryInfo("a"),
+            Height = -235,
+            NodeWidth = -523626,
+            Width = -253235,
+            Limit = -53225
         };
 
         mappedData.ForEach(x => instance.SetPropertyValue(x.Key, x.Value));
@@ -68,4 +72,14 @@ public class ReflectionTests
            .StartingDirectory.Name.Should()
            .Be("MyDir");
     }
+}
+
+[AutoGenerateBuilder]
+internal class TestClass
+{
+    public int Height { get; set; }
+    public int NodeWidth { get; set; }
+    public int Width { get; set; }
+    public int Limit { get; set; }
+    public string ExtraProp { get; set; } = "q";
 }

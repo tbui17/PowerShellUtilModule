@@ -1,9 +1,6 @@
-﻿
-
-using FluentAssertions;
+﻿using FluentAssertions;
 using FluentAssertions.Execution;
 using PowerShellStandardModule1.Commands.PrintTree;
-
 using PowerShellStandardModule1.Models;
 
 namespace TestProject1.PrintTree;
@@ -16,18 +13,19 @@ class PrintFilesTest : ContainerInit
     [Test]
     public void TestDisabled()
     {
-        var instance = new PrintTreeService
-        {
-            StartingDirectory = Utils.GetSolutionDirectory(),
-            Height = 500,
-            Limit = 500,
-            Width = 500,
-            NodeWidth = 500,
-            RootNodeWidth = 500,
-            Filter = _ => true,
-            File = false
-        };
-        instance.Init();
+       
+        
+        var instance = new PrintTreeService(
+            startingDirectory: Utils.GetSolutionDirectory(),
+            height: 500,
+            limit: 500,
+            width: 500,
+            nodeWidth: 500,
+            rootNodeWidth: 500,
+            filter: _ => true,
+            file: false
+        );
+        
 
         instance
            .CreateTreeNodes()
@@ -42,18 +40,19 @@ class PrintFilesTest : ContainerInit
     [Test]
     public void TestEnabled()
     {
-        var instance = new PrintTreeService
-        {
-            StartingDirectory = Utils.GetSolutionDirectory(),
-            Height = 500,
-            Limit = 500,
-            Width = 500,
-            NodeWidth = 500,
-            RootNodeWidth = 500,
-            Filter = _ => true,
-            File = true
-        };
-        instance.Init();
+       
+        
+        
+        var instance = new PrintTreeService(
+            startingDirectory: Utils.GetSolutionDirectory(),
+            height: 500,
+            limit: 500,
+            width: 500,
+            nodeWidth: 500,
+            rootNodeWidth: 500,
+            filter: _ => true,
+            file: true
+        );
 
         var res = instance
            .CreateTreeNodes()
@@ -69,19 +68,18 @@ class PrintFilesTest : ContainerInit
     [Test]
     public void TestCreateFilter()
     {
-        var instance = new PrintTreeService
-        {
-            StartingDirectory = Utils.GetSolutionDirectory(),
-            Height = 500,
-            Limit = 500,
-            Width = 500,
-            NodeWidth = 500,
-            RootNodeWidth = 500,
-            Filter = _ => true,
-            File = true
-        };
+        var instance = new PrintTreeService(
+            startingDirectory: Utils.GetSolutionDirectory(),
+            height: 500,
+            limit: 500,
+            width: 500,
+            nodeWidth: 500,
+            rootNodeWidth: 500,
+            filter: _ => true,
+            file: true
+        );
 
-        instance.Init();
+
         var widthFilterCreator = new WidthFilterCreator(nodeWidth: 500, rootNodeWidth: 500);
         var filter = instance.CreateShouldContinueFilter(widthFilterCreator);
 
@@ -103,19 +101,20 @@ class PrintFilesTest : ContainerInit
     [Test]
     public void TestCreateFilterDisabledFile()
     {
-        var instance = new PrintTreeService
-        {
-            StartingDirectory = Utils.GetSolutionDirectory(),
-            Height = 500,
-            Limit = 500,
-            Width = 500,
-            NodeWidth = 500,
-            RootNodeWidth = 500,
-            Filter = _ => true,
-            File = false
-        };
-
-        instance.Init();
+       
+        
+        var instance = new PrintTreeService(
+            startingDirectory: Utils.GetSolutionDirectory(),
+            height: 500,
+            limit: 500,
+            width: 500,
+            nodeWidth: 500,
+            rootNodeWidth: 500,
+            filter: _ => true,
+            file: false
+        );
+        
+        
         var widthFilterCreator = new WidthFilterCreator(nodeWidth: 500, rootNodeWidth: 500);
         var filter = instance.CreateShouldContinueFilter(widthFilterCreator);
 

@@ -124,18 +124,16 @@ public partial class PrintTreeTest : ContainerInit
     [Test]
     public void TestOrdering()
     {
-        var instance = new PrintTreeService
-        {
-            StartingDirectory = Directory,
-            Descending = true,
-            OrderBy = "creationtime",
-            Height = 500,
-            Limit = 500,
-            Width = 500,
-            NodeWidth = 500,
-            RootNodeWidth = 500
-        };
-        instance.Init();
+        var instance = new PrintTreeService(
+            startingDirectory: Directory,
+            descending: true,
+            orderBy: "creationtime",
+            height: 500,
+            limit: 500,
+            width: 500,
+            nodeWidth: 500,
+            rootNodeWidth: 500
+        );
 
         // given flat list of nodes, from a tree, when they are grouped by their parent, there will be partitions that will scope the tests
         var res = instance.CreatePrintNodes();
@@ -156,16 +154,17 @@ public partial class PrintTreeTest : ContainerInit
     [Test]
     public void TestBfs()
     {
-        var instance = new PrintTreeService
-        {
-            StartingDirectory = Directory,
-            Descending = true,
-            Height = 500,
-            Limit = 500,
-            Width = 500,
-            NodeWidth = 500,
-            RootNodeWidth = 500
-        };
+        var instance = new PrintTreeService(
+            startingDirectory: Directory,
+            descending: true,
+            orderBy: "creationtime",
+            height: 500,
+            limit: 500,
+            width: 500,
+            nodeWidth: 500,
+            rootNodeWidth: 500
+        );
+
         instance.Init();
         var res = instance.CreateTreeNodes();
         res
@@ -248,19 +247,20 @@ public partial class PrintTreeTest : ContainerInit
     [Test]
     public void TestWithin()
     {
-        var instance = new PrintTreeService
-        {
-            StartingDirectory = Directory,
-            Descending = true,
-            Height = 500,
-            Limit = 500,
-            Width = 500,
-            NodeWidth = 500,
-            RootNodeWidth = 500,
-            Within = true,
-            Filter = x => x.Name.Contains("print", StringComparison.OrdinalIgnoreCase)
-        };
-        instance.Init();
+       
+        
+        var instance = new PrintTreeService(
+            startingDirectory: Directory,
+            descending: true,
+            height: 500,
+            limit: 500,
+            width: 500,
+            nodeWidth: 500,
+            rootNodeWidth: 500,
+            within: true,
+            filter: x => x.Name.Contains("print", StringComparison.OrdinalIgnoreCase)
+        );
+        
         var res = instance.CreateTreeNodes();
         using var scope = new AssertionScope();
         res

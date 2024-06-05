@@ -12,6 +12,7 @@ public partial class PrintTreeService
 {
     public PrintTreeService(
         DirectoryInfo startingDirectory,
+        StringValueSelector? stringValueSelector = null,
         int height = 3,
         int width = int.MaxValue,
         int nodeWidth = int.MaxValue,
@@ -19,43 +20,45 @@ public partial class PrintTreeService
         int rootNodeWidth = -1,
         string orderBy = "Name",
         bool descending = false,
+        Func<FileSystemInfo, bool>? filter = null,
         bool within = false,
-        bool file = false
+        bool file = false,
+        CancellationToken token = default
     )
     {
-        StartingDirectory = startingDirectory;
+        StartingDirectory = startingDirectory ?? throw new ArgumentNullException(nameof(startingDirectory));
+        StringValueSelector = stringValueSelector ?? DefaultStringValueSelector;
         Height = height;
         Width = width;
         NodeWidth = nodeWidth;
         Limit = limit;
+        Token = token;
         RootNodeWidth = rootNodeWidth;
         OrderBy = orderBy;
         Descending = descending;
+        Filter = filter ?? (_ => true);
         Within = within;
         File = file;
+        Init();
     }
 
-    public  DirectoryInfo StartingDirectory { get; init; }
-    public StringValueSelector StringValueSelector { get; init; } = DefaultStringValueSelector;
-    public int Height { get; init; } = 3;
-    public int Width { get; init; } = int.MaxValue;
-    public int NodeWidth { get; init; } = int.MaxValue;
-    public int Limit { get; init; } = int.MaxValue;
-    public CancellationToken Token { get; init; } = CancellationToken.None;
-    public int RootNodeWidth { get; init; } = -1;
 
-    public string OrderBy { get; init; } = "Name";
-
-    public bool Descending { get; init; }
-
-    public Func<FileSystemInfo, bool> Filter { get; init; } = _ => true;
-
-    public bool Within { get; init; }
-
-    public bool File { get; init; }
+    public DirectoryInfo StartingDirectory { get;  }
+    public StringValueSelector StringValueSelector { get;  }
+    public int Height { get;  }
+    public int Width { get;  }
+    public int NodeWidth { get;  }
+    public int Limit { get;  }
+    public CancellationToken Token { get;  }
+    public int RootNodeWidth { get;  }
+    public string OrderBy { get;  }
+    public bool Descending { get;  }
+    public Func<FileSystemInfo, bool> Filter { get;  }
+    public bool Within { get;  }
+    public bool File { get;  }
 
 
-    private Func<FileSystemInfo, IEnumerable<FileSystemInfo>> ChildProvider { get; init; } = FsUtil.GetChildren;
+    private Func<FileSystemInfo, IEnumerable<FileSystemInfo>> ChildProvider { get;  } = FsUtil.GetChildren;
 
     private PrintNodeImpl? PrintNodeImpl { get; set; }
     private BfsImplFs? BfsImpl { get; set; }
