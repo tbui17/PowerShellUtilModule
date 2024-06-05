@@ -4,46 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d34cbfe3-307c-4ff6-bf3e-624ae5bb9add" name="Changes" comment="complete">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/indexLayout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1.sln" beforeDir="false" afterPath="$PROJECT_DIR$/PowershellUtilsSolution.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Attributes/Clamp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Attributes/Clamp.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/Bfs/BfsCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Bfs/BfsCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/Bfs/BfsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Bfs/BfsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/Fuzzy/SelectFuzzyCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Fuzzy/SelectFuzzyCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/BfsExecutor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/BfsExecutor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/BfsImplFs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/BfsImplFs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/FileFilterCreator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/FileFilterCreator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/Params.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/Params.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/PrintNodeImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintNodeImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/PrintTreeCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintTreeCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/PrintTreeExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintTreeExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/PrintTreeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintTreeService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/WidthFilterCreator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/WidthFilterCreator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/PrintTree/WithinHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/WithinHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Commands/Sample/TestSampleCmdletCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Sample/TestSampleCmdletCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/GlobalUsings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/GlobalUsings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Lib/ChildGetterFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Lib/DirectoryUtil.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Lib/Extensions/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Lib/Extensions/Extensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Lib/Extensions/Traversal.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Lib/Extensions/Traversal.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Lib/FsUtil.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Lib/FsUtil.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Lib/PsUtil.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Lib/PsUtil.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Lib/Traverser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Lib/Traverser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Models/AbstractNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Models/AbstractNode.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Models/FuzzyResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Models/FuzzyResult.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Models/PrintNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Models/PrintNode.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/Models/TreeNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Models/TreeNode.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellStandardModule1/PowerShellStandardModule1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/PowerShellUtils.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestProject1/BfsTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/BfsTest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestProject1/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/Extensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestProject1/PrintTree/PrintTreeTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/PrintTree/PrintTreeTest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestProject1/PrintTree/TestFiles.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/PrintTree/TestFiles.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestProject1/ReflectionTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/ReflectionTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestProject1/TestProject1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/TestProject1.csproj" afterDir="false" />
+    <list default="true" id="d34cbfe3-307c-4ff6-bf3e-624ae5bb9add" name="Changes" comment="refactor">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellUtils/Commands/Fuzzy/SelectFuzzyCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Fuzzy/SelectFuzzyCommand.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -369,6 +332,7 @@
     <setting file="mock://PrintTreeController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -435,7 +399,7 @@
       <workItem from="1717004644797" duration="675000" />
       <workItem from="1717006281406" duration="2648000" />
       <workItem from="1717014677390" duration="37539000" />
-      <workItem from="1717058070570" duration="327078000" />
+      <workItem from="1717058070570" duration="331677000" />
     </task>
     <task id="LOCAL-00001" summary="Implemented bfs file search;&#10;Fuzzy requires nuget installation, powershell has issues resolving circular dependencies, but this is separate issue from the repository.">
       <option name="closed" value="true" />
@@ -733,7 +697,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717550649899</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="refactor">
+      <option name="closed" value="true" />
+      <created>1717561500850</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1717561500850</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -753,7 +725,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Implemented bfs file search;&#10;Fuzzy requires nuget installation, powershell has issues resolving circular dependencies, but this is separate issue from the repository." />
     <MESSAGE value="update unit test" />
     <MESSAGE value="Add helper extension methods" />
     <MESSAGE value="- Add limit and timeout&#10;- Error handling during BFS, allows continued search on fail&#10;-Update unit tests" />
@@ -778,7 +749,8 @@
     <MESSAGE value="c" />
     <MESSAGE value="c6" />
     <MESSAGE value="complete" />
-    <option name="LAST_COMMIT_MESSAGE" value="complete" />
+    <MESSAGE value="refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
