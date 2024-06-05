@@ -67,7 +67,7 @@ public partial class PrintTreeCommand : PSCmdlet
      
         var instance = new PrintTreeService(
             startingDirectory: new DirectoryInfo(StartingDirectory),
-            height: Constrain(Height),
+            height: Constrain(Depth),
             nodeWidth: Constrain(NodeWidth),
             width: Constrain(Width),
             limit: Constrain(Limit),

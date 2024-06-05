@@ -60,7 +60,7 @@ public class ReflectionTests
 
         var cmd = new PrintTreeCommand()
         {
-            Height = 11,
+            Depth = 11,
             NodeWidth = 12,
             StartingDirectory = "MyDir",
             Width = 13,

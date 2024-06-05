@@ -4,53 +4,68 @@ using System.IO;
 using System.IO.Enumeration;
 using System.Linq;
 using System.Threading;
+using PowerShellStandardModule1.Commands.PrintTree;
 using PowerShellStandardModule1.Lib;
-using PowerShellStandardModule1.Lib.Extensions;
 
 namespace PowerShellStandardModule1.Commands.Bfs;
 
-using DirectoryChildGetter = Func<DirectoryInfo, IEnumerable<DirectoryInfo>>;
+using DirectoryChildGetter = Func<FileSystemInfo, IEnumerable<FileSystemInfo>>;
 
 public class BfsController(
-    string pattern,
-    string startingDirectory,
+    DirectoryInfo startingDirectory,
+    string pattern = "*",
     bool ignoreCase = true,
-    DirectoryChildGetter? directoryChildGetter = null,
-    int itemsToReturn = 1,
-    int limit = int.MaxValue
-)
+    int limit = int.MaxValue,
+    int take = int.MaxValue,
+    int height = int.MaxValue,
+    bool file = false)
 {
-    public readonly int ItemsToReturn = Math.Max(0, itemsToReturn);
-
     public readonly int Limit = Math.Max(0, limit);
 
-    private readonly DirectoryChildGetter _childGetter = directoryChildGetter ??
-                                                         DirectoryUtil.CreateDirectoryChildGetter(
-                                                             DirectoryUtil.DefaultEnumerationOptions
-                                                         );
+    public readonly int Height = Math.Max(0, height);
 
-    private readonly DirectoryInfo _startingDirectory = new(startingDirectory);
+    private readonly DirectoryChildGetter _childGetter =
+        file
+            ? FsUtil.GetChildren
+            : DirectoryUtil.GetChildren;
 
 
-    public IEnumerable<DirectoryInfo> Invoke(CancellationToken? token = null)
+    public FileSystemInfoTreeNodeEnumerable Invoke(CancellationToken? token = null)
     {
         var cancelToken = token ?? CancellationToken.None;
         Validate();
-        
-        return Traversal.Bfs(_startingDirectory,_childGetter)
-            .Take(Limit)
-            .TakeWhile(_ => !cancelToken.IsCancellationRequested)
-            .Where(x => IsMatch(x.Name))
-            .Take(ItemsToReturn);
-    }
 
-    private void Validate()
-    {
-        if (!_startingDirectory.Exists)
+        var impl = new BfsExecutor<FileSystemInfo>
         {
-            throw new DirectoryNotFoundException($"Directory not found: {_startingDirectory}");
+            ChildProvider = _childGetter,
+            ShouldBreak = ShouldBreak
+        };
+
+        var res = impl.Invoke(startingDirectory);
+
+        if (pattern != "*")
+        {
+            res = res.Where(x => IsMatch(x.Value.Name));
+        }
+
+        return res.Take(take);
+
+
+        bool ShouldBreak(FileSystemInfoTreeNode x)
+        {
+            cancelToken.ThrowIfCancellationRequested();
+            return x.Height > Height || x.Count > Limit;
         }
     }
 
-    private bool IsMatch(string name) => FileSystemName.MatchesSimpleExpression(pattern, name, ignoreCase);
+
+    private void Validate()
+    {
+        if (!startingDirectory.Exists)
+        {
+            throw new DirectoryNotFoundException($"Directory not found: {startingDirectory}");
+        }
+    }
+
+    public bool IsMatch(string name) => FileSystemName.MatchesSimpleExpression(pattern, name, ignoreCase);
 }

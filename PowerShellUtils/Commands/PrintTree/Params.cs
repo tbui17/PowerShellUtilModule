@@ -28,7 +28,7 @@ public partial class PrintTreeCommand
         Position = 1,
         HelpMessage = "The maximum depth to search. Defaults to 3. Negative numbers are rounded to 0."
     )]
-    public int Height { get; set; } = 3;
+    public int Depth { get; set; } = 3;
 
 
     [Parameter(

@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d34cbfe3-307c-4ff6-bf3e-624ae5bb9add" name="Changes" comment="refactor">
+    <list default="true" id="d34cbfe3-307c-4ff6-bf3e-624ae5bb9add" name="Changes" comment="update fuzzy">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellUtils/Commands/Fuzzy/SelectFuzzyCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Fuzzy/SelectFuzzyCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellUtils/Commands/Bfs/BfsCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Bfs/BfsCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellUtils/Commands/Bfs/BfsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Bfs/BfsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/Params.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/Params.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintTreeCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintTreeCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestProject1/BfsTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/BfsTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestProject1/ReflectionTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/ReflectionTests.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +40,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/06aed6c3ac50471789584e40142d90ac70000/25/300b9e09/WildcardPattern.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/06aed6c3ac50471789584e40142d90ac70000/c1/873b1ff9/InternalCommand.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/06aed6c3ac50471789584e40142d90ac70000/f5/96daac9d/Cmdlet.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/06aed6c3ac50471789584e40142d90ac70000/fd/d51bfa24/DscPropertyAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/93ad1732e6bb4cc0a5b6f0de2317699584908/47/8beba5a2/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc26fff0972243259d3923e1643ef5b65ae00/11/660dd14c/ILifetimeScope.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc26fff0972243259d3923e1643ef5b65ae00/8a/b993bbc2/ResolutionExtensions.cs" root0="SKIP_HIGHLIGHTING" />
@@ -315,6 +321,8 @@
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Structs/PrintNode.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Structs/PrintNode.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Structs/PrintNode.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellUtils/Commands/Bfs/BfsCommand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellUtils/Commands/Bfs/BfsCommand.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/FuzzyTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/PrintTree/ContainerInit.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/PrintTreeNodeCreation.cs" root0="SKIP_HIGHLIGHTING" />
@@ -399,7 +407,7 @@
       <workItem from="1717004644797" duration="675000" />
       <workItem from="1717006281406" duration="2648000" />
       <workItem from="1717014677390" duration="37539000" />
-      <workItem from="1717058070570" duration="331677000" />
+      <workItem from="1717058070570" duration="341201000" />
     </task>
     <task id="LOCAL-00001" summary="Implemented bfs file search;&#10;Fuzzy requires nuget installation, powershell has issues resolving circular dependencies, but this is separate issue from the repository.">
       <option name="closed" value="true" />
@@ -705,7 +713,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717561500850</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="update fuzzy">
+      <option name="closed" value="true" />
+      <created>1717576917351</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1717576917351</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -725,7 +741,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update unit test" />
     <MESSAGE value="Add helper extension methods" />
     <MESSAGE value="- Add limit and timeout&#10;- Error handling during BFS, allows continued search on fail&#10;-Update unit tests" />
     <MESSAGE value="Update git tracking" />
@@ -750,7 +765,8 @@
     <MESSAGE value="c6" />
     <MESSAGE value="complete" />
     <MESSAGE value="refactor" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor" />
+    <MESSAGE value="update fuzzy" />
+    <option name="LAST_COMMIT_MESSAGE" value="update fuzzy" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
