@@ -75,7 +75,7 @@ public partial class PrintTreeCommand : PSCmdlet
             rootNodeWidth: RootNodeWidth,
             stringValueSelector: CreateSelector(),
             filter: CreateFilter(),
-            orderBy: OrderBy,
+            orderBy: OrderBy.ToString(),
             descending: Descending,
             within: Within,
             file: File

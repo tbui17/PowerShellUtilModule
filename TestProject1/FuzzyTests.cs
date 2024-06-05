@@ -9,9 +9,7 @@ namespace TestProject1;
 public class FuzzyTests
 {
     [SetUp]
-    public void Setup()
-    {
-    }
+    public void Setup() { }
 
     [Test]
     public void TestFuzzy()
@@ -23,13 +21,15 @@ public class FuzzyTests
         {
             String1 = str1,
             String2 = str2,
-            Strategy = "Ratio"
+            Strategy = Enum.Parse<FuzzyStrategy>("Ratio")
         };
 
         var res = command.Run();
         var data = new FuzzyResult("hello", "hello2", score);
 
-        res.Should().BeEquivalentTo(data);
+        res
+           .Should()
+           .BeEquivalentTo(data);
     }
 
     [Test]
@@ -54,23 +54,30 @@ public class FuzzyTests
         ];
 
 
-        var cases = strategies.Select(x =>
-        {
-            var action = () =>
+        var cases = strategies.Select(
+            x =>
             {
-                var fn = SelectFuzzyCommand.GetFuzzyStrategy(x);
-                fn.Should().NotBeNull();
-                fn("Render", "end").Should().BeGreaterThanOrEqualTo(0);
-            };
-            return action;
-        });
+                var action = () =>
+                {
+                    var fn = SelectFuzzyCommand.GetFuzzyStrategy(x);
+                    fn
+                       .Should()
+                       .NotBeNull();
+                    fn("Render", "end")
+                       .Should()
+                       .BeGreaterThanOrEqualTo(0);
+                };
+                return action;
+            }
+        );
 
 
         using var scope = new AssertionScope();
         foreach (var testCase in cases)
         {
-            testCase.Should().NotThrow();
+            testCase
+               .Should()
+               .NotThrow();
         }
     }
-    
 }

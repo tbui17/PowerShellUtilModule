@@ -93,8 +93,7 @@ public partial class PrintTreeService
             limit: Limit
         );
     }
-    
-    
+
 
     private Func<FileSystemInfoTreeNode, bool> CreateShouldContinueFilter(WidthFilterCreator widthFilterCreator)
     {
@@ -114,7 +113,6 @@ public partial class PrintTreeService
                 filters.Add(Filter);
             }
 
-          
 
             Func<FileSystemInfo, bool> allFilter = filters.AggregateAll();
 

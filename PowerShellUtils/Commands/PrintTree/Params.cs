@@ -57,6 +57,7 @@ public partial class PrintTreeCommand
     )]
     public int RootNodeWidth { get; set; } = -1;
 
+    
     [Parameter(
         HelpMessage =
             """
@@ -72,10 +73,9 @@ public partial class PrintTreeCommand
                       The property to sort by of a FileSystemInfo object. Available options are:
                       Name, CreationTime, LastAccessTime, LastWriteTime, Extension, Attributes
                       Defaults to Name.
-                      If an invalid option is selected, it will default to name.
                       """
     )]
-    public string OrderBy { get; set; } = "Name";
+    public FsOrdererType OrderBy { get; set; } = FsOrdererType.Name;
 
     [Parameter(HelpMessage = "Sort order is ascending by default. Enable to sort in descending order.")]
     public SwitchParameter Descending { get; set; }
@@ -96,4 +96,15 @@ public partial class PrintTreeCommand
     public SwitchParameter File { get; set; }
     
     
+}
+
+public enum FsOrdererType
+{
+    Name,
+    CreationTime,
+    LastAccessTime,
+    LastWriteTime,
+    Extension,
+    Attributes,
+    Exists
 }

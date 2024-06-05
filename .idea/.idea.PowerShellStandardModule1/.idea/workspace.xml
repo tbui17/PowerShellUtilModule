@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d34cbfe3-307c-4ff6-bf3e-624ae5bb9add" name="Changes" comment="update fuzzy">
+    <list default="true" id="d34cbfe3-307c-4ff6-bf3e-624ae5bb9add" name="Changes" comment="c1">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PowerShellUtils/Commands/Bfs/BfsCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Bfs/BfsCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellUtils/Commands/Bfs/BfsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Bfs/BfsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellUtils/Commands/Fuzzy/SelectFuzzyCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/Fuzzy/SelectFuzzyCommand.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/Params.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/Params.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintTreeCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintTreeCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestProject1/BfsTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/BfsTest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestProject1/ReflectionTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/ReflectionTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintTreeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintTreeService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestProject1/FuzzyTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestProject1/FuzzyTests.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -323,6 +323,7 @@
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellStandardModule1/Structs/PrintNode.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellUtils/Commands/Bfs/BfsCommand.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellUtils/Commands/Bfs/BfsCommand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellUtils/Commands/Bfs/BfsCommand.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/FuzzyTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/PrintTree/ContainerInit.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/PrintTreeNodeCreation.cs" root0="SKIP_HIGHLIGHTING" />
@@ -338,6 +339,8 @@
     <setting file="mock://PrintTreeController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://PrintTreeController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://PrintTreeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
@@ -407,7 +410,7 @@
       <workItem from="1717004644797" duration="675000" />
       <workItem from="1717006281406" duration="2648000" />
       <workItem from="1717014677390" duration="37539000" />
-      <workItem from="1717058070570" duration="341201000" />
+      <workItem from="1717058070570" duration="344963000" />
     </task>
     <task id="LOCAL-00001" summary="Implemented bfs file search;&#10;Fuzzy requires nuget installation, powershell has issues resolving circular dependencies, but this is separate issue from the repository.">
       <option name="closed" value="true" />
@@ -721,7 +724,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717576917351</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="c1">
+      <option name="closed" value="true" />
+      <created>1717616326547</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1717616326547</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -754,7 +765,6 @@
     <MESSAGE value="global usings" />
     <MESSAGE value="cx" />
     <MESSAGE value="a" />
-    <MESSAGE value="c1" />
     <MESSAGE value="add within" />
     <MESSAGE value="remove parameterset" />
     <MESSAGE value="cleanup" />
@@ -766,7 +776,8 @@
     <MESSAGE value="complete" />
     <MESSAGE value="refactor" />
     <MESSAGE value="update fuzzy" />
-    <option name="LAST_COMMIT_MESSAGE" value="update fuzzy" />
+    <MESSAGE value="c1" />
+    <option name="LAST_COMMIT_MESSAGE" value="c1" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

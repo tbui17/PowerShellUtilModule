@@ -9,6 +9,23 @@ namespace PowerShellStandardModule1.Commands.Fuzzy;
 
 using FuzzyFunc = Func<string, string, int>;
 
+public enum FuzzyStrategy
+{
+    PartialRatio,
+    PartialTokenAbbreviationRatio,
+    PartialTokenDifferenceRatio,
+    PartialTokenInitialismRatio,
+    PartialTokenSetRatio,
+    PartialTokenSortRatio,
+    Ratio,
+    TokenAbbreviationRatio,
+    TokenDifferenceRatio,
+    TokenInitialismRatio,
+    TokenSetRatio,
+    TokenSortRatio,
+    WeightedRatio
+}
+
 [Cmdlet(VerbsCommon.Select, "Fuzzy")]
 [Alias("Fuzzy")]
 [OutputType(typeof(FuzzyResult))]
@@ -34,14 +51,14 @@ public class SelectFuzzyCommand : PSCmdlet
 
     [Parameter(
         Position = 2, HelpMessage = """
-                                    Strategy to use for fuzzy matching. Defaults to 'Ratio', and will use this option if an invalid option is selected.
+                                    Strategy to use for fuzzy matching. Defaults to 'Ratio'.
                                     Options: "PartialRatio", "PartialTokenAbbreviationRatio", "PartialTokenDifferenceRatio",
                                     "PartialTokenInitialismRatio", "PartialTokenSetRatio", "PartialTokenSortRatio", "Ratio",
                                     "TokenAbbreviationRatio", "TokenDifferenceRatio", "TokenInitialismRatio", "TokenSetRatio", "TokenSortRatio",
                                     "WeightedRatio"
                                     """
     )]
-    public string Strategy = "Ratio";
+    public FuzzyStrategy Strategy = FuzzyStrategy.Ratio;
 
 
     protected override void ProcessRecord()
@@ -53,7 +70,7 @@ public class SelectFuzzyCommand : PSCmdlet
     public FuzzyResult Run()
     {
         var score = FuzzyFuncs
-           .GetValueOrDefault(Strategy, FuzzyFuncs["Ratio"])(String1, String2);
+           .GetValueOrDefault(Strategy, Fuzz.Ratio)(String1, String2);
         return new FuzzyResult(String1, String2, score);
     }
 
@@ -81,7 +98,7 @@ public class SelectFuzzyCommand : PSCmdlet
         return (FuzzyFunc)res;
     }
 
-    public static Dictionary<string, FuzzyFunc> FuzzyFuncs = typeof(Fuzz)
+    public static Dictionary<FuzzyStrategy, FuzzyFunc> FuzzyFuncs = typeof(Fuzz)
        .GetMethods()
        .Where(x => x.IsStatic)
        .Where(
@@ -91,6 +108,6 @@ public class SelectFuzzyCommand : PSCmdlet
         )
        .Where(x => x.Name.Contains("ratio", StringComparison.OrdinalIgnoreCase))
        .DistinctBy(x => x.Name)
-       .Select(x => KeyValuePair.Create(x.Name, x.CreateDelegate<FuzzyFunc>()))
-       .ToDictionary(StringComparer.OrdinalIgnoreCase);
+       .Select(x => KeyValuePair.Create(Enum.Parse<FuzzyStrategy>(x.Name), x.CreateDelegate<FuzzyFunc>()))
+       .ToDictionary();
 }
