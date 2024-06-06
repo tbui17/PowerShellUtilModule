@@ -62,7 +62,7 @@ namespace TestProject1.PrintTree;
  )
 ]
 [TestFixtureSource(typeof(FixtureData), nameof(FixtureData.FixtureParams))]
-public class PrintTreeNodeIntegration(
+public class PrintTreeNodeSpecs(
     int height = 1000,
     int nodeWidth = 1000,
     int width = 1000,
@@ -228,7 +228,7 @@ public class PrintTreeNodeIntegration(
     }
 
     [Test]
-    public void TestPrintNodesToTreeString()
+    public void TestTreeString()
     {
         var str = PrintNodes
            .ToTreeString()

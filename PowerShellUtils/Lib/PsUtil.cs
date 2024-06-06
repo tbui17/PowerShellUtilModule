@@ -7,13 +7,22 @@ namespace PowerShellStandardModule1.Lib;
 
 public static class PsUtil
 {
-    public static string SerializePsResult(this IReadOnlyCollection<PSObject> psResult) => psResult.FirstOrDefault()?.ToString() ?? "";
+    public static string SerializePsResult(this IReadOnlyCollection<PSObject> psResult) =>
+        psResult
+           .FirstOrDefault()
+          ?.ToString() ??
+        "";
 
 
-    public static Collection<PSObject> InvokeWithValue(this ScriptBlock block, object? value)
+    public static Collection<PSObject> InvokeWithValue(
+        this ScriptBlock block,
+        object? value,
+        Dictionary<string, ScriptBlock>? functionsToDefine = null
+    )
     {
+        functionsToDefine ??= new();
         var variable = new PSVariable("_", value);
-        return block.InvokeWithContext(new(), [variable]);
+        return block.InvokeWithContext(functionsToDefine, [variable]);
     }
 
     public static PSObject GetFirst(this Collection<PSObject> src) => src.First();

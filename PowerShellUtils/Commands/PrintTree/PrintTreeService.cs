@@ -23,6 +23,7 @@ public partial class PrintTreeService
     public Func<FileSystemInfo, bool> Filter { get; }
     public bool Within { get; }
     public bool File { get; }
+    
     public int ParallelThreshold { get; init; } = Environment.ProcessorCount * 100;
 }
 
@@ -198,7 +199,8 @@ public partial class PrintTreeService
             ["LastWriteTime"] = x => x.OrderBy(n => n.Value.LastWriteTime),
             ["Extension"] = x => x.OrderBy(n => n.Value.Extension),
             ["Attributes"] = x => x.OrderBy(n => n.Value.Attributes),
-            ["Exists"] = x => x.OrderBy(n => n.Value.Exists)
+            ["Exists"] = x => x.OrderBy(n => n.Value.Exists),
+            ["ChildCount"] = x => x.OrderBy(n => n.Children.Count)
         };
 
     public static DirectoryTreeNodeEnumerable DefaultNodeOrderer(DirectoryTreeNodeEnumerable node) => node;

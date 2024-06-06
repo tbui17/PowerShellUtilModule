@@ -71,7 +71,7 @@ public partial class PrintTreeCommand
     [Parameter(
         HelpMessage = """
                       The property to sort by of a FileSystemInfo object. Available options are:
-                      Name, CreationTime, LastAccessTime, LastWriteTime, Extension, Attributes
+                      Name, CreationTime, LastAccessTime, LastWriteTime, Extension, Attributes, ChildCount
                       Defaults to Name.
                       """
     )]
@@ -106,5 +106,6 @@ public enum FsOrdererType
     LastWriteTime,
     Extension,
     Attributes,
-    Exists
+    Exists,
+    ChildCount
 }
