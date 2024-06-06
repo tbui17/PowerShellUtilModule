@@ -6,7 +6,7 @@ using System.Threading;
 namespace PowerShellStandardModule1.Commands.PrintTree;
 
 public class BfsImplFs(
-    Func<FileSystemInfoTreeNode, bool> shouldContinueFilter,
+    Func<FileSystemInfoTreeNode, bool> Where,
     Func<FileSystemInfo, IEnumerable<FileSystemInfo>> childProvider,
     FileSystemInfo startingDirectory,
     int height,
@@ -19,7 +19,7 @@ public class BfsImplFs(
         
         return new BfsExecutor<FileSystemInfo>
         {
-            Where = shouldContinueFilter,
+            Where = Where,
             ChildProvider = childProvider,
             ShouldBreak = ShouldBreak
         }.Invoke(startingDirectory);

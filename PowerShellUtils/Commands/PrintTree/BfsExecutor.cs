@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PowerShellStandardModule1.Lib.Extensions;
 using PowerShellStandardModule1.Models;
 
 namespace PowerShellStandardModule1.Commands.PrintTree;
@@ -10,48 +11,44 @@ public class BfsExecutor<T>
     public Func<TreeNode<T>, bool> Where { get; set; } = _ => true;
     public Func<TreeNode<T>, bool> ShouldBreak { get; set; } = _ => true;
     public Func<T, IEnumerable<T>> ChildProvider { get; set; } = _ => [];
-    private int Count { get; set; }
-    private Queue<TreeNode<T>> Queue { get; } = new();
+
 
     public IEnumerable<TreeNode<T>> Invoke(T root)
     {
-        Count = 0;
-        Queue.Clear();
-        Queue.Enqueue(new TreeNode<T> { Value = root });
+        var queue = Queue.StartWith(new TreeNode<T> { Value = root });
+        var count = 0;
 
-        while (Queue.Count > 0)
+        while (queue.NotEmpty())
         {
-            var next = Queue.Dequeue();
+            var next = queue.Dequeue();
             yield return next;
-
-
+            
             var newChildHeight = next.Height + 1;
 
 
-            var count = Count;
             var nodes = ChildProvider(next.Value)
                .Select(
-                    (x, i) => new TreeNode<T>
+                    (x, i) =>
                     {
-                        Value = x,
-                        Height = newChildHeight,
-                        Index = i,
-                        Parent = next,
-                        Count = count + i + 1
+                        count++;
+                        return new TreeNode<T>
+                        {
+                            Value = x,
+                            Height = newChildHeight,
+                            Index = i,
+                            Parent = next,
+                            Count = count
+                        };
                     }
                 );
 
-      
-
             foreach (var node in nodes)
             {
-                
-                Count++;
                 if (ShouldBreak(node)) yield break;
                 if (!Where(node)) continue;
 
                 node.Parent?.Children.Add(node);
-                Queue.Enqueue(node);
+                queue.Enqueue(node);
             }
         }
     }

@@ -10,6 +10,38 @@ namespace PowerShellStandardModule1.Commands.PrintTree;
 
 public partial class PrintTreeService
 {
+    public DirectoryInfo StartingDirectory { get; }
+    public StringValueSelector StringValueSelector { get; }
+    public int Height { get; }
+    public int Width { get; }
+    public int NodeWidth { get; }
+    public int Limit { get; }
+    public CancellationToken Token { get; }
+    public int RootNodeWidth { get; }
+    public string OrderBy { get; }
+    public bool Descending { get; }
+    public Func<FileSystemInfo, bool> Filter { get; }
+    public bool Within { get; }
+    public bool File { get; }
+    public int ParallelThreshold { get; init; } = Environment.ProcessorCount * 100;
+}
+
+public partial class PrintTreeService
+{
+    private Func<FileSystemInfo, IEnumerable<FileSystemInfo>> ChildProvider =>
+        File
+            ? FsUtil.GetChildren
+            : DirectoryUtil.GetChildren;
+
+
+    private BfsExecutor<FileSystemInfo> BfsImpl { get; set; }
+
+    private PrintNodeImpl PrintNodeImpl { get; set; }
+
+    private RemoveBranchesNotSatisfyingFilterImpl RemoveBranchesNotSatisfyingFilterImpl { get; set; }
+
+    private ClearChildrenExceedingWidthImpl ClearChildrenExceedingWidthImpl { get; set; }
+
     public PrintTreeService(
         DirectoryInfo startingDirectory,
         StringValueSelector? stringValueSelector = null,
@@ -53,62 +85,41 @@ public partial class PrintTreeService
             token: Token
         );
 
+        ClearChildrenExceedingWidthImpl = new ClearChildrenExceedingWidthImpl(
+            nodeWidth: NodeWidth,
+            rootNodeWidth: RootNodeWidth
+        );
+
         BfsImpl = CreateBfsImpl();
-    }
+        return;
 
-
-    public DirectoryInfo StartingDirectory { get; }
-    public StringValueSelector StringValueSelector { get; }
-    public int Height { get; }
-    public int Width { get; }
-    public int NodeWidth { get; }
-    public int Limit { get; }
-    public CancellationToken Token { get; }
-    public int RootNodeWidth { get; }
-    public string OrderBy { get; }
-    public bool Descending { get; }
-    public Func<FileSystemInfo, bool> Filter { get; }
-    public bool Within { get; }
-    public bool File { get; }
-
-
-    private Func<FileSystemInfo, IEnumerable<FileSystemInfo>> ChildProvider =>
-        File
-            ? FsUtil.GetChildren
-            : DirectoryUtil.GetChildren;
-
-
-    private BfsExecutor<FileSystemInfo> BfsImpl { get; set; }
-
-    private PrintNodeImpl PrintNodeImpl { get; set; }
-
-    private RemoveBranchesNotSatisfyingFilterImpl RemoveBranchesNotSatisfyingFilterImpl { get; set; }
-
-    public int ParallelThreshold { get; init; } = Environment.ProcessorCount * 100;
-
-
-    private FileSystemInfoTreeNodeEnumerableProcessor CreateOrderer()
-    {
-        FileSystemInfoTreeNodeEnumerableProcessor orderer = NodeOrderers.GetValueOrDefault(OrderBy, DefaultNodeOrderer);
-
-        return Descending
-            ? orderer.AndThen(x => x.Reverse())
-            : orderer;
-    }
-
-    private BfsExecutor<FileSystemInfo> CreateBfsImpl() =>
-        new()
+        FileSystemInfoTreeNodeEnumerableProcessor CreateOrderer()
         {
-            ChildProvider = ChildProvider,
-            ShouldBreak = node =>
+            FileSystemInfoTreeNodeEnumerableProcessor orderer = NodeOrderers.GetValueOrDefault(
+                OrderBy, DefaultNodeOrderer
+            );
+
+            return Descending
+                ? orderer.AndThen(x => x.Reverse())
+                : orderer;
+        }
+
+        BfsExecutor<FileSystemInfo> CreateBfsImpl()
+        {
+            return new BfsExecutor<FileSystemInfo>
             {
-                Token.ThrowIfCancellationRequested();
-                return node.Height > Height || node.Count > Limit;
-            },
-            Where = Within
-                ? _ => true
-                : node => Filter(node.Value)
-        };
+                ChildProvider = ChildProvider,
+                ShouldBreak = node =>
+                {
+                    Token.ThrowIfCancellationRequested();
+                    return node.Height > Height || node.Count > Limit;
+                },
+                Where = Within
+                    ? _ => true
+                    : node => Filter(node.Value)
+            };
+        }
+    }
 
 
     public IReadOnlyList<FileSystemInfoTreeNode> CreateTreeNodes()
@@ -123,62 +134,25 @@ public partial class PrintTreeService
             return [];
         }
 
-
         var result = BfsImpl
            .Invoke(StartingDirectory)
            .ToList();
 
         if (Within)
         {
-            RemoveBranchesNotSatisfyingFilterImpl.Invoke(result);    
+            RemoveBranchesNotSatisfyingFilterImpl.Invoke(result);
         }
 
-        ClearChildrenExceedingWidth();
+        ClearChildrenExceedingWidthImpl.Invoke(result, ParallelThreshold);
 
         return result;
-
-        void ClearChildren(FileSystemInfoTreeNode node)
-        {
-            if (node.Height == 0)
-            {
-                node.Children = node
-                   .Children.Take(RootNodeWidth)
-                   .ToList();
-                return;
-            }
-
-            node.Children = node
-               .Children.Take(NodeWidth)
-               .ToList();
-        }
-
-        void ClearChildrenExceedingWidth()
-        {
-            if (result.Count >= ParallelThreshold)
-            {
-                result
-                   .AsParallel()
-                   .ForAll(ClearChildren);
-            }
-            else
-            {
-                foreach (var node in result) ClearChildren(node);
-            }
-        }
     }
 
 
-    public FileSystemInfoPrintNodeEnumerable CreatePrintNodes()
-    {
-        if (PrintNodeImpl is null)
-        {
-            throw new InvalidOperationException("Service not initialized");
-        }
-
-        return CreateTreeNodes()
+    public FileSystemInfoPrintNodeEnumerable CreatePrintNodes() =>
+        CreateTreeNodes()
            .Take(1)
            .SelectMany(PrintNodeImpl.CreatePrintNodes);
-    }
 
 
     public int PredictMaxPrintNodeWidth()

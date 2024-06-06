@@ -426,9 +426,13 @@ public static class Extensions
     }
 
     public static int MinZero(this int value) => Math.Max(0, value);
-
-
   
+}
+
+
+public static class Queue
+{
+    public static Queue<T> StartWith<T>(T item) => new(item.InArray());
 }
 
 public static class Stack
