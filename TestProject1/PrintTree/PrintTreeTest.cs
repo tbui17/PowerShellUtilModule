@@ -175,8 +175,8 @@ public partial class PrintTreeTest : ContainerInit
     public void TestFilters()
     {
         using var scope = new AssertionScope();
-        Func<FileSystemInfo, bool> filter = x => x.Name.Contains("print", StringComparison.OrdinalIgnoreCase);
-        var withinHandler = new WithinHandler(within: true, filter: filter, cancellationToken: CancellationToken.None);
+        
+        
         var widthFilterCreator = new WidthFilterCreator(nodeWidth: 15, rootNodeWidth: 25);
         var fileFilterCreator = new FileFilterCreator(false);
 
@@ -193,13 +193,9 @@ public partial class PrintTreeTest : ContainerInit
            .BeTrue();
 
 
-        FileSystemInfo dir = new DirectoryInfo("name12345");
-
-        withinHandler
-           .GetBfsFilter()(dir)
-           .Should()
-           .BeTrue();
         
+
+      
         var widthFilter = widthFilterCreator
            .CreateWidthIsWithinLimitsFilter();
 

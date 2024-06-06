@@ -7,12 +7,10 @@ using PowerShellStandardModule1.Lib.Extensions;
 
 namespace PowerShellStandardModule1.Commands.PrintTree;
 
-public class WithinHandler(bool within, Func<FileSystemInfo, bool> filter, CancellationToken cancellationToken)
+public class RemoveBranchesNotSatisfyingFilterImpl(Func<FileSystemInfo, bool> filter, CancellationToken cancellationToken)
 {
-    public void ProcessResult(IList<FileSystemInfoTreeNode> result)
+    public void Invoke(IList<FileSystemInfoTreeNode> result)
     {
-        
-        if (!within) return;
 
         var branches = GetBranchesSatisfyingFilter(result);
         foreach (var node in result)
@@ -46,10 +44,5 @@ public class WithinHandler(bool within, Func<FileSystemInfo, bool> filter, Cance
         }
     }
 
-    public Func<FileSystemInfo, bool> GetBfsFilter()
-    {
-        return within
-            ? _ => true
-            : filter;
-    }
+
 }

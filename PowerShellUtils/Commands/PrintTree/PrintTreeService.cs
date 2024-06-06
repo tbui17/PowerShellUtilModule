@@ -26,20 +26,34 @@ public partial class PrintTreeService
         CancellationToken token = default
     )
     {
-        StartingDirectory = startingDirectory ?? throw new ArgumentNullException(nameof(startingDirectory));
+        StartingDirectory = startingDirectory;
         StringValueSelector = stringValueSelector ?? DefaultStringValueSelector;
         Height = height;
         Width = width;
         NodeWidth = nodeWidth;
         Limit = limit;
         Token = token;
-        RootNodeWidth = rootNodeWidth;
+        RootNodeWidth = rootNodeWidth < 0
+            ? nodeWidth
+            : rootNodeWidth;
         OrderBy = orderBy;
         Descending = descending;
         Filter = filter ?? (_ => true);
         Within = within;
         File = file;
-        Init();
+        RemoveBranchesNotSatisfyingFilterImpl = new RemoveBranchesNotSatisfyingFilterImpl(
+            filter: Filter,
+            cancellationToken: Token
+        );
+
+        PrintNodeImpl = new PrintNodeImpl(
+            orderer: CreateOrderer(),
+            width: Width,
+            stringValueSelector: StringValueSelector,
+            token: Token
+        );
+
+        BfsImpl = CreateBfsImpl();
     }
 
 
@@ -63,63 +77,15 @@ public partial class PrintTreeService
             ? FsUtil.GetChildren
             : DirectoryUtil.GetChildren;
 
-    private PrintNodeImpl? PrintNodeImpl { get; set; }
-    private BfsImplFs? BfsImpl { get; set; }
 
-    private WithinHandler? WithinHandler { get; set; }
-    private WidthFilterCreator? FilterCreator { get; set; }
+    private BfsExecutor<FileSystemInfo> BfsImpl { get; set; }
 
+    private PrintNodeImpl PrintNodeImpl { get; set; }
 
-    private void Init()
-    {
-        WithinHandler = new WithinHandler(
-            within: Within, filter: Filter,
-            cancellationToken: Token
-        );
+    private RemoveBranchesNotSatisfyingFilterImpl RemoveBranchesNotSatisfyingFilterImpl { get; set; }
 
-        FilterCreator = new WidthFilterCreator(nodeWidth: NodeWidth, rootNodeWidth: RootNodeWidth);
+    public int ParallelThreshold { get; init; } = Environment.ProcessorCount * 100;
 
-        PrintNodeImpl = new PrintNodeImpl(
-            orderer: CreateOrderer(),
-            width: Width,
-            stringValueSelector: StringValueSelector,
-            token: Token
-        );
-
-        BfsImpl = new BfsImplFs(
-            shouldContinueFilter: CreateShouldContinueFilter(widthFilterCreator: FilterCreator),
-            childProvider: ChildProvider,
-            startingDirectory: StartingDirectory, cancellationToken: Token, height: Height,
-            limit: Limit
-        );
-    }
-
-
-    private Func<FileSystemInfoTreeNode, bool> CreateShouldContinueFilter(WidthFilterCreator widthFilterCreator)
-    {
-        Func<FileSystemInfoTreeNode, bool>[] nodeFilters =
-            [CreateAdaptedFilter(), widthFilterCreator.CreateWidthIsWithinLimitsFilter()];
-
-        Func<FileSystemInfoTreeNode, bool> aggregateFilter = nodeFilters.AggregateAll();
-
-        return aggregateFilter;
-
-        Func<FileSystemInfoTreeNode, bool> CreateAdaptedFilter()
-        {
-            List<Func<FileSystemInfo, bool>> filters = [];
-            if (!Within)
-            {
-                // if within is not enabled, apply filter to all nodes. otherwise, it will be used in child removal portion.
-                filters.Add(Filter);
-            }
-
-
-            Func<FileSystemInfo, bool> allFilter = filters.AggregateAll();
-
-            Func<FileSystemInfoTreeNode, bool> adaptedFilter = allFilter.Compose((FileSystemInfoTreeNode x) => x.Value);
-            return adaptedFilter;
-        }
-    }
 
     private FileSystemInfoTreeNodeEnumerableProcessor CreateOrderer()
     {
@@ -130,25 +96,75 @@ public partial class PrintTreeService
             : orderer;
     }
 
+    private BfsExecutor<FileSystemInfo> CreateBfsImpl() =>
+        new()
+        {
+            ChildProvider = ChildProvider,
+            ShouldBreak = node =>
+            {
+                Token.ThrowIfCancellationRequested();
+                return node.Height > Height || node.Count > Limit;
+            },
+            Where = Within
+                ? _ => true
+                : node => Filter(node.Value)
+        };
+
+
     public IReadOnlyList<FileSystemInfoTreeNode> CreateTreeNodes()
     {
-        // build up tree meeting most requirements
-
         if (!StartingDirectory.Exists)
         {
             throw new DirectoryNotFoundException($"Directory not found: {StartingDirectory}");
         }
 
-        if (BfsImpl is null || WithinHandler is null)
+        if (RootNodeWidth == 0 || Limit <= 0 || Height <= 0)
         {
-            throw new InvalidOperationException("Service not initialized");
+            return [];
         }
 
 
-        return BfsImpl
-           .Invoke()
-           .ToList()
-           .Tap(WithinHandler.ProcessResult);
+        var result = BfsImpl
+           .Invoke(StartingDirectory)
+           .ToList();
+
+        if (Within)
+        {
+            RemoveBranchesNotSatisfyingFilterImpl.Invoke(result);    
+        }
+
+        ClearChildrenExceedingWidth();
+
+        return result;
+
+        void ClearChildren(FileSystemInfoTreeNode node)
+        {
+            if (node.Height == 0)
+            {
+                node.Children = node
+                   .Children.Take(RootNodeWidth)
+                   .ToList();
+                return;
+            }
+
+            node.Children = node
+               .Children.Take(NodeWidth)
+               .ToList();
+        }
+
+        void ClearChildrenExceedingWidth()
+        {
+            if (result.Count >= ParallelThreshold)
+            {
+                result
+                   .AsParallel()
+                   .ForAll(ClearChildren);
+            }
+            else
+            {
+                foreach (var node in result) ClearChildren(node);
+            }
+        }
     }
 
 

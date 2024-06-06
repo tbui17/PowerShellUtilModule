@@ -72,6 +72,8 @@ public class ReflectionTests
            .StartingDirectory.Name.Should()
            .Be("MyDir");
     }
+
+   
 }
 
 [AutoGenerateBuilder]
