@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d34cbfe3-307c-4ff6-bf3e-624ae5bb9add" name="Changes" comment="- Fix node width bug">
-      <change afterPath="$PROJECT_DIR$/TestProject1/PrintTree/ExpandTest.cs" afterDir="false" />
+    <list default="true" id="d34cbfe3-307c-4ff6-bf3e-624ae5bb9add" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PowerShellStandardModule1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/Params.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/Params.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintTreeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Commands/PrintTree/PrintTreeService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowerShellUtils/Lib/PsUtil.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PowerShellUtils/Lib/PsUtil.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -326,9 +322,13 @@
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellUtils/Commands/PrintTree/BfsExecutor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellUtils/Commands/PrintTree/BfsExecutor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellUtils/Commands/PrintTree/BfsImplFs.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellUtils/Commands/PrintTree/Params.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellUtils/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellUtils/Commands/PrintTree/PrintTreeService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/PowerShellUtils/Lib/PsUtil.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/FuzzyTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/PrintTree/ContainerInit.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/PrintTree/PrintTreeTest.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/PrintTreeNodeCreation.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/PrintTreeNodeCreation.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/PCS/RiderProjects/PowerShellStandardModule1/TestProject1/PrintTreeTest.cs" root0="SKIP_HIGHLIGHTING" />
@@ -458,7 +458,7 @@
       <workItem from="1717004644797" duration="675000" />
       <workItem from="1717006281406" duration="2648000" />
       <workItem from="1717014677390" duration="37539000" />
-      <workItem from="1717058070570" duration="375345000" />
+      <workItem from="1717058070570" duration="377656000" />
     </task>
     <task id="LOCAL-00001" summary="Implemented bfs file search;&#10;Fuzzy requires nuget installation, powershell has issues resolving circular dependencies, but this is separate issue from the repository.">
       <option name="closed" value="true" />
@@ -804,7 +804,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717649394481</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="minor refactor">
+      <option name="closed" value="true" />
+      <created>1717703463336</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1717703463336</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -824,7 +832,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Update git tracking" />
     <MESSAGE value="Fix display issues in powershell console - serialize to PSObject" />
     <MESSAGE value="fix directory bug" />
     <MESSAGE value="strjoin" />
@@ -849,7 +856,8 @@
     <MESSAGE value="- change height =&gt; depth&#10;- change bfs to include height options&#10;- Autocomplete options with enums" />
     <MESSAGE value="c1" />
     <MESSAGE value="- Fix node width bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Fix node width bug" />
+    <MESSAGE value="minor refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor refactor" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
