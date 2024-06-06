@@ -243,33 +243,33 @@ PowerShellStandardModule1
 │                   ├── ref
 │                   └── refint
 └── TestProject1
-    ├── bin
-    │   └── Debug
-    │       └── net8.0
-    │           ├── cs
-    │           ├── de
-    │           ├── es
-    │           ├── fr
-    │           ├── it
-    │           ├── ja
-    │           ├── ko
-    │           ├── pl
-    │           ├── pt-BR
-    │           ├── ru
-    │           ├── runtimes
-    │           │   └── win
-    │           │       └── lib
-    │           │           ├── net6.0
-    │           │           └── netstandard2.0
-    │           ├── tr
-    │           ├── zh-Hans
-    │           └── zh-Hant
-    ├── obj
-    │   └── Debug
-    │       └── net8.0
-    │           ├── ref
-    │           └── refint
-    └── PrintTree
+├── bin
+│   └── Debug
+│       └── net8.0
+│           ├── cs
+│           ├── de
+│           ├── es
+│           ├── fr
+│           ├── it
+│           ├── ja
+│           ├── ko
+│           ├── pl
+│           ├── pt-BR
+│           ├── ru
+│           ├── runtimes
+│           │   └── win
+│           │       └── lib
+│           │           ├── net6.0
+│           │           └── netstandard2.0
+│           ├── tr
+│           ├── zh-Hans
+│           └── zh-Hant
+├── obj
+│   └── Debug
+│       └── net8.0
+│           ├── ref
+│           └── refint
+└── PrintTree
 ```
 
 
@@ -345,11 +345,11 @@ PowerShellStandardModule1
 │       ├── Debug
 │       └── Release
 └── TestProject1
-    ├── bin
-    │   └── Debug
-    ├── obj
-    │   └── Debug
-    └── PrintTree
+├── bin
+│   └── Debug
+├── obj
+│   └── Debug
+└── PrintTree
 ```
 
 ## Within
@@ -365,8 +365,8 @@ PowerShellStandardModule1
 │   └── Commands
 │       └── PrintTree
 └── TestProject1
-    └── PrintTree
-    
+└── PrintTree
+
 ```
 
 
@@ -378,8 +378,8 @@ PowerShellStandardModule1
 printtree -file -Depth 10 -where {$_.name -eq "TestFiles.cs"} -within -StringSelector {"[$($_.GetType().Name)] " + $_.name}
 [DirectoryInfo] PowerShellStandardModule1
 └── [DirectoryInfo] TestProject1
-    └── [DirectoryInfo] PrintTree
-        └── [FileInfo] TestFiles.cs
+└── [DirectoryInfo] PrintTree
+└── [FileInfo] TestFiles.cs
 ```
 
 
@@ -419,9 +419,9 @@ Get-PrintTree -Depth 9 -NodeWidth 3 -Width 35 -RootNodeWidth 99999999 -Limit 500
 │           ├── [net6.0] - 5/20/2024 5:44 AM
 │           └── [netstandard2.0] - 5/20/2024 5:41 AM
 └── [PowerShellStandardModule1] - 6/4/2024 8:05 PM
-    └── [bin] - 6/4/2024 8:05 PM
-        └── [Release] - 6/4/2024 8:05 PM
-            └── [net8.0] - 6/4/2024 8:05 PM
+└── [bin] - 6/4/2024 8:05 PM
+└── [Release] - 6/4/2024 8:05 PM
+└── [net8.0] - 6/4/2024 8:05 PM
 ```
 
 # Get-Bfs
@@ -436,111 +436,111 @@ Get-PrintTree -Depth 9 -NodeWidth 3 -Width 35 -RootNodeWidth 99999999 -Limit 500
 get-help get-bfs -full
 
 NAME
-    Get-Bfs
+Get-Bfs
 
 SYNTAX
-    Get-Bfs [[-Pattern] <string>] [[-StartingDirectory] <string>] [-Depth <int>] [-CaseSensitive] [-File] [-First <int>] [-Limit <int>] [<CommonParameters>]
+Get-Bfs [[-Pattern] <string>] [[-StartingDirectory] <string>] [-Depth <int>] [-CaseSensitive] [-File] [-First <int>] [-Limit <int>] [<CommonParameters>]
 
 
 PARAMETERS
-    -CaseSensitive
-        Enable to be have case sensitive search.
+-CaseSensitive
+Enable to be have case sensitive search.
 
-        Required?                    false
-        Position?                    Named
-        Accept pipeline input?       false
-        Parameter set name           (All)
-        Aliases                      None
-        Dynamic?                     false
-        Accept wildcard characters?  false
+Required?                    false
+Position?                    Named
+Accept pipeline input?       false
+Parameter set name           (All)
+Aliases                      None
+Dynamic?                     false
+Accept wildcard characters?  false
 
-    -Depth <int>
-        Max depth to search. Defaults to 100.
+-Depth <int>
+Max depth to search. Defaults to 100.
 
-        Required?                    false
-        Position?                    Named
-        Accept pipeline input?       false
-        Parameter set name           (All)
-        Aliases                      None
-        Dynamic?                     false
-        Accept wildcard characters?  false
+Required?                    false
+Position?                    Named
+Accept pipeline input?       false
+Parameter set name           (All)
+Aliases                      None
+Dynamic?                     false
+Accept wildcard characters?  false
 
-    -File
-        Enable to receive files in addition to directories.
+-File
+Enable to receive files in addition to directories.
 
-        Required?                    false
-        Position?                    Named
-        Accept pipeline input?       false
-        Parameter set name           (All)
-        Aliases                      None
-        Dynamic?                     false
-        Accept wildcard characters?  false
+Required?                    false
+Position?                    Named
+Accept pipeline input?       false
+Parameter set name           (All)
+Aliases                      None
+Dynamic?                     false
+Accept wildcard characters?  false
 
-    -First <int>
-        How many results to take before stopping. Defaults to 1. Negative numbers are rounded to 0.
+-First <int>
+How many results to take before stopping. Defaults to 1. Negative numbers are rounded to 0.
 
-        Required?                    false
-        Position?                    Named
-        Accept pipeline input?       false
-        Parameter set name           (All)
-        Aliases                      None
-        Dynamic?                     false
-        Accept wildcard characters?  false
+Required?                    false
+Position?                    Named
+Accept pipeline input?       false
+Parameter set name           (All)
+Aliases                      None
+Dynamic?                     false
+Accept wildcard characters?  false
 
-    -Limit <int>
-        The maximum amount of items to process, regardless if they match the pattern. Defaults to int32 max. Negative numbers rounded to 0.
+-Limit <int>
+The maximum amount of items to process, regardless if they match the pattern. Defaults to int32 max. Negative numbers rounded to 0.
 
-        Required?                    false
-        Position?                    Named
-        Accept pipeline input?       false
-        Parameter set name           (All)
-        Aliases                      None
-        Dynamic?                     false
-        Accept wildcard characters?  false
+Required?                    false
+Position?                    Named
+Accept pipeline input?       false
+Parameter set name           (All)
+Aliases                      None
+Dynamic?                     false
+Accept wildcard characters?  false
 
-    -Pattern <string>
-        The pattern to search for. Follows same conventions as other PowerShell commands.
+-Pattern <string>
+The pattern to search for. Follows same conventions as other PowerShell commands.
 
-        Required?                    false
-        Position?                    0
-        Accept pipeline input?       false
-        Parameter set name           (All)
-        Aliases                      None
-        Dynamic?                     false
-        Accept wildcard characters?  false
+Required?                    false
+Position?                    0
+Accept pipeline input?       false
+Parameter set name           (All)
+Aliases                      None
+Dynamic?                     false
+Accept wildcard characters?  false
 
-    -StartingDirectory <string>
-        The directory to start the search from. Defaults to the current directory.
+-StartingDirectory <string>
+The directory to start the search from. Defaults to the current directory.
 
-        Required?                    false
-        Position?                    1
-        Accept pipeline input?       true (ByValue, ByPropertyName)
-        Parameter set name           (All)
-        Aliases                      None
-        Dynamic?                     false
-        Accept wildcard characters?  false
+Required?                    false
+Position?                    1
+Accept pipeline input?       true (ByValue, ByPropertyName)
+Parameter set name           (All)
+Aliases                      None
+Dynamic?                     false
+Accept wildcard characters?  false
 
-    <CommonParameters>
-        This cmdlet supports the common parameters: Verbose, Debug,
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters (https://go.microsoft.com/fwlink/?LinkID=113216).
+<CommonParameters>
+This cmdlet supports the common parameters: Verbose, Debug,
+ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+OutBuffer, PipelineVariable, and OutVariable. For more information, see
+about_CommonParameters (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 
 INPUTS
-    System.String
+System.String
 
 
 OUTPUTS
-    System.IO.FileSystemInfo
+System.IO.FileSystemInfo
 
 
 ALIASES
-    Bfs
+Bfs
 
 
 REMARKS
-    None
+None
 ```
 
 
@@ -571,71 +571,71 @@ bfs *tree* -First 10 | rvpa -Relative
 get-help select-fuzzy -full
 
 NAME
-    Select-Fuzzy
+Select-Fuzzy
 
 SYNTAX
-    Select-Fuzzy [-String1] <string> [-String2] <string> [[-Strategy] <string>] [<CommonParameters>]
+Select-Fuzzy [-String1] <string> [-String2] <string> [[-Strategy] <string>] [<CommonParameters>]
 
 
 PARAMETERS
-    -Strategy <string>
-        Strategy to use for fuzzy matching. Defaults to 'Ratio', and will use this option if an invalid option is selected.
-        Options: "PartialRatio", "PartialTokenAbbreviationRatio", "PartialTokenDifferenceRatio",
-        "PartialTokenInitialismRatio", "PartialTokenSetRatio", "PartialTokenSortRatio", "Ratio",
-        "TokenAbbreviationRatio", "TokenDifferenceRatio", "TokenInitialismRatio", "TokenSetRatio", "TokenSortRatio",
-        "WeightedRatio"
+-Strategy <string>
+Strategy to use for fuzzy matching. Defaults to 'Ratio', and will use this option if an invalid option is selected.
+Options: "PartialRatio", "PartialTokenAbbreviationRatio", "PartialTokenDifferenceRatio",
+"PartialTokenInitialismRatio", "PartialTokenSetRatio", "PartialTokenSortRatio", "Ratio",
+"TokenAbbreviationRatio", "TokenDifferenceRatio", "TokenInitialismRatio", "TokenSetRatio", "TokenSortRatio",
+"WeightedRatio"
 
-        Required?                    false
-        Position?                    2
-        Accept pipeline input?       false
-        Parameter set name           (All)
-        Aliases                      None
-        Dynamic?                     false
-        Accept wildcard characters?  false
+Required?                    false
+Position?                    2
+Accept pipeline input?       false
+Parameter set name           (All)
+Aliases                      None
+Dynamic?                     false
+Accept wildcard characters?  false
 
-    -String1 <string>
-        The first string to compare.
+-String1 <string>
+The first string to compare.
 
-        Required?                    true
-        Position?                    0
-        Accept pipeline input?       true (ByValue, ByPropertyName)
-        Parameter set name           (All)
-        Aliases                      None
-        Dynamic?                     false
-        Accept wildcard characters?  false
+Required?                    true
+Position?                    0
+Accept pipeline input?       true (ByValue, ByPropertyName)
+Parameter set name           (All)
+Aliases                      None
+Dynamic?                     false
+Accept wildcard characters?  false
 
-    -String2 <string>
-        The second string to compare.
+-String2 <string>
+The second string to compare.
 
-        Required?                    true
-        Position?                    1
-        Accept pipeline input?       true (ByValue, ByPropertyName)
-        Parameter set name           (All)
-        Aliases                      None
-        Dynamic?                     false
-        Accept wildcard characters?  false
+Required?                    true
+Position?                    1
+Accept pipeline input?       true (ByValue, ByPropertyName)
+Parameter set name           (All)
+Aliases                      None
+Dynamic?                     false
+Accept wildcard characters?  false
 
-    <CommonParameters>
-        This cmdlet supports the common parameters: Verbose, Debug,
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters (https://go.microsoft.com/fwlink/?LinkID=113216).
+<CommonParameters>
+This cmdlet supports the common parameters: Verbose, Debug,
+ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+OutBuffer, PipelineVariable, and OutVariable. For more information, see
+about_CommonParameters (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 
 INPUTS
-    System.String
+System.String
 
 
 OUTPUTS
-    PowerShellStandardModule1.Models.FuzzyResult
+PowerShellStandardModule1.Models.FuzzyResult
 
 
 ALIASES
-    Fuzzy
+Fuzzy
 
 
 REMARKS
-    None
+None
 ```
 ## Usage
 ```powershell
