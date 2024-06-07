@@ -24,7 +24,7 @@ public partial class PrintTreeService
     public bool Within { get; }
     public bool File { get; }
     
-    public int ParallelThreshold { get; init; } = Environment.ProcessorCount * 100;
+    public int ParallelThreshold { get; }
 }
 
 public partial class PrintTreeService
@@ -56,10 +56,12 @@ public partial class PrintTreeService
         Func<FileSystemInfo, bool>? filter = null,
         bool within = false,
         bool file = false,
+        int parallelThreshold = 10_000,
         CancellationToken token = default
     )
     {
         StartingDirectory = startingDirectory;
+        ParallelThreshold = parallelThreshold;
         StringValueSelector = stringValueSelector ?? DefaultStringValueSelector;
         Height = height;
         Width = width;
@@ -88,7 +90,8 @@ public partial class PrintTreeService
 
         ClearChildrenExceedingWidthImpl = new ClearChildrenExceedingWidthImpl(
             nodeWidth: NodeWidth,
-            rootNodeWidth: RootNodeWidth
+            rootNodeWidth: RootNodeWidth,
+            parallelThreshold:ParallelThreshold
         );
 
         BfsImpl = CreateBfsImpl();
@@ -144,7 +147,7 @@ public partial class PrintTreeService
             RemoveBranchesExceptFilteredImpl.Invoke(result);
         }
 
-        ClearChildrenExceedingWidthImpl.Invoke(result, ParallelThreshold);
+        ClearChildrenExceedingWidthImpl.Invoke(result);
 
         return result;
     }

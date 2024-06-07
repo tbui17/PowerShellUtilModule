@@ -5,7 +5,8 @@ namespace PowerShellStandardModule1.Commands.PrintTree;
 
 public class ClearChildrenExceedingWidthImpl(
     int nodeWidth,
-    int rootNodeWidth)
+    int rootNodeWidth,
+    int parallelThreshold)
 {
     private void ClearChildren(FileSystemInfoTreeNode node)
     {
@@ -22,9 +23,9 @@ public class ClearChildrenExceedingWidthImpl(
            .ToList();
     }
 
-    public void Invoke(ICollection<FileSystemInfoTreeNode> result, int ParallelThreshold)
+    public void Invoke(ICollection<FileSystemInfoTreeNode> result)
     {
-        if (result.Count >= ParallelThreshold)
+        if (result.Count >= parallelThreshold)
         {
             result
                .AsParallel()

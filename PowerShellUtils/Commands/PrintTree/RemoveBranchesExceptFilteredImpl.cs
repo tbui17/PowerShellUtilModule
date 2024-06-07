@@ -50,14 +50,17 @@ public class RemoveBranchesExceptFilteredImpl(
 
 public class PreserveTerminalNodeChildrenImpl(
     Func<FileSystemInfo, bool> filter,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken,
+    int parallelThreshold = int.MaxValue)
 {
-    public void Invoke(IList<FileSystemInfoTreeNode> result, bool parallel = false)
+    private bool ShouldInvokeParallel(int count) => count >= parallelThreshold;
+
+    public void Invoke(IList<FileSystemInfoTreeNode> result)
     {
         var (dependencyNodes, terminalNodes) = GetDependencyAndTerminalNodes(result);
 
 
-        if (parallel)
+        if (ShouldInvokeParallel(result.Count))
         {
             dependencyNodes
                .AsParallel()
@@ -84,12 +87,12 @@ public class PreserveTerminalNodeChildrenImpl(
     }
 
     private (HashSet<FileSystemInfoTreeNode> dependencyNodes, HashSet<FileSystemInfoTreeNode> terminalNodes)
-        GetDependencyAndTerminalNodes(IList<FileSystemInfoTreeNode> nodes, bool parallel = false)
+        GetDependencyAndTerminalNodes(IList<FileSystemInfoTreeNode> nodes)
     {
         var dependencyNodes = new HashSet<FileSystemInfoTreeNode>();
         var terminalNodes = new HashSet<FileSystemInfoTreeNode>();
 
-        if (parallel)
+        if (ShouldInvokeParallel(nodes.Count))
         {
             // synchronize before foreach block
             foreach (var node in nodes
