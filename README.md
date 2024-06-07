@@ -365,7 +365,7 @@ PowerShellStandardModule1
 	- RootNodeWidth constrains the amount of children the top level directory can have.
 	- NodeWidth constrains the amount of children each node other than the top level directory can have.
 	- If RootNodeWidth is negative, it defaults to the NodeWidth.
-	- Width alters the final tree length.
+    - Width alters the amount of lines output.
 
 - NodeWidth and RootNodeWidth directly impact the data returned from search results, and can therefore truncate node with children, drastically altering the Width of the tree.
 - Width only alters the number of lines in the output, and is not dependent on node connections.
