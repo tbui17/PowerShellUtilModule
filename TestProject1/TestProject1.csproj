@@ -20,6 +20,7 @@
         </PackageReference>
         <PackageReference Include="LanguageExt.Core" Version="4.4.8" />
         <PackageReference Include="LanguageExt.Transformers" Version="4.4.8" />
+        <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="8.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
         <PackageReference Include="Moq" Version="4.20.70" />
         <PackageReference Include="morelinq" Version="4.2.0" />
@@ -39,6 +40,10 @@
       <Reference Include="JetBrains.ReSharper.TestRunner.Abstractions">
         <HintPath>..\..\..\..\..\Program Files\JetBrains\JetBrains Rider 2023.3.3\lib\ReSharperHost\TestRunner\netcoreapp3.0\JetBrains.ReSharper.TestRunner.Abstractions.dll</HintPath>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\TestData\" />
     </ItemGroup>
 
 </Project>

@@ -39,7 +39,7 @@ public partial class PrintTreeService
 
     private PrintNodeImpl PrintNodeImpl { get; set; }
 
-    private RemoveBranchesNotSatisfyingFilterImpl RemoveBranchesNotSatisfyingFilterImpl { get; set; }
+    private RemoveBranchesExceptFilteredImpl RemoveBranchesExceptFilteredImpl { get; set; }
 
     private ClearChildrenExceedingWidthImpl ClearChildrenExceedingWidthImpl { get; set; }
 
@@ -74,7 +74,7 @@ public partial class PrintTreeService
         Filter = filter ?? (_ => true);
         Within = within;
         File = file;
-        RemoveBranchesNotSatisfyingFilterImpl = new RemoveBranchesNotSatisfyingFilterImpl(
+        RemoveBranchesExceptFilteredImpl = new RemoveBranchesExceptFilteredImpl(
             filter: Filter,
             cancellationToken: Token
         );
@@ -141,7 +141,7 @@ public partial class PrintTreeService
 
         if (Within)
         {
-            RemoveBranchesNotSatisfyingFilterImpl.Invoke(result);
+            RemoveBranchesExceptFilteredImpl.Invoke(result);
         }
 
         ClearChildrenExceedingWidthImpl.Invoke(result, ParallelThreshold);

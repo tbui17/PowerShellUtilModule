@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Execution;
+using Newtonsoft.Json;
 using PowerShellStandardModule1.Commands.PrintTree;
+using PowerShellStandardModule1.Lib;
 using PowerShellStandardModule1.Lib.Extensions;
 using PowerShellStandardModule1.Models;
 using TestNode = PowerShellStandardModule1.Models.TreeNode<string>;
@@ -237,11 +239,41 @@ public partial class PrintTreeTest : ContainerInit
         using var scope = new AssertionScope();
         res
            .Should()
-           .Contain(x => x.Value.Name.Contains("PrintTree", StringComparison.OrdinalIgnoreCase));
-        res
-           .Count.Should()
-           .BeGreaterThan(2);
+           .Contain(x => x.Value.Name.Contains("PrintTree", StringComparison.OrdinalIgnoreCase))
+           .And.HaveCountGreaterThan(2);
+    
     }
+
+
+    [Test]
+    public void TestPreserveTerminalNodes()
+    {
+        var bfsImpl = new BfsExecutor<FileSystemInfo> { ChildProvider = FsUtil.GetChildren };
+        var res = bfsImpl
+           .Invoke(GetTestDataDirectory())
+           .ToList();
+
+        var initialCount = res.Count;
+
+
+        var impl = new PreserveTerminalNodeChildrenImpl(filter: x => x.Name == "level3", CancellationToken.None);
+
+        impl.Invoke(res);
+
+        var seq = Traversal
+           .Bfs(res[0], x => x.Children)
+           .ToList();
+
+        using var scope = new AssertionScope();
+
+
+        seq
+           .Should()
+           .Contain(x => x.Value.Name == "level7")
+           .And.NotContain(x => x.Value.Name == "level2d")
+           .And.HaveCountLessThan(initialCount);
+    }
+   
 }
 
 public partial class PrintTreeTest

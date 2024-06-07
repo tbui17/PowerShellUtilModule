@@ -9,7 +9,7 @@ namespace PowerShellStandardModule1.Commands.PrintTree;
 public class BfsExecutor<T>
 {
     public Func<TreeNode<T>, bool> Where { get; set; } = _ => true;
-    public Func<TreeNode<T>, bool> ShouldBreak { get; set; } = _ => true;
+    public Func<TreeNode<T>, bool> ShouldBreak { get; set; } = _ => false;
     public Func<T, IEnumerable<T>> ChildProvider { get; set; } = _ => [];
 
 

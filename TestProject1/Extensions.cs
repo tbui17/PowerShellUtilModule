@@ -25,7 +25,7 @@ internal static class Extensions
             {
                 Formatting = formatting,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                Converters = [new DirectoryInfoConverter()]
+                Converters = [new DirectoryInfoConverter(), new FileInfoConverter()]
             }
         );
     }
@@ -77,6 +77,28 @@ public class DirectoryInfoConverter : JsonConverter<DirectoryInfo>
     {
         var path = (string)reader.Value!;
         return new DirectoryInfo(path);
+    }
+}
+
+
+
+public class FileInfoConverter : JsonConverter<FileInfo>
+{
+    public override void WriteJson(JsonWriter writer, FileInfo? value, JsonSerializer serializer)
+    {
+        writer.WriteValue(value!.FullName);
+    }
+
+    public override FileInfo ReadJson(
+        JsonReader reader,
+        Type objectType,
+        FileInfo? existingValue,
+        bool hasExistingValue,
+        JsonSerializer serializer
+    )
+    {
+        var path = (string)reader.Value!;
+        return new FileInfo(path);
     }
 }
 

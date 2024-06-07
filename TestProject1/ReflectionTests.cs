@@ -61,10 +61,10 @@ public class ReflectionTests
         var cmd = new PrintTreeCommand()
         {
             Depth = 11,
-            NodeWidth = 12,
+            NodeChildren = 12,
             StartingDirectory = "MyDir",
             Width = 13,
-            RootNodeWidth = 14,
+            RootNodeChildren = 14,
             Limit = 15,
         };
         var instance = mapper.Map<PrintTreeService>(cmd);
