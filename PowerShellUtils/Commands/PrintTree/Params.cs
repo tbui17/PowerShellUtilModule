@@ -33,9 +33,9 @@ public partial class PrintTreeCommand
 
     [Parameter(
         HelpMessage =
-            "The maximum amount of lines an individual node should have. Defaults to int32 max. Negative numbers are rounded to 0."
+            "The maximum amount of children an individual node should have. Defaults to int32 max. Negative numbers are rounded to 0."
     )]
-    public int NodeWidth { get; set; } = Int32.MaxValue;
+    public int NodeChildren { get; set; } = Int32.MaxValue;
 
 
     [Parameter(
@@ -53,9 +53,9 @@ public partial class PrintTreeCommand
 
     [Parameter(
         HelpMessage =
-            "Maximum width for the root node. Defaults to a negative value (-1), which will coerce it into the NodeWidth if this is the case."
+            "Maximum children for the root node. Defaults to a negative value (-1), which will coerce it into the NodeChildren if this is the case."
     )]
-    public int RootNodeWidth { get; set; } = -1;
+    public int RootNodeChildren { get; set; } = -1;
 
     
     [Parameter(

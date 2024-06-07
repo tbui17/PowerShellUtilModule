@@ -1,10 +1,14 @@
-﻿  
+﻿
+# Description
+  
 - Powershell utility modules for working with directory structures.  
   
-# Installation  
+# Installation 
 ```powershell  
-- Install-Module -Name PowerShellUtils  
-- Import-Module -Name PowerShellUtils  
+
+Install-Module -Name PowerShellUtils  
+Import-Module -Name PowerShellUtils  
+
 ```
 
 # Get-PrintTree
@@ -163,7 +167,7 @@ PARAMETERS
 
     -OrderBy <string>
         The property to sort by of a FileSystemInfo object. Available options are:
-        Name, CreationTime, LastAccessTime, LastWriteTime, Extension, Attributes
+        Name, CreationTime, LastAccessTime, LastWriteTime, Extension, Attributes, ChildCount
         Defaults to Name.
         If an invalid option is selected, it will default to name.
 
@@ -357,9 +361,186 @@ PowerShellStandardModule1
 
 ## Width, NodeWidth, RootNodeWidth
 
-- NodeWidth and RootNodeWidth directly impact the data returned from search results.
-- Width alters the final tree after it has been built. 
+- Let's review the following behaviors as they are crucial:
+	- RootNodeWidth constrains the amount of children the top level directory can have.
+	- NodeWidth constrains the amount of children each node other than the top level directory can have.
+	- If RootNodeWidth is negative, it defaults to the NodeWidth.
+	- Width alters the final tree length.
 
+- NodeWidth and RootNodeWidth directly impact the data returned from search results, and can therefore truncate node with children, drastically altering the Width of the tree.
+- Width only alters the number of lines in the output, and is not dependent on node connections.
+
+Note the following example, showing how results can drastically change with small changes to NodeWidth:
+
+Original:
+
+```PowerShell
+
+printtree -depth 30000
+
+PowerShellStandardModule1
+├── .idea
+│   └── .idea.PowershellUtilsSolution
+│       └── .idea
+├── PowerShellStandardModule1
+│   └── bin
+│       └── Release
+│           └── net8.0
+│               └── win-x64
+│                   └── publish
+│                       └── PowerShellUtils
+├── PowerShellUtils
+│   ├── Attributes
+│   ├── bin
+│   │   ├── Debug
+│   │   │   ├── net6.0
+│   │   │   ├── net8.0
+│   │   │   └── netstandard2.0
+│   │   └── Release
+│   │       └── net8.0
+│   │           └── win-x64
+│   │               └── publish
+│   ├── Commands
+│   │   ├── Bfs
+│   │   ├── Fuzzy
+│   │   ├── PrintTree
+│   │   └── Sample
+│   ├── Lib
+│   │   └── Extensions
+│   ├── Models
+│   └── obj
+│       ├── Debug
+│       │   ├── net6.0
+│       │   │   ├── ref
+│       │   │   └── refint
+│       │   ├── net8.0
+│       │   │   ├── ref
+│       │   │   └── refint
+│       │   └── netstandard2.0
+│       └── Release
+│           └── net8.0
+│               └── win-x64
+│                   ├── ref
+│                   └── refint
+└── TestProject1
+    ├── bin
+    │   └── Debug
+    │       └── net8.0
+    │           ├── cs
+    │           ├── de
+    │           ├── es
+    │           ├── fr
+    │           ├── it
+    │           ├── ja
+    │           ├── ko
+    │           ├── pl
+    │           ├── pt-BR
+    │           ├── ru
+    │           ├── runtimes
+    │           │   └── win
+    │           │       └── lib
+    │           │           ├── net6.0
+    │           │           └── netstandard2.0
+    │           ├── tr
+    │           ├── zh-Hans
+    │           └── zh-Hant
+    ├── obj
+    │   └── Debug
+    │       └── net8.0
+    │           ├── ref
+    │           └── refint
+    ├── PrintTree
+    └── Resources
+        └── TestData
+            ├── level1
+            │   ├── level2
+            │   │   ├── level3
+            │   │   │   ├── level4
+            │   │   │   │   └── level5
+            │   │   │   │       ├── level6
+            │   │   │   │       │   └── level7
+            │   │   │   │       └── level6b
+            │   │   │   └── level4b
+            │   │   │       └── level5b
+            │   │   └── level3b
+            │   │       └── level4c
+            │   └── level2b
+            │       └── level3c
+            ├── level1b
+            │   └── level2c
+            │       └── level3d
+            ├── level1c
+            │   └── level2d
+            └── level1d
+```
+
+
+Filtered:
+
+```powershell
+printtree -width 26 -NodeWidth 2 -RootNodeWidth 300 -depth 99999
+PowerShellStandardModule1
+├── .idea
+│   └── .idea.PowershellUtilsSolution
+│       └── .idea
+├── PowerShellStandardModule1
+│   └── bin
+│       └── Release
+│           └── net8.0
+│               └── win-x64
+│                   └── publish
+│                       └── PowerShellUtils
+├── PowerShellUtils
+│   ├── Attributes
+│   └── bin
+│       ├── Debug
+│       │   ├── net6.0
+│       │   └── net8.0
+│       └── Release
+│           └── net8.0
+│               └── win-x64
+│                   └── publish
+└── TestProject1
+    ├── bin
+    │   └── Debug
+    │       └── net8.0
+    │           ├── cs
+    
+```
+
+- Filtered, with 1 extra NodeWidth
+
+```PowerShell
+printtree -width 26 -NodeWidth 3 -RootNodeWidth 300 -depth 99999
+
+PowerShellStandardModule1
+├── .idea
+│   └── .idea.PowershellUtilsSolution
+│       └── .idea
+├── PowerShellStandardModule1
+│   └── bin
+│       └── Release
+│           └── net8.0
+│               └── win-x64
+│                   └── publish
+│                       └── PowerShellUtils
+├── PowerShellUtils
+│   ├── Attributes
+│   ├── bin
+│   │   ├── Debug
+│   │   │   ├── net6.0
+│   │   │   ├── net8.0
+│   │   │   └── netstandard2.0
+│   │   └── Release
+│   │       └── net8.0
+│   │           └── win-x64
+│   │               └── publish
+│   └── Commands
+│       ├── Bfs
+│       ├── Fuzzy
+│       └── PrintTree
+```
+- There is now an additional node, whose contents by line count towards the Width limit.
 
 ## Where
 

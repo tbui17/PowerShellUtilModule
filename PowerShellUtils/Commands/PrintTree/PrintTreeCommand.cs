@@ -68,11 +68,11 @@ public partial class PrintTreeCommand : PSCmdlet
         var instance = new PrintTreeService(
             startingDirectory: new DirectoryInfo(StartingDirectory),
             height: Constrain(Depth),
-            nodeWidth: Constrain(NodeWidth),
+            nodeWidth: Constrain(NodeChildren),
             width: Constrain(Width),
             limit: Constrain(Limit),
             token: Token,
-            rootNodeWidth: RootNodeWidth,
+            rootNodeWidth: RootNodeChildren,
             stringValueSelector: CreateSelector(),
             filter: CreateFilter(),
             orderBy: OrderBy.ToString(),
