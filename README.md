@@ -103,8 +103,8 @@ NAME
     Get-PrintTree
 
 SYNTAX
-    Get-PrintTree [[-StartingDirectory] <string>] [[-Depth] <int>] [-NodeWidth <int>] [-Limit <int>] [-Width <int>]
-    [-RootNodeWidth <int>] [-StringSelector <scriptblock>] [-OrderBy <string>] [-Descending] [-Where <scriptblock>]
+    Get-PrintTree [[-StartingDirectory] <string>] [[-Depth] <int>] [-NodeChildren <int>] [-Limit <int>] [-Width <int>]
+    [-RootNodeChildren <int>] [-StringSelector <scriptblock>] [-OrderBy <string>] [-Descending] [-Where <scriptblock>]
     [-Within] [-File] [<CommonParameters>]
 
 
@@ -153,8 +153,8 @@ PARAMETERS
         Dynamic?                     false
         Accept wildcard characters?  false
 
-    -NodeWidth <int>
-        The maximum amount of lines an individual node should have. Defaults to int32 max. Negative numbers are
+    -NodeChildren <int>
+        The maximum amount of children an individual node should have. Defaults to int32 max. Negative numbers are
         rounded to 0.
 
         Required?                    false
@@ -179,8 +179,8 @@ PARAMETERS
         Dynamic?                     false
         Accept wildcard characters?  false
 
-    -RootNodeWidth <int>
-        Maximum width for the root node. Defaults to a negative value (-1), which will coerce it into the NodeWidth if
+    -RootNodeChildren <int>
+        Maximum children for the root node. Defaults to a negative value (-1), which will coerce it into the NodeChildren if
         this is the case.
 
         Required?                    false
@@ -359,18 +359,18 @@ PowerShellStandardModule1
 ```
 
 
-## Width, NodeWidth, RootNodeWidth
+## Width, NodeChildren, RootNodeChildren
 
 - Let's review the following behaviors as they are crucial:
-	- RootNodeWidth constrains the amount of children the top level directory can have.
-	- NodeWidth constrains the amount of children each node other than the top level directory can have.
-	- If RootNodeWidth is negative, it defaults to the NodeWidth.
-    - Width alters the amount of lines output.
+	- RootNodeChildren constrains the amount of children the top level directory can have.
+	- NodeChildren constrains the amount of children each node other than the top level directory can have.
+	- If RootNodeChildren is negative, it defaults to the NodeChildren.
+	- Width alters the amount of lines output.
 
-- NodeWidth and RootNodeWidth directly impact the data returned from search results, and can therefore truncate node with children, drastically altering the Width of the tree.
+- NodeChildren and RootNodeChildren directly impact the data returned from search results, and can therefore truncate node with children, drastically altering the Width of the tree.
 - Width only alters the number of lines in the output, and is not dependent on node connections.
 
-Note the following example, showing how results can drastically change with small changes to NodeWidth:
+Note the following example, showing how results can drastically change with small changes to NodeChildren:
 
 Original:
 
@@ -478,7 +478,7 @@ PowerShellStandardModule1
 Filtered:
 
 ```powershell
-printtree -width 26 -NodeWidth 2 -RootNodeWidth 300 -depth 99999
+printtree -width 26 -NodeChildren 2 -RootNodeChildren 300 -depth 99999
 PowerShellStandardModule1
 ├── .idea
 │   └── .idea.PowershellUtilsSolution
@@ -508,10 +508,10 @@ PowerShellStandardModule1
     
 ```
 
-- Filtered, with 1 extra NodeWidth
+- Filtered, with 1 extra NodeChildren
 
 ```PowerShell
-printtree -width 26 -NodeWidth 3 -RootNodeWidth 300 -depth 99999
+printtree -width 26 -NodeChildren 3 -RootNodeChildren 300 -depth 99999
 
 PowerShellStandardModule1
 ├── .idea
@@ -627,7 +627,7 @@ printtree -file -Depth 10 -where {$_.name -eq "TestFiles.cs"} -within -StringSel
 - Imagine you are trying to get an overview of the locations of build folders in relation to a project root, but you do not want to get inundated with excessive results. You know that the entry points are somewhere within the top level and there are only a few of them, but there are many to look through, and you do not want that to dictate the length of your search results. You remember vaguely that that the folders had a version number in them containing ".0". You also want to get its last write time. 
 
 ```powershell
-Get-PrintTree -Depth 9 -NodeWidth 3 -Width 35 -RootNodeWidth 99999999 -Limit 50000 -Where {$_.Name -Like "*.0*"} -Within -StringSelector {"[$($_.Name)] - $($_.LastWriteTime.ToShortDateString()) $($_.LastWriteTime.ToShortTimeString())"} -OrderBy LastWriteTime -Desc
+Get-PrintTree -Depth 9 -NodeChildren 3 -Width 35 -RootNodeChildren 99999999 -Limit 50000 -Where {$_.Name -Like "*.0*"} -Within -StringSelector {"[$($_.Name)] - $($_.LastWriteTime.ToShortDateString()) $($_.LastWriteTime.ToShortTimeString())"} -OrderBy LastWriteTime -Desc
 [PowerShellStandardModule1] - 6/4/2024 8:05 PM
 ├── [TestProject1] - 6/5/2024 5:50 PM
 │   ├── [obj] - 6/4/2024 8:07 PM
